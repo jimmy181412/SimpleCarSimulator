@@ -101,7 +101,7 @@ public class CarSimGUI
 			public AbstractCar createCar(String name, Point startingLoca)
 			{
 				//AI controlled car (car not tested)
-				return new ExampleAICar(startingLoca, System.getProperty("user.dir") + "/resources/bluecar.png");
+				return new ExampleAICar(startingLoca, System.getProperty("user.dir") + "/SimpleCarSimulator/resources/redcar.png");
 			}
 	
 			@Override
@@ -110,7 +110,7 @@ public class CarSimGUI
 				Point finishLocation = new Point(0,0);
 				finishLocation.setX(Integer.parseInt(information[0]));
 				finishLocation.setY(Integer.parseInt(information[1]));
-				return new ExampleTestingCar(startingLoca, System.getProperty("user.dir") + "/resources/redcar.png", finishLocation);
+				return new ExampleTestingCar(startingLoca, System.getProperty("user.dir") + "/SimpleCarSimulator/resources/bluecar.png", finishLocation);
 			}
 		};
 	}
@@ -165,11 +165,11 @@ public class CarSimGUI
 						updateGUIWorld();
 					}
 					//While testing
-					/*
-					BufferedReader br = new BufferedReader(new FileReader(System.getProperty("user.dir") + "/bin/examples/ExampleWorldFile.txt"));
-					simworld = LoadWorld.loadWorldFromFile(br, cal);
-					pnlWorld.setLayout(new GridLayout(simworld.getHeight(), simworld.getWidth(), 1, 1));
-					updateGUIWorld();*/
+					
+//					BufferedReader br = new BufferedReader(new FileReader(System.getProperty("user.dir") + "/bin/examples/ExampleWorldFile.txt"));
+//					simworld = LoadWorld.loadWorldFromFile(br, cal);
+//					pnlWorld.setLayout(new GridLayout(simworld.getHeight(), simworld.getWidth(), 1, 1));
+//					updateGUIWorld();
 					
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
@@ -207,10 +207,12 @@ public class CarSimGUI
 		}
 		for (AbstractCar car : simworld.getCars())
 		{
+		
 			Point p = simworld.getCarPosition(car);
 			JLabel icon = new JLabel(car.getCarIcon());
 			icon.setSize(simworld.getCell(p.getX(), p.getY()).getWidth(), simworld.getCell(p.getX(), p.getY()).getHeight());
 			simworld.getCell(p.getX(), p.getY()).add(icon);
+			
 		}
 		pnlWorld.revalidate();
 		pnlWorld.repaint();

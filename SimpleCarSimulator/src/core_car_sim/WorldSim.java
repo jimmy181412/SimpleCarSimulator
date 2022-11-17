@@ -13,10 +13,11 @@ public class WorldSim
 	private AbstractCell[][] world;
 	private ArrayList<CarAddedListener> carAddedListeners = new ArrayList<CarAddedListener>();
 	private ArrayList<AbstractCar> cars = new ArrayList<AbstractCar>();
+	// all cars position
 	private HashMap<AbstractCar, Point> carPositions = new HashMap<AbstractCar, Point>();
 	private int width;
 	private int height;
-	private int visability = 3;
+	private int visability = 2;
 
 	public WorldSim(int x, int y)
 	{
@@ -94,19 +95,38 @@ public class WorldSim
 	{
 		//Let car view world
 		HashMap<AbstractCar, Deque<Direction>> allRoutes = new HashMap<AbstractCar, Deque<Direction>>();
+		
 		for (AbstractCar car : cars)
 		{
 			if (!car.isCrashed())
 			{
+				// The screen that car is able to see
 				WorldSim visibleWorld = getVisibleWorldForPosition(carPositions.get(car), true);
+				// The position that car in its own visible world
 				Point carReferencePoint = new Point(visability,visability);
 				car.visibleWorldUpdate(visibleWorld, carReferencePoint);
-				Deque<Direction> route = car.getSimulationRoute();
+				
+				Deque<Direction> route = car.getSimulationRoute();	
+				
+				
+				System.out.println(route.size());
+				
+				
+				
 				allRoutes.put(car, route);
 			}
 		}
+		
 		//for each route entry add position as key, then add car id as pair
 		HashMap<AbstractCar, Point> finalPositions = carPositions;
+		
+		
+		System.out.println("-----------------------");
+		for(Entry<AbstractCar, Point> cc : finalPositions.entrySet()) {
+			System.out.print(cc.getValue().getX());
+			System.out.println(cc.getValue().getY());
+		}
+		
 		//Check for invalid routes / crashes 
 		HashMap<Point, AbstractCar> checkPositions = new HashMap<Point, AbstractCar>();
 		boolean finishedChecking = false;
@@ -151,6 +171,7 @@ public class WorldSim
 		//Move to new position
 		for (AbstractCar car : cars)
 		{
+			
 			carPositions.put(car, finalPositions.get(car));
 		}
 		
@@ -158,10 +179,13 @@ public class WorldSim
 
 	
 	private WorldSim getVisibleWorldForPosition(Point currentPosition, boolean looped)
-	{
+	{	
+		
+		//(Field of view)FOV of a car
 		WorldSim visWorld = new WorldSim((visability * 2) + 1,(visability * 2) + 1);
-		visWorld.carAddedListeners = carAddedListeners;
+		visWorld.carAddedListeners = carAddedListeners;   
 		visWorld.cars = cars;
+		
 		//car positions need to be adjusted to visible world
 		visWorld.carPositions = new HashMap<AbstractCar, Point>();
 		int worldX;

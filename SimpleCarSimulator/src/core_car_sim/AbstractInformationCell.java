@@ -40,6 +40,10 @@ public abstract class AbstractInformationCell extends AbstractCell
 		visibilityChange = amount;
 	}
 	
+	public ArrayList<Direction> getFaces(){
+		return faces;
+	}
+	
 	@Override
 	public boolean isDriveable()
 	{

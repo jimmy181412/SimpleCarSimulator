@@ -1,6 +1,7 @@
 package core_car_sim;
 
 import java.awt.*;
+import java.util.ArrayList;
 
 public class TrafficLightCell extends AbstractInformationCell
 {
@@ -11,22 +12,51 @@ public class TrafficLightCell extends AbstractInformationCell
 
 	public class TrafficLightCellInformation
 	{
-		public boolean redOn = true;
-		public boolean yellowOn = false;
-		public boolean greenOn = false;
+		public boolean redOn;
+		public boolean yellowOn;
+		public boolean greenOn;
+		public ArrayList<Point> effected_area = new ArrayList<Point>();
+
 		public Point stopAt;
 		public Point stopAtReference;
 	}
 	
 	private TrafficLightCellInformation lightSituation = new TrafficLightCellInformation();
-	private int timeToChange = 4;
+	private int timeToChange = 8;
 	private int currentTime = 0;
+
 	
-	public TrafficLightCell(Direction _faces, int _visibleFrom, Point roadEffectLocation, Point roadEffectReference)
+	public TrafficLightCell(Direction _faces, int _visibleFrom,Point roadEffectLocation, Point roadEffectReference, int position)
 	{
 		super(_faces, _visibleFrom);
+		//The location of trafficLight
 		lightSituation.stopAt = roadEffectLocation;
+		//The location of the white line
 		lightSituation.stopAtReference = roadEffectReference;
+		
+		// The position of a traffic light **
+		if(position == 1) {
+			lightSituation.redOn = true;
+			lightSituation.yellowOn = false;
+			lightSituation.greenOn = false;
+		}
+		else if(position == 2) {
+			
+			lightSituation.redOn = true;
+			lightSituation.yellowOn = false;
+			lightSituation.greenOn = false;	
+		}
+		else if(position == 3) {
+			lightSituation.redOn = true;
+			lightSituation.yellowOn = false;
+			lightSituation.greenOn = false;
+		}
+		else if(position == 4) {
+			lightSituation.redOn = true;
+			lightSituation.yellowOn = false;
+			lightSituation.greenOn = false;
+		}
+		
 	}
 	
 	@Override
@@ -62,7 +92,6 @@ public class TrafficLightCell extends AbstractInformationCell
 		}
 		
 	}
-
 	@Override
 	public void paintComponent(Graphics g)
 	{
@@ -89,6 +118,5 @@ public class TrafficLightCell extends AbstractInformationCell
 	public InformationCell getInformationType()
 	{
 		return InformationCell.ic_trafficLight;
-	}
-
+	}		
 }
