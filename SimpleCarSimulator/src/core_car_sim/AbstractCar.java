@@ -7,6 +7,7 @@ import javax.swing.ImageIcon;
 public abstract class AbstractCar
 {
 	private Point startingPosition;
+	private Point endPosition; 
 	private int speed;
 	private boolean crashed;
 	protected ImageIcon carIcon = null;
@@ -15,9 +16,10 @@ public abstract class AbstractCar
 	protected abstract ArrayDeque<Direction> getSimulationRoute();
 	protected abstract boolean isFinished(Point point);
 	
-	public AbstractCar(Point startPos, int startingSpeed, String fileImage)
+	public AbstractCar(Point startPos, Point endPos,  int startingSpeed, String fileImage)
 	{
 		startingPosition = startPos;
+		endPosition = endPos;
 		speed = startingSpeed;
 		carIcon = new ImageIcon(fileImage);
 	}
@@ -34,6 +36,14 @@ public abstract class AbstractCar
 
 	public Point getStartingPosition() {
 		return startingPosition;
+	}
+	
+	public Point getEndPosition() {
+		return endPosition;
+	}
+	
+	public void setEndPosition(Point endPosition) {
+		this.endPosition = endPosition;
 	}
 
 	public void setStartingPosition(Point startingPosition) {

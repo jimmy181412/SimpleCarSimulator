@@ -98,19 +98,16 @@ public class CarSimGUI
 		initialize();
 		cal = new CarAddedListener() {
 			@Override
-			public AbstractCar createCar(String name, Point startingLoca)
+			public AbstractCar createCar(String name, Point startingLoca, Point endingLoca)
 			{
 				//AI controlled car (car not tested)
-				return new ExampleAICar(startingLoca, System.getProperty("user.dir") + "/SimpleCarSimulator/resources/redcar.png");
+				return new ExampleAICar(startingLoca, endingLoca, System.getProperty("user.dir") + "/SimpleCarSimulator/resources/redcar.png");
 			}
 	
 			@Override
-			public AbstractCar createCar(String name, Point startingLoca, String[] information)
+			public AbstractCar createCar(String name, Point startingLoca, Point endingLoca, String av)
 			{
-				Point finishLocation = new Point(0,0);
-				finishLocation.setX(Integer.parseInt(information[0]));
-				finishLocation.setY(Integer.parseInt(information[1]));
-				return new ExampleTestingCar(startingLoca, System.getProperty("user.dir") + "/SimpleCarSimulator/resources/bluecar.png", finishLocation);
+				return new ExampleTestingCar(startingLoca, endingLoca,System.getProperty("user.dir") + "/SimpleCarSimulator/resources/bluecar.png");
 			}
 		};
 	}

@@ -71,9 +71,4 @@ solidlinedown 7 4
 
 
 
-
-Car slow 4 5 
-Car slow 3 7
-Car slow 2 5 
-Car slow 3 5
-Car Test 1 8 7 4
+Car Test 1 8 7 4 jim

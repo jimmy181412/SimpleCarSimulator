@@ -87,12 +87,4 @@ hardshoulder 5 2
 hardshoulder 5 1
 hardshoulder 5 0
 
-
-
-
-
-
-
-
-Car testingCar 6 8 6 2
-Car AICar 6 10
+Car testingCar 6 8 8 2 jim

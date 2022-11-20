@@ -51,6 +51,13 @@ public class RoadCell extends AbstractCell
 	private boolean pavement;
 	private ArrayList<RoadMarking> roadMarkings = new ArrayList<RoadMarking>();
 	private int speedLimit;
+	private int f_value = 10000;
+	private int g_value = 500;
+	public boolean checked = false;
+	public boolean open = false;
+	public RoadCell parent;
+	
+	
 	
 	public RoadCell(ArrayList<Direction> directions, boolean _pavement, ArrayList<RoadMarking> markings, int _speedLimit)
 	{
@@ -104,6 +111,22 @@ public class RoadCell extends AbstractCell
 	public void setMarking(RoadMarking rm)
 	{
 		roadMarkings.add(rm);
+	}
+	
+	public void setAsChecked() {
+		this.checked = true;
+	}
+	
+	public void setAsOpen() {
+		this.open = true;
+	}
+	
+	public RoadCell getParent() {
+		return this.parent;
+	}
+	
+	public void setParent(RoadCell rc) {
+		this.parent = rc;
 	}
 	
 	@Override
@@ -203,10 +226,29 @@ public class RoadCell extends AbstractCell
 			g2d.drawString(travelDirection.get(0).toString(),getWidth()/4,getHeight()/4);
 		}
 	}
+	
+	
 
 	@Override
 	public boolean isDriveable()
 	{
 		return true;
 	}
+	
+	public void setGValue(int value) {
+		this.g_value = value;
+	}
+	
+	public int getGValue() {
+		return this.g_value;
+	}
+	
+	public void setFValue(int value) {
+		this.f_value = value;
+	}
+	
+	public int getFValue() {
+		return this.f_value;
+	}
+	
 }

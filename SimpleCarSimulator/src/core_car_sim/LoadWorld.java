@@ -157,13 +157,13 @@ public class LoadWorld
 					((RoadCell)createdSim.getCell(Integer.parseInt(items[1]),Integer.parseInt(items[2]))).setMarking(RoadMarking.rm_hard_shoulder);
 					break;
 				case "car":
-					if (items.length <= 4)
+					if (items.length <= 6)
 					{	
-						createdSim.addCar(items[1], new Point(Integer.parseInt(items[2]), Integer.parseInt(items[3])));
+						createdSim.addCar(items[1], new Point(Integer.parseInt(items[2]), Integer.parseInt(items[3])),new Point(Integer.parseInt(items[4]),Integer.parseInt(items[5])));
 					}
 					else
 					{
-						createdSim.addCar(items[1], new Point(Integer.parseInt(items[2]), Integer.parseInt(items[3])), Arrays.copyOfRange(items, 4, items.length));
+						createdSim.addCar(items[1], new Point(Integer.parseInt(items[2]), Integer.parseInt(items[3])), new Point(Integer.parseInt(items[4]), Integer.parseInt(items[5])),items[6] );
 					}
 					break;
 			}

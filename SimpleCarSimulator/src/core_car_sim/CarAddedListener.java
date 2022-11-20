@@ -2,6 +2,6 @@ package core_car_sim;
 
 public interface CarAddedListener 
 {
-	AbstractCar createCar(String name, Point startingLoca);
-	AbstractCar createCar(String name, Point startingLoca, String[] information);
+	AbstractCar createCar(String name, Point startingLoca, Point endingLoca);
+	AbstractCar createCar(String name, Point startingLoca, Point endingLoca, String av);
 }

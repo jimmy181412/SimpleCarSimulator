@@ -38,30 +38,18 @@ public class ExampleTestingCar extends AbstractCar
 	// car's current moving direction
 	private Direction cmd = Direction.north;
 	
-   
 	
-	
-	// the point that the car should stop
-	Point finishedLocation;
 	
 	ArrayDeque<Direction> directions = new ArrayDeque<Direction>();
 	
-	
-	public ExampleTestingCar(Point startPos, String imageLoc, Point finishLoca)
-	{
-		super(startPos, 0, imageLoc);
+
+	public ExampleTestingCar(Point startPos, Point endPos,String imageLoc){
+		super(startPos,endPos,0,imageLoc);
 		setSpeed(1);
-		finishedLocation = finishLoca;
 	}
 
 	@Override
 	protected void visibleWorldUpdate(WorldSim visibleWorld, Point location){
-		
-		System.out.println("xxxxxxxxxxxxx");
-		System.out.println(location.getX());
-		
-		System.out.println(location.getY());
-		System.out.println("xxxxxxxxxxxxx");
 		
 		
 		for (int y = 0; y < visibleWorld.getHeight(); y++){
@@ -92,14 +80,6 @@ public class ExampleTestingCar extends AbstractCar
 									trafficLightRed = tlci.redOn;
 									
 									Point visibleWorldStopPoint = new Point(x + tlci.stopAtReference.getX(), y + tlci.stopAtReference.getY());
-									System.out.println(tlci.stopAtReference.getX());
-									System.out.println(tlci.stopAtReference.getY());
-									//
-									System.out.println("stop point is: ");
-									System.out.print(visibleWorldStopPoint.getX());
-									System.out.println(visibleWorldStopPoint.getY());
-									
-									//
 									atWhiteLine = visibleWorldStopPoint.equals(location);
 								}
 							}
@@ -150,7 +130,6 @@ public class ExampleTestingCar extends AbstractCar
 						}
 						else if(rm == RoadMarking.rm_hard_shoulder) {
 							//check cars current position
-//							location
 							if(x == location.getX() && y == location.getY()) {
 								atHardShoulder = true;
 							}
@@ -199,12 +178,7 @@ public class ExampleTestingCar extends AbstractCar
 	}
 
 	@Override
-	protected ArrayDeque<Direction> getSimulationRoute(){
-	
-
-		System.out.println(atWhiteLine);
-		System.out.println(trafficLightRed);
-		
+	protected ArrayDeque<Direction> getSimulationRoute(){		
 		if (getSpeed() == 0 || (trafficLightRed && atWhiteLine) || finished)
 		{
 			setSpeed(0);
@@ -231,7 +205,7 @@ public class ExampleTestingCar extends AbstractCar
 	@Override
 	protected boolean isFinished(Point point)
 	{
-		finished = point == finishedLocation;
+		finished = point == getEndPosition();
 		return finished;
 	}
 	
@@ -247,5 +221,4 @@ public class ExampleTestingCar extends AbstractCar
 	   approaching_vertical_zebra = false;
 	   approaching_horizontal_zebra = false; 
 	}
-
 }

@@ -22,6 +22,7 @@ public abstract class AbstractCell extends JPanel
 		ct_pavement
 	}
 	private CellType cellType;
+	private Point cellPosition;
 	public abstract void stepSim();
 	public abstract boolean isDriveable();
 	
@@ -34,6 +35,14 @@ public abstract class AbstractCell extends JPanel
 	{
 		return cellType;
 	}
+	
+	public void setPosition(Point position) {
+		this.cellPosition = position;
+	}
+	public Point getPosition() {
+		return cellPosition;
+	}
+	
 	
 	
 }

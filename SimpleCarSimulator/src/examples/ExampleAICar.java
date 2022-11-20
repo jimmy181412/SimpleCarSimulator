@@ -11,9 +11,9 @@ public class ExampleAICar extends AbstractCar
 {
 	private ArrayDeque<Direction> goLeft = new ArrayDeque<Direction>();
 
-	public ExampleAICar(Point startPos, String imageLoc)
+	public ExampleAICar(Point startPos, Point endPos, String imageLoc)
 	{
-		super(startPos, 2, imageLoc);
+		super(startPos,endPos, 2, imageLoc);
 	}
 
 	@Override
