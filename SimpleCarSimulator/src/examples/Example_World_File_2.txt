@@ -27,17 +27,17 @@ solidlineleft 5 2
 solidlineleft 5 1
 solidlineleft 5 0
 
-solidlineleft 6 10
-solidlineleft 6 9
-solidlineleft 6 8
-solidlineleft 6 7
-solidlineleft 6 6
-solidlineleft 6 5
-solidlineleft 6 4
-solidlineleft 6 3
-solidlineleft 6 2
-solidlineleft 6 1
-solidlineleft 6 0
+swll 6 10
+swll 6 9
+swll 6 8
+swll 6 7
+swll 6 6
+swll 6 5
+swll 6 4
+swll 6 3
+swll 6 2
+swll 6 1
+swll 6 0
 
 dottedlineleft 7 10
 dottedlineleft 7 9
@@ -87,4 +87,5 @@ hardshoulder 5 2
 hardshoulder 5 1
 hardshoulder 5 0
 
-Car testingCar 6 8 8 2 jim
+Car testingCar 6 8 6 2 jim
+

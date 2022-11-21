@@ -7,7 +7,8 @@ import javax.swing.ImageIcon;
 public abstract class AbstractCar
 {
 	private Point startingPosition;
-	private Point endPosition; 
+	private Point endPosition;
+	private Point currentPosition;
 	private int speed;
 	private boolean crashed;
 	protected ImageIcon carIcon = null;
@@ -42,12 +43,20 @@ public abstract class AbstractCar
 		return endPosition;
 	}
 	
+	public Point getCurrentPosition() {
+		return this.currentPosition;
+	}
+	
 	public void setEndPosition(Point endPosition) {
 		this.endPosition = endPosition;
 	}
 
 	public void setStartingPosition(Point startingPosition) {
 		this.startingPosition = startingPosition;
+	}
+	
+	public void setCurrentPosition(Point currentPosition) {
+		this.currentPosition = currentPosition;
 	}
 	
 	public ImageIcon getCarIcon()

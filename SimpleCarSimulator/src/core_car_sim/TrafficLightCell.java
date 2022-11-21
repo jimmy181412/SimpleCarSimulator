@@ -22,7 +22,7 @@ public class TrafficLightCell extends AbstractInformationCell
 	}
 	
 	private TrafficLightCellInformation lightSituation = new TrafficLightCellInformation();
-	private int timeToChange = 8;
+	private int timeToChange = 4;
 	private int currentTime = 0;
 
 	

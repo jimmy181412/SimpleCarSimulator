@@ -49,7 +49,7 @@ public class ExampleTestingCar extends AbstractCar
 	}
 
 	@Override
-	protected void visibleWorldUpdate(WorldSim visibleWorld, Point location){
+	public void visibleWorldUpdate(WorldSim visibleWorld, Point location){
 		
 		
 		for (int y = 0; y < visibleWorld.getHeight(); y++){
@@ -92,8 +92,6 @@ public class ExampleTestingCar extends AbstractCar
 							}
 							
 						}
-						
-					
 					}
 				}
 				else if(visibleWorld.getCell(x, y).getCellType() == CellType.ct_road) {		
@@ -135,22 +133,22 @@ public class ExampleTestingCar extends AbstractCar
 							}
 						}
 						
-						else if(rm == RoadMarking.rm_solid_line_left) {
+						else if(rm == RoadMarking.rm_solid_white_line_left) {
 							if((x == location.getX() && y == location.getY()) || (x == location.getX() - 1 && y == location.getY())) {
 								no_left_turn = true;
 							}
 						}
-						else if(rm == RoadMarking.rm_solid_line_right) {
+						else if(rm == RoadMarking.rm_solid_white_line_right) {
 							if((x == location.getX() && y == location.getY())|| (x == location.getX() + 1 && y == location.getY())){
 								no_right_turn = true;
 							}
 						}
-						else if(rm == RoadMarking.rm_solid_line_up) {
+						else if(rm == RoadMarking.rm_solid_white_line_up) {
 							if((x == location.getX() && y == location.getY())||(x == location.getX() && y == location.getY() - 1)) {
 								no_up_turn = true;
 							}
 						}
-						else if(rm == RoadMarking.rm_solid_line_down) {
+						else if(rm == RoadMarking.rm_solid_white_line_down) {
 							if((x == location.getX() && y == location.getY()) || x == location.getX() && y == location.getY() + 1) {
 								no_down_turn = true;
 							}
@@ -174,31 +172,53 @@ public class ExampleTestingCar extends AbstractCar
 			wallAhead = visibleWorld.getCell(location.getX() - 1, location.getY()).getCellType() != CellType.ct_road;
 			break;
 		
-		}	
+		}
+		
+		
 	}
 
 	@Override
-	protected ArrayDeque<Direction> getSimulationRoute(){		
-		if (getSpeed() == 0 || (trafficLightRed && atWhiteLine) || finished)
+	public ArrayDeque<Direction> getSimulationRoute(){	
+		
+		System.out.println("no up turn: " + no_up_turn);
+		System.out.println("no down turn: " + no_down_turn);
+		System.out.println("no right turn: " + no_right_turn);
+		System.out.println("no left turn: " + no_left_turn);
+		System.out.println("traffic light red on: " + trafficLightRed);
+		System.out.println("at white line: " + atWhiteLine);
+		System.out.println("at hardshrouder: " + atHardShoulder);
+		System.out.println("approaching_vertical_zebra: " + approaching_vertical_zebra);
+		System.out.println("approaching_horizontal_zebra: " + approaching_horizontal_zebra);
+		
+		
+		if ((trafficLightRed && atWhiteLine) || finished)
 		{
 			setSpeed(0);
-			reMakeDecisions();
-			
 		}
-		else if (atWhiteLine && !trafficLightRed){
-			setSpeed(1);
-			directions.push(cmd);
-			reMakeDecisions();
+		else if(no_down_turn && cmd == Direction.south) {
+				System.out.println("ss");
+				directions.push(Direction.east);	
 		}
-	
-		else if(wallAhead) {
-			setSpeed(0);
-			reMakeDecisions();
+		else if(no_up_turn && cmd == Direction.north) {
+				System.out.println("nn");
+				directions.push(Direction.west);
+		}
+		else if(no_right_turn && cmd == Direction.east) {	
+				System.out.println("ee");
+				directions.push(Direction.north);
+		}
+		else if(no_left_turn && cmd == Direction.west) {
+				System.out.println("ww");
+				directions.push(Direction.south);	
 		}
 		else {
-			directions.push(cmd);
-			reMakeDecisions();
+			directions.push(cmd);	
 		}
+		
+		System.out.println("currentMovingDirection is: " + cmd.toString());
+		System.out.println("direction size is: " + directions.size());
+		
+		reMakeDecisions();
 		return directions;
 	}
 
@@ -207,6 +227,14 @@ public class ExampleTestingCar extends AbstractCar
 	{
 		finished = point == getEndPosition();
 		return finished;
+	}
+	
+	public void changeCMD(Direction d) {
+		this.cmd = d;
+	}
+	
+	public Direction getCMD() {
+		return this.cmd;
 	}
 	
 	public void reMakeDecisions() {

@@ -140,6 +140,18 @@ public class LoadWorld
 					break;
 				case "solidlinedown":
 					((RoadCell)createdSim.getCell(Integer.parseInt(items[1]),Integer.parseInt(items[2]))).setMarking(RoadMarking.rm_solid_line_down);
+					break;	
+				case "swlr":
+					((RoadCell)createdSim.getCell(Integer.parseInt(items[1]),Integer.parseInt(items[2]))).setMarking(RoadMarking.rm_solid_white_line_right);
+					break;
+				case "swll":
+					((RoadCell)createdSim.getCell(Integer.parseInt(items[1]),Integer.parseInt(items[2]))).setMarking(RoadMarking.rm_solid_white_line_left);
+					break;
+				case "swlu":
+					((RoadCell)createdSim.getCell(Integer.parseInt(items[1]),Integer.parseInt(items[2]))).setMarking(RoadMarking.rm_solid_white_line_up);
+					break;
+				case "swld":
+					((RoadCell)createdSim.getCell(Integer.parseInt(items[1]),Integer.parseInt(items[2]))).setMarking(RoadMarking.rm_solid_white_line_down);
 					break;
 				case "dottedlineright":
 					((RoadCell)createdSim.getCell(Integer.parseInt(items[1]),Integer.parseInt(items[2]))).setMarking(RoadMarking.rm_dotted_line_right);

@@ -34,8 +34,11 @@ public class RoadCell extends AbstractCell
 		rm_dotted_line_right,
 		rm_dotted_line_up,
 		rm_dotted_line_down,
-		rm_hard_shoulder
-		
+		rm_hard_shoulder,
+		rm_solid_white_line_left,
+		rm_solid_white_line_right,
+		rm_solid_white_line_up,
+		rm_solid_white_line_down
 	}
 
 	/*
@@ -119,6 +122,14 @@ public class RoadCell extends AbstractCell
 	
 	public void setAsOpen() {
 		this.open = true;
+	}
+	
+	public void setAsUnChecked() {
+		this.checked = false;
+	}
+	
+	public void setAsUnOpened() {
+		this.open = false;
 	}
 	
 	public RoadCell getParent() {
@@ -216,6 +227,22 @@ public class RoadCell extends AbstractCell
 			}
 			else if(rm == RoadMarking.rm_hard_shoulder) {
 				g2d.drawString("HS",getWidth()/2,getHeight()/2);
+			}
+			else if(rm == RoadMarking.rm_solid_white_line_right) {
+				g2d.setStroke(new BasicStroke(7, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
+				g2d.drawLine(getWidth(),0,getWidth(),getHeight());
+			}
+			else if(rm == RoadMarking.rm_solid_white_line_left){
+				g2d.setStroke(new BasicStroke(7, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
+				g2d.drawLine(0,0,0,getHeight());
+			}
+			else if(rm == RoadMarking.rm_solid_white_line_up){
+				g2d.setStroke(new BasicStroke(7, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
+				g2d.drawLine(0,0,getWidth(),0);
+			}
+			else if(rm == RoadMarking.rm_solid_white_line_down){
+				g2d.setStroke(new BasicStroke(7, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
+				g2d.drawLine(0,getHeight(),getWidth(),getHeight());
 			}
 		}	
 		if(travelDirection.size() > 1)
