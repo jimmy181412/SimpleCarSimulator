@@ -34,11 +34,14 @@ public class ExampleTestingCar extends AbstractCar
 	boolean no_up_turn;
 	boolean approaching_vertical_zebra = false;
 	boolean approaching_horizontal_zebra = false;
+	boolean no_overtake= false;
+	boolean no_go_north_because_other_car = false;
+	boolean no_go_south_because_other_car =false;
+	boolean no_go_east_because_other_car = false;
+	boolean no_go_west_because_other_car = false;
 	
 	// car's current moving direction
 	private Direction cmd = Direction.north;
-	
-	
 	
 	ArrayDeque<Direction> directions = new ArrayDeque<Direction>();
 	
@@ -57,37 +60,36 @@ public class ExampleTestingCar extends AbstractCar
 				if (visibleWorld.getCell(x, y).getCellType() == CellType.ct_information){
 					if (((AbstractInformationCell)visibleWorld.getCell(x, y)).getInformationType() == InformationCell.ic_trafficLight){
 						TrafficLightCell tlc = (TrafficLightCell)visibleWorld.getCell(x, y);
-						TrafficLightCellInformation tlci = ((TrafficLightCell)visibleWorld.getCell(x, y)).getInformation();					
+						TrafficLightCellInformation tlci = ((TrafficLightCell)visibleWorld.getCell(x, y)).getInformation();	
 						//faces list
 						ArrayList<Direction> faces = tlc.getFaces();
 						if(faces.size() != 0) {
 							if(faces.get(0) == Direction.east) {
 								if (cmd == Direction.west) {
 									trafficLightRed = tlci.redOn;
-									Point visibleWorldStopPoint = new Point(x + tlci.stopAtReference.getX(), y + tlci.stopAtReference.getY());
-									atWhiteLine = visibleWorldStopPoint == location;
+									Point visibleWorldStopPoint = new Point(x , y - 1);
+									atWhiteLine = visibleWorldStopPoint.equals(location);
 								}		
 							}
 							else if(faces.get(0) == Direction.west) {
 								if(cmd == Direction.east) {
 									trafficLightRed = tlci.redOn;
-									Point visibleWorldStopPoint = new Point(x + tlci.stopAtReference.getX(), y + tlci.stopAtReference.getY());
-									atWhiteLine = visibleWorldStopPoint == location;
+									Point visibleWorldStopPoint = new Point(x , y + 1);
+									atWhiteLine = visibleWorldStopPoint.equals(location);
 								}
 							}
 							else if(faces.get(0) == Direction.south) {
 								if(cmd == Direction.north) {
 									trafficLightRed = tlci.redOn;
-									
-									Point visibleWorldStopPoint = new Point(x + tlci.stopAtReference.getX(), y + tlci.stopAtReference.getY());
+									Point visibleWorldStopPoint = new Point(x + 1, y);
 									atWhiteLine = visibleWorldStopPoint.equals(location);
 								}
 							}
 							else if(faces.get(0) == Direction.north) {
 								if(cmd == Direction.south) {
 									trafficLightRed = tlci.redOn;
-									Point visibleWorldStopPoint = new Point(x + tlci.stopAtReference.getX(), y + tlci.stopAtReference.getY());
-									atWhiteLine = visibleWorldStopPoint == location;
+									Point visibleWorldStopPoint = new Point(x - 1, y );
+									atWhiteLine = visibleWorldStopPoint.equals(location);
 								}
 							}
 							
@@ -188,35 +190,75 @@ public class ExampleTestingCar extends AbstractCar
 		System.out.println("at white line: " + atWhiteLine);
 		System.out.println("at hardshrouder: " + atHardShoulder);
 		System.out.println("approaching_vertical_zebra: " + approaching_vertical_zebra);
-		System.out.println("approaching_horizontal_zebra: " + approaching_horizontal_zebra);
+		System.out.println("approaching_horizontal_zebra: " + approaching_horizontal_zebra);	
+		System.out.println("no_overtake: " + no_overtake);
+		System.out.println("no_go_north_because_other_car: " + no_go_north_because_other_car);
+		System.out.println("no_go_south_because_other_car: " + no_go_south_because_other_car);
+		System.out.println("no_go_east_because_other_car: " + no_go_east_because_other_car);
+		System.out.println("no_go_west_because_other_car: " + no_go_west_because_other_car);
 		
-		
+
 		if ((trafficLightRed && atWhiteLine) || finished)
 		{
 			setSpeed(0);
 		}
+		else if(atHardShoulder && no_down_turn && cmd == Direction.south) {
+		
+				directions.push(cmd);
+		}
+		
+		else if(atHardShoulder && no_up_turn && cmd == Direction.north) {
+					directions.push(cmd);
+		}
+		
+		else if(atHardShoulder && no_right_turn && cmd == Direction.east) {		
+				directions.push(cmd);
+		}
+		else if(atHardShoulder && no_left_turn && cmd == Direction.west) {
+				directions.push(cmd);
+		}
+		
 		else if(no_down_turn && cmd == Direction.south) {
-				System.out.println("ss");
+			if(atHardShoulder) {
+				directions.push(cmd);
+			}
+			else{
 				directions.push(Direction.east);	
+			}	
 		}
 		else if(no_up_turn && cmd == Direction.north) {
-				System.out.println("nn");
+			if(atHardShoulder) {
+				directions.push(cmd);
+			}
+			else {
 				directions.push(Direction.west);
+			}
+				
 		}
-		else if(no_right_turn && cmd == Direction.east) {	
-				System.out.println("ee");
+		else if(no_right_turn && cmd == Direction.east) {
+			if(atHardShoulder) {
+				directions.push(cmd);
+			}
+			else {
 				directions.push(Direction.north);
+			}
 		}
 		else if(no_left_turn && cmd == Direction.west) {
-				System.out.println("ww");
-				directions.push(Direction.south);	
+			if(atHardShoulder) {
+				directions.push(cmd);
+			}
+			else {
+				directions.push(Direction.south);
+			}
+					
 		}
 		else {
 			directions.push(cmd);	
 		}
 		
+		
 		System.out.println("currentMovingDirection is: " + cmd.toString());
-		System.out.println("direction size is: " + directions.size());
+		
 		
 		reMakeDecisions();
 		return directions;
@@ -247,6 +289,11 @@ public class ExampleTestingCar extends AbstractCar
 	   no_down_turn = false;
 	   no_up_turn = false;
 	   approaching_vertical_zebra = false;
-	   approaching_horizontal_zebra = false; 
+	   approaching_horizontal_zebra = false;
+	   no_overtake = false;
+	   no_go_north_because_other_car = false;
+	   no_go_south_because_other_car = false;
+	   no_go_east_because_other_car = false;
+	   no_go_west_because_other_car = false;
 	}
 }

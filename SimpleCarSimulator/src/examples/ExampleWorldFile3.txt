@@ -11,7 +11,7 @@
 |^^VV||||
 |^^VV||||
 
-Trll tl1 5 3 5 4 >
+Trll tl1 5 3 5 4 <
 
 solidlineleft 1 8
 solidlineleft 1 7
@@ -68,7 +68,5 @@ solidlineup 7 4
 solidlinedown 5 4
 solidlinedown 6 4
 solidlinedown 7 4
-
-
 
 Car Test 1 8 7 4 jim

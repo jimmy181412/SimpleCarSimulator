@@ -22,8 +22,8 @@ public class TrafficLightCell extends AbstractInformationCell
 	}
 	
 	private TrafficLightCellInformation lightSituation = new TrafficLightCellInformation();
-	private int timeToChange = 4;
-	private int currentTime = 0;
+	private int timeToChange = 12;
+	private int currentTime;
 
 	
 	public TrafficLightCell(Direction _faces, int _visibleFrom,Point roadEffectLocation, Point roadEffectReference, int position)
@@ -39,22 +39,26 @@ public class TrafficLightCell extends AbstractInformationCell
 			lightSituation.redOn = true;
 			lightSituation.yellowOn = false;
 			lightSituation.greenOn = false;
+			currentTime = 0;
 		}
 		else if(position == 2) {
 			
 			lightSituation.redOn = true;
 			lightSituation.yellowOn = false;
 			lightSituation.greenOn = false;	
+			currentTime = 3;
 		}
 		else if(position == 3) {
 			lightSituation.redOn = true;
 			lightSituation.yellowOn = false;
 			lightSituation.greenOn = false;
+			currentTime = 6;
 		}
 		else if(position == 4) {
 			lightSituation.redOn = true;
 			lightSituation.yellowOn = false;
 			lightSituation.greenOn = false;
+			currentTime = 9;
 		}
 		
 	}
@@ -69,27 +73,56 @@ public class TrafficLightCell extends AbstractInformationCell
 	public void stepSim()
 	{
 		currentTime++;
-		if (lightSituation.yellowOn)
-		{
-			if (lightSituation.redOn)
-			{
-				lightSituation.greenOn = true;
-				lightSituation.redOn = false;
-				lightSituation.yellowOn = false;
-			}
-			else
-			{
-				lightSituation.greenOn = false;
-				lightSituation.redOn = true;
-				lightSituation.yellowOn = false;	
-			}
+		
+		
+		if(currentTime >= 0 && currentTime < 10) {
+			lightSituation.redOn = true;
+			lightSituation.yellowOn = false;
+			lightSituation.greenOn = false;
 		}
-		else if (currentTime > timeToChange)
-		{
+		else if(currentTime == 10) {
+			
 			lightSituation.yellowOn = true;
 			lightSituation.greenOn = false;
+			lightSituation.redOn = false;
+			
+		}
+		else if(currentTime > 10 && currentTime < timeToChange) {
+			lightSituation.greenOn = true;
+			lightSituation.yellowOn = false;
+			lightSituation.redOn = false;
+			
+		}
+		else if(currentTime == timeToChange) {
+			lightSituation.greenOn = true;
+			lightSituation.yellowOn = false;
+			lightSituation.redOn = false;
+			//reset the time
 			currentTime = 0;
 		}
+		
+//		if (lightSituation.yellowOn)
+//		{
+//			if (lightSituation.redOn)
+//			{
+//				lightSituation.greenOn = true;
+//				lightSituation.redOn = false;
+//				lightSituation.yellowOn = false;
+//			}
+//			else
+//			{
+//				lightSituation.greenOn = false;
+//				lightSituation.redOn = true;
+//				lightSituation.yellowOn = false;	
+//			}
+//		}
+//		else if (currentTime > timeToChange)
+//		{
+//			
+//			lightSituation.yellowOn = true;
+//			lightSituation.greenOn = false;
+//			currentTime = 0;
+//		}
 		
 	}
 	@Override
