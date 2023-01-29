@@ -4,38 +4,66 @@ import java.util.ArrayDeque;
 
 import javax.swing.ImageIcon;
 
-public abstract class AbstractCar
-{
-	private Point startingPosition;
-	private Point endPosition;
-	private Point currentPosition;
-	private int speed;
-	private boolean crashed;
+
+// the father of all kind of cars
+// Abstract RoTRA
+// 
+public abstract class AbstractCar{
+	//general attributes
+	public Point startingPosition;
+	public Point endPosition;
+	public int speed;
 	protected ImageIcon carIcon = null;
+	
+	//detect whether the car has crashed or not
+	public boolean crashed;
+	
+	//the current Position of the car
+	public Point currentPosition;
+	//current moving direction of the car
+	public Direction cmd = Direction.north;
+	//Previous moving direction of the car
+	public Direction pmd = Direction.north;
 	
 	protected abstract void visibleWorldUpdate(WorldSim visibleWorld, Point location);
 	protected abstract ArrayDeque<Direction> getSimulationRoute();
 	protected abstract boolean isFinished(Point point);
 	
-	public AbstractCar(Point startPos, Point endPos,  int startingSpeed, String fileImage)
-	{
+	public AbstractCar(Point startPos, Point endPos,  int startingSpeed, String fileImage){
 		startingPosition = startPos;
 		endPosition = endPos;
 		speed = startingSpeed;
 		carIcon = new ImageIcon(fileImage);
 	}
 	
-	public int getSpeed()
-	{
+	// getter and setter of current moving direction and previous moving direction of the car
+	public void setCMD(Direction cmd){
+		this.cmd = cmd;
+	}
+	
+	public Direction getCMD(){
+		return this.cmd;
+	}
+	
+	public void setPMD(Direction pmd){
+		this.pmd = pmd;
+	}
+	
+	public Direction getPMD(){
+		return this.pmd;
+	}
+	
+	//getter and setter of speed
+	public int getSpeed(){
 		return speed;
 	}
-
-	public void setSpeed(int speed)
-	{
+	
+	public void setSpeed(int speed){
 		this.speed = speed;
 	}
-
-	public Point getStartingPosition() {
+	
+	// getters and setters of positions.. 
+	public Point getStartingPosition(){
 		return startingPosition;
 	}
 	
@@ -43,35 +71,33 @@ public abstract class AbstractCar
 		return endPosition;
 	}
 	
-	public Point getCurrentPosition() {
+	public Point getCurrentPosition(){
 		return this.currentPosition;
 	}
 	
-	public void setEndPosition(Point endPosition) {
+	public void setEndPosition(Point endPosition){
 		this.endPosition = endPosition;
 	}
 
-	public void setStartingPosition(Point startingPosition) {
+	public void setStartingPosition(Point startingPosition){
 		this.startingPosition = startingPosition;
 	}
 	
-	public void setCurrentPosition(Point currentPosition) {
+	public void setCurrentPosition(Point currentPosition){
 		this.currentPosition = currentPosition;
 	}
 	
-	public ImageIcon getCarIcon()
-	{
-		return carIcon;
-	}
 	
-	public boolean isCrashed()
-	{
+	// getter and setter of crash
+	public boolean isCrashed(){
 		return crashed;
 	}
 	
-	public void setCrashed(boolean crashed)
-	{
+	public void setCrashed(boolean crashed){
 		this.crashed = crashed;
 	}
-
+	
+	public ImageIcon getCarIcon(){
+		return carIcon;
+	}
 }

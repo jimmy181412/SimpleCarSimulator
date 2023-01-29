@@ -1,20 +1,18 @@
 package core_car_sim;
 
-public enum Direction
-{
+//There are no needs to edit Direction File
+public enum Direction{
 	north("^"),
 	south("V"),
 	east(">"),
 	west("<");
 	
 	private final String dir;
-	private Direction(String s)
-	{
+	private Direction(String s){
 		dir = s;
 	}
 	
-	public String toString()
-	{
+	public String toString(){
 		return dir;
 	}
 }

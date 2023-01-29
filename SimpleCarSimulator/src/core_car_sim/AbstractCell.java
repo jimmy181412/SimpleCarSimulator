@@ -5,44 +5,38 @@ import javax.swing.JPanel;
 /*
  * Abstract cell of the car simulator
  */
-
-public abstract class AbstractCell extends JPanel
-{
+public abstract class AbstractCell extends JPanel{
 	/**
 	 * Auto generated serial
 	 */
 	private static final long serialVersionUID = -1866861919859124549L;
 
-	public enum CellType
-	{
-		ct_blank, //Non drivable
-		ct_road, //Drivable
-		ct_information, //Traffic lights, road signs etc
+	public enum CellType{
+		ct_blank,
+		ct_road, 
+		ct_information,
 		ct_non_visible, 
 		ct_pavement
 	}
+	
 	private CellType cellType;
 	private Point cellPosition;
 	public abstract void stepSim();
 	public abstract boolean isDriveable();
 	
-	public AbstractCell(CellType ct)
-	{
+	public AbstractCell(CellType ct){
 		cellType = ct;
 	}
 	
-	public CellType getCellType()
-	{
+	public CellType getCellType(){
 		return cellType;
 	}
 	
-	public void setPosition(Point position) {
+	public void setPosition(Point position){
 		this.cellPosition = position;
 	}
 	public Point getPosition() {
 		return cellPosition;
 	}
-	
-	
 	
 }

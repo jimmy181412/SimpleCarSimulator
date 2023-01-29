@@ -2,41 +2,35 @@ package core_car_sim;
 
 import java.util.ArrayList;
 
-public abstract class AbstractInformationCell extends AbstractCell
-{
-	public enum InformationCell
-	{
+public abstract class AbstractInformationCell extends AbstractCell{
+	
+	public enum InformationCell{
 		ic_trafficLight
 	}
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 6253765837690795987L;
-	private ArrayList<Direction> faces = new ArrayList<Direction>();//Which way the information faces
-	private ArrayList<Integer> visibleFrom = new ArrayList<Integer>();
-	private int visibilityChange = 0;
+	//Which way the information faces
+	public ArrayList<Direction> faces = new ArrayList<Direction>();
+	public ArrayList<Integer> visibleFrom = new ArrayList<Integer>();
+	public int visibilityChange = 0;
 	
-	public AbstractInformationCell(ArrayList<Direction> _faces, ArrayList<Integer> _visibleFrom)
-	{
+	public AbstractInformationCell(ArrayList<Direction> _faces, ArrayList<Integer> _visibleFrom){
 		super(CellType.ct_information);
-		faces = _faces;
-		visibleFrom = _visibleFrom;
+		this.faces = _faces;
+		this.visibleFrom = _visibleFrom;
 	}
 	
-	public AbstractInformationCell(Direction _faces, int _visibleFrom)
-	{
+	public AbstractInformationCell(Direction _faces, int _visibleFrom){
 		super(CellType.ct_information);
-		faces.add(_faces);
-		visibleFrom.add(_visibleFrom);
+		this.faces.add(_faces);
+		this.visibleFrom.add(_visibleFrom);
 	}
 
-	public int isVisibleFrom(Direction direction)
-	{
+	public int isVisibleFrom(Direction direction){
 		return Math.max(visibleFrom.get(faces.indexOf(direction)) - visibilityChange, 0); 
 	}
 	
-	public void reduceVisibilityBy(int amount)
-	{
+	public void reduceVisibilityBy(int amount){
 		visibilityChange = amount;
 	}
 	
@@ -45,12 +39,10 @@ public abstract class AbstractInformationCell extends AbstractCell
 	}
 	
 	@Override
-	public boolean isDriveable()
-	{
+	public boolean isDriveable(){
 		return false;
 	}
 	
 	public abstract Object getInformation();
 	public abstract InformationCell getInformationType();
-
 }

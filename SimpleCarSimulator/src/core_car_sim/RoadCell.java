@@ -9,15 +9,8 @@ import java.awt.BasicStroke;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 
-
-public class RoadCell extends AbstractCell
-{
-	/*
-	 * 
-	 * List of possible markings on the tarmac
-	 */
-	public enum RoadMarking
-	{
+public class RoadCell extends AbstractCell{
+	public enum RoadMarking{
 		rm_Zebra_Vertical,
 		rm_Zebra_Horizontal,
 		rm_Pelican,
@@ -40,104 +33,107 @@ public class RoadCell extends AbstractCell
 		rm_solid_white_line_up,
 		rm_solid_white_line_down
 	}
-
-	/*
-	 * Represents tarmac
-	 */
-
-
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -3908736198953808153L;
-	private ArrayList<Direction> travelDirection = new ArrayList<Direction>();
-	private boolean pavement;
-	private ArrayList<RoadMarking> roadMarkings = new ArrayList<RoadMarking>();
-	private int speedLimit;
+	
+	// attributes used for A star search
 	private int f_value = 10000;
 	private int g_value = 500;
 	public boolean checked = false;
 	public boolean open = false;
 	public RoadCell parent;
 	
+	// the direction that the car can go at this road cell
+	private ArrayList<Direction> travelDirection = new ArrayList<Direction>();
+	// the road markings at this road cell
+	private ArrayList<RoadMarking> roadMarkings = new ArrayList<RoadMarking>();
 	
+	private int speedLimit;
+	private boolean pavement;
 	
-	public RoadCell(ArrayList<Direction> directions, boolean _pavement, ArrayList<RoadMarking> markings, int _speedLimit)
-	{
+	public RoadCell(ArrayList<Direction> directions, boolean _pavement, ArrayList<RoadMarking> markings, int _speedLimit){
 		super(CellType.ct_road);
-		travelDirection.addAll(directions);
-		pavement = _pavement;
-		if(markings != null) {
-			roadMarkings.addAll(markings);
-		}
-		speedLimit = _speedLimit;
+		this.travelDirection.addAll(directions);
+		this.pavement = _pavement;
+		if(markings != null) {this.roadMarkings.addAll(markings);}
+		this.speedLimit = _speedLimit;
 	}
 	
-	public RoadCell(Direction _direction, boolean _pavement, ArrayList<RoadMarking> markings, int _speedLimit)
-	{
+	public RoadCell(Direction _direction, boolean _pavement, ArrayList<RoadMarking> markings, int _speedLimit){
 		super(CellType.ct_road);
-		travelDirection.add(_direction);
-		pavement = _pavement;
-		if(markings != null) {
-			roadMarkings.addAll(markings);
-		}
-		speedLimit = _speedLimit;
+		this.travelDirection.add(_direction);
+		this.pavement = _pavement;
+		if(markings != null) {this.roadMarkings.addAll(markings);}
+		this.speedLimit = _speedLimit;
 	}
 
 	@Override
-	public void stepSim()
-	{
+	public void stepSim(){
 		// TODO Auto-generated method stub
-		
 	}
-
-	public ArrayList<Direction> getTravelDirection()
-	{
+	
+	public ArrayList<Direction> getTravelDirection(){
 		return travelDirection;
 	}
 
-	public boolean isPavement()
-	{
+	public boolean isPavement(){
 		return pavement;
 	}
 
-	public ArrayList<RoadMarking> getRoadMarkings()
-	{
+	public ArrayList<RoadMarking> getRoadMarkings(){
 		return roadMarkings;
 	}
 
-	public int getSpeedLimit()
-	{
+	public int getSpeedLimit(){
 		return speedLimit;
 	}
 	
-	public void setMarking(RoadMarking rm)
-	{
+	public void setMarking(RoadMarking rm){
 		roadMarkings.add(rm);
 	}
 	
-	public void setAsChecked() {
+	public void setAsChecked(){
 		this.checked = true;
 	}
 	
-	public void setAsOpen() {
+	public void setAsOpen(){
 		this.open = true;
 	}
 	
-	public void setAsUnChecked() {
+	public void setAsUnChecked(){
 		this.checked = false;
 	}
 	
-	public void setAsUnOpened() {
+	public void setAsUnOpened(){
 		this.open = false;
 	}
 	
-	public RoadCell getParent() {
+	public RoadCell getParent(){
 		return this.parent;
 	}
 	
-	public void setParent(RoadCell rc) {
+	public void setParent(RoadCell rc){
 		this.parent = rc;
+	}
+	
+	@Override
+	public boolean isDriveable(){
+		return true;
+	}
+	
+	public void setGValue(int value){
+		this.g_value = value;
+	}
+	
+	public int getGValue() {
+		return this.g_value;
+	}
+	
+	public void setFValue(int value){
+		this.f_value = value;
+	}
+	
+	public int getFValue(){
+		return this.f_value;
 	}
 	
 	@Override
@@ -156,23 +152,26 @@ public class RoadCell extends AbstractCell
 		}
 			
 		for(RoadMarking rm:  roadMarkings){
-			if (rm  == RoadMarking.rm_HorizontalWhiteLineLeft)
-			{	
+			if (rm  == RoadMarking.rm_HorizontalWhiteLineLeft){	
 				g2d.setStroke(new BasicStroke(5, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
 				g2d.drawLine(5,0,5,getHeight());
 			}
-			else if (rm == RoadMarking.rm_HorizontalWhiteLineRight) {
+			
+			else if (rm == RoadMarking.rm_HorizontalWhiteLineRight){
 				g2d.setStroke(new BasicStroke(5, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
 				g2d.drawLine(getWidth()-5,0,getWidth()-5,getHeight());
 			}
-			else if (rm == RoadMarking.rm_VerticalWhiteLineUp) {
+			
+			else if (rm == RoadMarking.rm_VerticalWhiteLineUp){
 				g2d.setStroke(new BasicStroke(5, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
 				g2d.drawLine(0,5,getWidth(),5);
 			}
-			else if (rm == RoadMarking.rm_VerticalWhiteLineDown) {
+			
+			else if (rm == RoadMarking.rm_VerticalWhiteLineDown){
 				g2d.setStroke(new BasicStroke(5, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
 				g2d.drawLine(0,getHeight()-5,getWidth(),getHeight()-5);
 			}
+			
 			else if(rm == RoadMarking.rm_Zebra_Vertical){
 				for(int i = 0 ; i <=  getWidth(); i = i + getWidth() / 4 ) {
 					for(int j = 0; j <= getHeight() ; j = j + getHeight() /4) {					
@@ -181,6 +180,7 @@ public class RoadCell extends AbstractCell
 					}
 				}	
 			}
+			
 			else if(rm == RoadMarking.rm_Zebra_Horizontal) {
 				for(int i = 0 ; i <=  getWidth(); i = i + getWidth() / 4 ) {
 					for(int j = 0; j <= getHeight() ; j = j + getHeight() /4) {			
@@ -189,62 +189,77 @@ public class RoadCell extends AbstractCell
 					}
 				}		
 			}
+			
 			else if(rm == RoadMarking.rm_BusLine) {
 				g2d.drawString("BUS",50, 18);
 			}
+			
 			else if(rm == RoadMarking.rm_solid_line_right) {
 				g2d.setStroke(new BasicStroke(7, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
 				g2d.drawLine(getWidth(),0,getWidth(),getHeight());
 			}
+			
 			else if(rm == RoadMarking.rm_solid_line_left){
 				g2d.setStroke(new BasicStroke(7, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
 				g2d.drawLine(0,0,0,getHeight());
 			}
+			
 			else if(rm == RoadMarking.rm_solid_line_up){
 				g2d.setStroke(new BasicStroke(7, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
 				g2d.drawLine(0,0,getWidth(),0);
 			}
+			
 			else if(rm == RoadMarking.rm_solid_line_down){
 				g2d.setStroke(new BasicStroke(7, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
 				g2d.drawLine(0,getHeight(),getWidth(),getHeight());
 			}
+			
 			else if(rm == RoadMarking.rm_dotted_line_right) {
 				
 				g2d.setStroke(new BasicStroke(7, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]{10}, 0));
 				g2d.drawLine(getWidth(),0,getWidth(),getHeight());
 			}
+			
 			else if(rm == RoadMarking.rm_dotted_line_left){
 				g2d.setStroke(new BasicStroke(7, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]{10}, 0));
 				g2d.drawLine(0,0,0,getHeight());
 			}
+			
 			else if(rm == RoadMarking.rm_dotted_line_up){
 				g2d.setStroke(new BasicStroke(7, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]{10}, 0));
 				g2d.drawLine(0,0,getWidth(),0);
 			}
+			
 			else if(rm == RoadMarking.rm_dotted_line_down){
 				g2d.setStroke(new BasicStroke(7, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]{10}, 0));
 				g2d.drawLine(0,getHeight(),getWidth(),getHeight());
 			}
+			
 			else if(rm == RoadMarking.rm_hard_shoulder) {
 				g2d.drawString("HS",getWidth()/2,getHeight()/2);
 			}
+			
 			else if(rm == RoadMarking.rm_solid_white_line_right) {
 				g2d.setStroke(new BasicStroke(7, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
 				g2d.drawLine(getWidth(),0,getWidth(),getHeight());
 			}
+			
 			else if(rm == RoadMarking.rm_solid_white_line_left){
 				g2d.setStroke(new BasicStroke(7, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
 				g2d.drawLine(0,0,0,getHeight());
 			}
+			
 			else if(rm == RoadMarking.rm_solid_white_line_up){
 				g2d.setStroke(new BasicStroke(7, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
 				g2d.drawLine(0,0,getWidth(),0);
 			}
+			
 			else if(rm == RoadMarking.rm_solid_white_line_down){
 				g2d.setStroke(new BasicStroke(7, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
 				g2d.drawLine(0,getHeight(),getWidth(),getHeight());
 			}
-		}	
+		}
+		
 		if(travelDirection.size() > 1)
 		{
 			g2d.drawString("+",getWidth()/4, getHeight()/4);
@@ -253,29 +268,4 @@ public class RoadCell extends AbstractCell
 			g2d.drawString(travelDirection.get(0).toString(),getWidth()/4,getHeight()/4);
 		}
 	}
-	
-	
-
-	@Override
-	public boolean isDriveable()
-	{
-		return true;
-	}
-	
-	public void setGValue(int value) {
-		this.g_value = value;
-	}
-	
-	public int getGValue() {
-		return this.g_value;
-	}
-	
-	public void setFValue(int value) {
-		this.f_value = value;
-	}
-	
-	public int getFValue() {
-		return this.f_value;
-	}
-	
 }

@@ -15,179 +15,97 @@ import examples.ExampleAICar;
 import examples.ExampleTestingCar;
 
 
-public class WorldSim
-{
+public class WorldSim{
 	private AbstractCell[][] world;
-	private ArrayList<CarAddedListener> carAddedListeners = new ArrayList<CarAddedListener>();
-	private ArrayList<AbstractCar> cars = new ArrayList<AbstractCar>();
-	// all cars position
-	private HashMap<AbstractCar, Point> carPositions = new HashMap<AbstractCar, Point>();
 	
+	// size of the world
 	private int width;
 	private int height;
 	private int visability = 2;
 	
-	public WorldSim(int x, int y)
-	{
-		width = x;
-		height = y;
-		world = new AbstractCell[x][y];
-	}
-
-	public int getWidth()
-	{
-		return width;
-	}
-
-	public int getHeight()
-	{
-		return height;
-	}
-
-	public void addCarAddedListener(CarAddedListener cal)
-	{
-		carAddedListeners.add(cal);
+	private ArrayList<CarAddedListener> carAddedListeners = new ArrayList<CarAddedListener>();
+	private ArrayList<AbstractCar> cars = new ArrayList<AbstractCar>();
+	
+	// all cars positions in the world
+	private HashMap<AbstractCar, Point> carPositions = new HashMap<AbstractCar, Point>();
+	
+	public WorldSim(int x, int y){
+		this.width = x;
+		this.height = y;
+		this.world = new AbstractCell[x][y];
 	}
 	
-	public void resetCarPositions()
-	{
-		for (AbstractCar car : cars)
-		{
-			carPositions.put(car, car.getStartingPosition());
-		}
-	}
-	
-	public void simulate(int numOfSteps)
-	{
-		for (int i = 0; i < numOfSteps; i++)
-		{
+	public void simulate(int numOfSteps){
+		for (int i = 0; i < numOfSteps; i++){
 			updateCells();
 			carMovementPhase();
 		}
 	}
 	
-	public int speedLimit(int x, int y)
-	{
-		if (getCell(x, y).getCellType() == CellType.ct_road)
-		{
-			return ((RoadCell)getCell(x, y)).getSpeedLimit();
-		}
-		return 0;
+	private void updateCells(){
+		for (AbstractCell[] row : world){
+			for (AbstractCell cell : row){
+				cell.stepSim();
+			}
+		}	
 	}
 	
-	private AbstractCar getCarAtPosition(int x, int y)
-	{
-		for (AbstractCar c : cars)
-		{
-			if (carPositions.get(c).compareTo(new Point(x, y)) == 0)
-			{
-				return c;
-			}
-		}
-		return null;
-	}
-	
-	public boolean containsCar(int x, int y)
-	{
-		for (Point p : carPositions.values())
-		{
-			if (p.getX() ==  x && p.getY() == y)
-			{
-				return true;
-			}
-		}
-		return false;
-	}
-
-	private void carMovementPhase()
-	{
+	private void carMovementPhase(){
 		//Let car view world
 		HashMap<AbstractCar, Deque<Direction>> allRoutes = new HashMap<AbstractCar, Deque<Direction>>();
 		
-		for (AbstractCar car : cars)
-		{
-			if (!car.isCrashed())
-			{
-				// we only constructs the route for blue car(self-driving car)
-				if(car.getClass() == examples.ExampleTestingCar.class) {
-					ExampleTestingCar car1 = (ExampleTestingCar)car;
-					Point currentPosition = getCarPosition(car);
-					car1.setCurrentPosition(currentPosition);
-						
-					//currently we got a road cell path that the car should go through;
-					ArrayList<RoadCell> path = search(car1);
-					System.out.println("Cell List Size is: " + path.size());
-					ArrayDeque<Direction> path1 = new ArrayDeque<>();
+		for (AbstractCar car : cars){
+			if (!car.isCrashed()){
+				AbstractCar car1 = (AbstractCar)car;
+				Point currentPosition = getCarPosition(car1);
+				car1.setCurrentPosition(currentPosition);
+					
+				//currently we got a road cell path that the car should go through;
+				ArrayList<RoadCell> path = search(car1);
+				System.out.println("Cell List Size is: " + path.size());
+				ArrayDeque<Direction> path1 = new ArrayDeque<>();
 
-					// check two adjacent cells,
-					for(int i = 0; i < path.size() - 1; i++) {
-							int j = i + 1;
-							RoadCell rc1 = path.get(i);
-							RoadCell rc2 = path.get(j);
-							
-							Point rc1_p = rc1.getPosition();
-							Point rc2_p = rc2.getPosition();
-							
-							
-							//east
-							if(rc1_p.getX() -1 == rc2_p.getX() && rc1_p.getY() == rc2_p.getY()) {
-								path1.push(Direction.east);
-							}
-							//west
-							else if(rc1_p.getX() + 1 == rc2_p.getX() && rc1_p.getY() == rc2_p.getY()) {
-								path1.push(Direction.west);
-							}
-							//north
-							else if(rc1_p.getX()== rc2_p.getX() && rc1_p.getY() + 1  == rc2_p.getY()) {
-								path1.push(Direction.north);
-							}
-							//south
-							else if(rc1_p.getX() == rc2_p.getX() && rc1_p.getY() - 1 == rc2_p.getY()) {
-								path1.push(Direction.south);
-							}
-					}
+				// check two adjacent cells,
+				for(int i = 0; i < path.size() - 1; i++){
+						int j = i + 1;
+						RoadCell rc1 = path.get(i);
+						RoadCell rc2 = path.get(j);
 						
-//					int i = 0;
-//					int j = path1.size();
-//					while(i < j) {
-//						i++;
-//						System.out.println(path1.pop().toString());
-//					}
-					
-					Direction cmd = path1.peek();
-					car1.changeCMD(cmd);
-					
-					
-					// The screen that car is able to see
-					WorldSim visibleWorld = getVisibleWorldForPosition(carPositions.get(car1), true);
-					// The position that car in its own visible world
-					Point carReferencePoint = new Point(visability,visability);
-					car1.visibleWorldUpdate(visibleWorld, carReferencePoint);
-					
-					
-					
-					ArrayDeque<Direction> route = new ArrayDeque<>();
-					route = car1.getSimulationRoute();
-					
-					
-	
-					
-					allRoutes.put(car, route);
+						Point rc1_p = rc1.getPosition();
+						Point rc2_p = rc2.getPosition();
+									
+						//east
+						if(rc1_p.getX() -1 == rc2_p.getX() && rc1_p.getY() == rc2_p.getY()) {
+							path1.push(Direction.east);
+						}
+						//west
+						else if(rc1_p.getX() + 1 == rc2_p.getX() && rc1_p.getY() == rc2_p.getY()) {
+							path1.push(Direction.west);
+						}
+						//north
+						else if(rc1_p.getX()== rc2_p.getX() && rc1_p.getY() + 1  == rc2_p.getY()) {
+							path1.push(Direction.north);
+						}
+						//south
+						else if(rc1_p.getX() == rc2_p.getX() && rc1_p.getY() - 1 == rc2_p.getY()) {
+							path1.push(Direction.south);
+						}
 				}
 				
-				// for common cars
-				else {
-					// The screen that car is able to see
-					WorldSim visibleWorld = getVisibleWorldForPosition(carPositions.get(car), true);
-					// The position that car in its own visible world
-					Point carReferencePoint = new Point(visability,visability);
-					car.visibleWorldUpdate(visibleWorld, carReferencePoint);
-					
-					
-					Deque<Direction> route = car.getSimulationRoute();	
-					
-					allRoutes.put(car, route);	
-				}
+				car1.setPMD(car1.getCMD());
+				//current moving direction of the car is the first direction in the stack
+				Direction cmd = path1.peek();
+				car1.setCMD(cmd);
+				
+				// The screen that car is able to see
+				WorldSim visibleWorld = getVisibleWorldForPosition(carPositions.get(car1), true);
+				// The position that car in its own visible world
+				Point carReferencePoint = new Point(visability,visability);
+				car1.visibleWorldUpdate(visibleWorld, carReferencePoint);
+				
+				ArrayDeque<Direction> route = new ArrayDeque<>();
+				route = car1.getSimulationRoute();
+				allRoutes.put(car, route);
 			}
 		}
 		
@@ -197,40 +115,30 @@ public class WorldSim
 		HashMap<Point, AbstractCar> checkPositions = new HashMap<Point, AbstractCar>();
 		boolean finishedChecking = false;
 		HashSet<AbstractCar> carsFinished = new HashSet<AbstractCar>();
-		while (!finishedChecking)
-		{
+		while (!finishedChecking){
 			//Positions only need to be checked at a point in time
 			checkPositions.clear();
-			for (AbstractCar car : cars)
-			{
-				if (!car.isCrashed() && !allRoutes.get(car).isEmpty())
-				{
+			for (AbstractCar car : cars){
+				if (!car.isCrashed() && !allRoutes.get(car).isEmpty()){
 					Point currentPosition = finalPositions.get(car);
-					
-//					System.out.println(currentPosition.getX() + "  "  + currentPosition.getY());
-					
 					Direction nextDirection = allRoutes.get(car).pop();
 					currentPosition.moveDirection(nextDirection, getWidth(), getHeight());
 					
-					if (checkPositions.containsKey(currentPosition))
-					{
+					if (checkPositions.containsKey(currentPosition)){
 						//Crash
 						car.setCrashed(true);
 						checkPositions.get(currentPosition).setCrashed(true);
 					}
-					else if (!getCell(currentPosition.getX(),currentPosition.getY()).isDriveable())
-					{
+					else if (!getCell(currentPosition.getX(),currentPosition.getY()).isDriveable()){
 						//Crash
 						car.setCrashed(true);
 					}
-					else
-					{
+					else{
 						checkPositions.put(currentPosition, car);
 					}
 					finalPositions.put(car, currentPosition);
 				}
-				else
-				{
+				else{
 					carsFinished.add(car);
 				}
 			}
@@ -238,15 +146,11 @@ public class WorldSim
 		}
 		
 		//Move to new position
-		for (AbstractCar car : cars)
-		{
-			
+		for (AbstractCar car : cars){	
 			carPositions.put(car, finalPositions.get(car));
 		}
-		
 	}
 
-	
 	private WorldSim getVisibleWorldForPosition(Point currentPosition, boolean looped){		
 		//(Field of view)FOV of a car
 		WorldSim visWorld = new WorldSim((visability * 2) + 1,(visability * 2) + 1);
@@ -257,33 +161,26 @@ public class WorldSim
 		visWorld.carPositions = new HashMap<AbstractCar, Point>();
 		int worldX;
 		int worldY;
-		for (Entry<AbstractCar, Point> cp : carPositions.entrySet())
-		{
+		for (Entry<AbstractCar, Point> cp : carPositions.entrySet()){
 			//Adjust car positions based on current cars position
 			visWorld.carPositions.put(cp.getKey(), new Point((cp.getValue().getX() - currentPosition.getX()) + visability, 
-																(cp.getValue().getY() - currentPosition.getY()) + visability));
+															(cp.getValue().getY() - currentPosition.getY()) + visability));
 		}
-		for (int x = 0-visability; x <= visability; x++)
-		{
-			for (int y = 0-visability; y <= visability; y++)
-			{
+		for (int x = 0-visability; x <= visability; x++){
+			for (int y = 0-visability; y <= visability; y++){
 				worldX = currentPosition.getX() + x;
 				worldY = currentPosition.getY() + y;
-				if (worldX < 0 || worldX >= getWidth() || worldY < 0 || worldY >= getHeight())
-				{
-					if (!looped)
-					{
+				if (worldX < 0 || worldX >= getWidth() || worldY < 0 || worldY >= getHeight()){
+					if (!looped){
 						visWorld.setCell(new NonVisibleCell(), x+visability, y+visability);
 					}
-					else
-					{
+					else{
 						worldX = (worldX < 0) ? getWidth() + worldX : worldX % getWidth();
 						worldY = (worldY < 0) ? getHeight() + worldY : worldY % getHeight();
 						visWorld.setCell(getCell(worldX, worldY), x+visability, y+visability);
 					}
 				}
-				else
-				{
+				else{
 					visWorld.setCell(getCell(worldX, worldY), x+visability, y+visability);
 				}
 			}
@@ -291,77 +188,7 @@ public class WorldSim
 		return visWorld;
 	}
 
-	private void updateCells()
-	{
-		for (AbstractCell[] row : world)
-		{
-			for (AbstractCell cell : row)
-			{
-				cell.stepSim();
-			}
-		}
-		
-	}
-
-	public AbstractCell getCell(int x, int y) 
-	{
-		return world[x][y];
-	}
-
-	public void setCell(AbstractCell cell, Point pt)
-	{
-		setCell(cell, pt.getX(), pt.getY());
-	}
-	
-	public void setCell(AbstractCell cell, int x, int y)
-	{
-		world[x][y] = cell;
-	}
-
-	public void addCar(String name, Point startPos,Point endPos)
-	{
-		for (CarAddedListener cal : carAddedListeners)
-		{
-			AbstractCar createdCar = cal.createCar(name, startPos, endPos);
-			cars.add(createdCar);
-			carPositions.put(createdCar, startPos );
-		}
-	}
-
-	public void addCar(String name, Point point,Point endPos, String av)
-	{
-		for (CarAddedListener cal : carAddedListeners)
-		{
-			AbstractCar createdCar = cal.createCar(name, point, endPos,av);
-			cars.add(createdCar);
-			carPositions.put(createdCar, point);
-		}
-		
-	}
-
-	public boolean allFinished()
-	{
-		for (AbstractCar car : cars)
-		{
-			if (!car.isCrashed() && !car.isFinished(carPositions.get(car)))
-			{
-				return false;
-			}
-		}
-		return true;
-	}
-
-	public ArrayList<AbstractCar> getCars() 
-	{
-		return cars;
-	}
-
-	public Point getCarPosition(AbstractCar car) 
-	{
-		return carPositions.get(car);
-	}
-	
-	public WorldSim getWorldWithValueForACar(AbstractCar car)  {
+	public WorldSim getWorldWithValueForACar(AbstractCar car){
 		WorldSim copyWorld = copyWorld();
 		
 		Point currentPosition = car.getCurrentPosition();
@@ -371,10 +198,10 @@ public class WorldSim
 		Point otherPosition;
 		int X_gdistance, Y_gdistance, G_value, X_hdistance, Y_hdistance, H_value, F_value;
 		
-		for(int i = 0; i < copyWorld.width ; i++) {
-			for(int j = 0; j < copyWorld.height; j++) {
+		for(int i = 0; i < copyWorld.width ; i++){
+			for(int j = 0; j < copyWorld.height; j++){
 				otherPosition = new Point(i,j);
-					if(copyWorld.getCell(i,j).getCellType()  == CellType.ct_road) {
+					if(copyWorld.getCell(i,j).getCellType() == CellType.ct_road){
 						RoadCell rc = (RoadCell) copyWorld.getCell(i,j);
 							
 						X_gdistance = Math.abs(otherPosition.getX() - currentPosition.getX());
@@ -386,9 +213,7 @@ public class WorldSim
 						X_hdistance = Math.abs(otherPosition.getX() - endPosition.getX());
 						Y_hdistance = Math.abs(otherPosition.getY() - endPosition.getY());
 					
-						H_value = X_hdistance + Y_hdistance;
-					
-						
+						H_value = X_hdistance + Y_hdistance;	
 						F_value =  G_value + H_value;
 						
 							rc.setGValue(G_value);
@@ -399,19 +224,18 @@ public class WorldSim
 //							"F value is: " + rc.getFValue()
 //							+ " G value is: " + rc.getGValue()
 //							);		
-			}
+					}
 			}
 		}
-		
 		return copyWorld;
 	}
 	
-	public ArrayList<RoadCell> search(AbstractCar car) {	
+	public ArrayList<RoadCell> search(AbstractCar car){	
 		WorldSim world = getWorldWithValueForACar(car);
 		
-		for(int m = 0 ; m < world.width; m++) {
-			for(int n = 0 ; n < world.height; n++) {
-				if(world.getCell(m, n).getCellType() == CellType.ct_road) {
+		for(int m = 0 ; m < world.width; m++){
+			for(int n = 0 ; n < world.height; n++){
+				if(world.getCell(m, n).getCellType() == CellType.ct_road){
 					RoadCell rc = (RoadCell) world.getCell(m, n);
 					rc.setAsUnChecked();
 					rc.setAsUnOpened();
@@ -450,7 +274,6 @@ public class WorldSim
 			x = currentPosition.getX();
 			y = currentPosition.getY();
 			
-		
 			// open the up Cell(north)
 			if(y - 1 > 0) {
 				if(world.getCell(x, y - 1).getCellType() == CellType.ct_road) {
@@ -500,9 +323,8 @@ public class WorldSim
 		return routeList;
 	}
 	
-	
 	public void openCell(RoadCell rc, RoadCell currentCell, ArrayList<RoadCell> openList) {
-		if( rc.checked == false && rc.open == false) {
+		if( rc.checked == false && rc.open == false){
 			//if the cell is not opened yet, add it to open
 			rc.setAsOpen();
 			rc.setParent(currentCell);
@@ -514,11 +336,9 @@ public class WorldSim
 		ArrayList<RoadCell> routeList  = new ArrayList<>();	
 		RoadCell currentCell = endCell;
 		routeList.add(endCell);
-		while(!currentCell.getPosition().equals(startCell.getPosition())) {
-			
+		while(!currentCell.getPosition().equals(startCell.getPosition())){
 			currentCell = currentCell.parent;
-			routeList.add(currentCell); 
-					
+			routeList.add(currentCell); 	
 		}
 		return routeList;
 	}
@@ -530,8 +350,8 @@ public class WorldSim
 		copyWorld.cars = cars;
 		copyWorld.width = this.width;
 		copyWorld.height = this.height;
-		for(int i = 0; i < this.width; i ++) {
-			for(int j = 0; j < this.height;j++) {
+		for(int i = 0; i < this.width; i ++){
+			for(int j = 0; j < this.height;j++){
 				Point cellPosition = new Point(i,j);
 				AbstractCell cell = getCell(i,j);
 				cell.setPosition(cellPosition);
@@ -539,5 +359,109 @@ public class WorldSim
 			}
 		}
 		return copyWorld;		
+	}
+	
+
+	//-----------------------------------------------------------------
+	//get width of the world
+	public int getWidth(){
+		return this.width;
+	}
+	
+	//get height of the world
+	public int getHeight(){
+		return this.height;
+	}
+	
+	public AbstractCell getCell(int x, int y) 
+	{
+		return world[x][y];
+	}
+
+	public void setCell(AbstractCell cell, Point pt)
+	{
+		setCell(cell, pt.getX(), pt.getY());
+	}
+	
+	public void setCell(AbstractCell cell, int x, int y)
+	{
+		world[x][y] = cell;
+	}
+
+	
+	//get the speed limit at position (x,y)
+	public int speedLimit(int x, int y){
+		if (getCell(x, y).getCellType() == CellType.ct_road){
+			return ((RoadCell)getCell(x, y)).getSpeedLimit();
+		}
+		return 0;
+	}
+	
+	//-----------------------------------------------------------------
+	
+	public void addCarAddedListener(CarAddedListener cal){
+		carAddedListeners.add(cal);
+	}
+	
+	public void addCar(String name, Point startPos,Point endPos){
+		for (CarAddedListener cal : carAddedListeners){
+			AbstractCar createdCar = cal.createCar(name, startPos, endPos);
+			cars.add(createdCar);
+			carPositions.put(createdCar, startPos);
+		}
+	}
+
+	public void addCar(String name, Point startPos,Point endPos, String av){
+		for (CarAddedListener cal : carAddedListeners){
+			AbstractCar createdCar = cal.createCar(name, startPos, endPos,av);
+			cars.add(createdCar);
+			carPositions.put(createdCar, startPos);
+		}
+	}
+	
+	//check whether there are cars at position (x,y)
+	public boolean containsCar(int x, int y){
+		for (Point p : carPositions.values()){
+			if (p.getX() ==  x && p.getY() == y){
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	//get the car at position (x,y)
+	public AbstractCar getCarAtPosition(int x, int y){
+		for (AbstractCar c : cars){
+			if (containsCar(x,y)){
+				return c;
+			}
+		}
+		return null;
+	}
+	
+	//get all cars in the world
+	public ArrayList<AbstractCar> getCars(){
+		return cars;
+	}
+
+	//get the position of a car
+	public Point getCarPosition(AbstractCar car){
+		return carPositions.get(car);
+	}
+	
+	//reset all cars positions to their start positions
+	public void resetCarPositions(){
+		for (AbstractCar car : cars){
+			carPositions.put(car, car.getStartingPosition());
+		}
+	}
+	
+	public boolean allFinished(){
+		for (AbstractCar car : cars){
+			if (!car.isCrashed() && !car.isFinished(carPositions.get(car))){
+				return false;
+			}
+		}
+		return true;
 	}
 }

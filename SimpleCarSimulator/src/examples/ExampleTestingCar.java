@@ -20,13 +20,11 @@ public class ExampleTestingCar extends AbstractCar
 	boolean trafficLightRed;
 	boolean atWhiteLine;
 	boolean finished = false;
-	
-	 boolean overtakenOther = false;
-	 boolean getIntoLeftLane = false;
-	 boolean safegap = false;
-	 boolean atRightTurn = false;
-	 boolean wallAhead = false;
-	 
+	boolean overtakenOther = false;
+	boolean getIntoLeftLane = false;
+	boolean safegap = false;
+	boolean atRightTurn = false;
+	boolean wallAhead = false;//
 	boolean atHardShoulder;
     boolean no_right_turn = false;
     boolean no_left_turn = false;
@@ -40,11 +38,7 @@ public class ExampleTestingCar extends AbstractCar
 	boolean no_go_east_because_other_car = false;
 	boolean no_go_west_because_other_car = false;
 	
-	// car's current moving direction
-	private Direction cmd = Direction.north;
-	
 	ArrayDeque<Direction> directions = new ArrayDeque<Direction>();
-	
 
 	public ExampleTestingCar(Point startPos, Point endPos,String imageLoc){
 		super(startPos,endPos,0,imageLoc);
@@ -53,8 +47,6 @@ public class ExampleTestingCar extends AbstractCar
 
 	@Override
 	public void visibleWorldUpdate(WorldSim visibleWorld, Point location){
-		
-		
 		for (int y = 0; y < visibleWorld.getHeight(); y++){
 			for (int x = 0; x < visibleWorld.getWidth(); x++){
 				if (visibleWorld.getCell(x, y).getCellType() == CellType.ct_information){
