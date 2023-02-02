@@ -29,9 +29,10 @@ public abstract class AbstractCar{
 	protected abstract ArrayDeque<Direction> getSimulationRoute();
 	protected abstract boolean isFinished(Point point);
 	
-	public AbstractCar(Point startPos, Point endPos,  int startingSpeed, String fileImage){
+	public AbstractCar(Point startPos, Point endPos, int startingSpeed, String fileImage){
 		startingPosition = startPos;
 		endPosition = endPos;
+		currentPosition = startPos;
 		speed = startingSpeed;
 		carIcon = new ImageIcon(fileImage);
 	}

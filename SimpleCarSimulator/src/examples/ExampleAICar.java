@@ -13,22 +13,30 @@ public class ExampleAICar extends AbstractCar
 
 	public ExampleAICar(Point startPos, Point endPos, String imageLoc)
 	{
-		super(startPos,endPos, 2, imageLoc);
+		super(startPos,endPos, 1, imageLoc);
 	}
 
 	@Override
 	protected ArrayDeque<Direction> getSimulationRoute()
 	{
 		goLeft.push(Direction.north);
-		goLeft.push(Direction.north);
+	
 		return goLeft;
 	}
 
 	@Override
 	protected boolean isFinished(Point point)
 	{
+		boolean isFinished = false;
 		// Dont care where the car is when finished
-		return false;
+		  if(currentPosition.equals(endPosition)) {
+	            isFinished = true;
+	        }
+	        else {
+	            isFinished = false;
+	        }
+	        return isFinished;
+	        
 	}
 
 	@Override

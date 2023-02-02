@@ -31,7 +31,8 @@ public class RoadCell extends AbstractCell{
 		rm_solid_white_line_left,
 		rm_solid_white_line_right,
 		rm_solid_white_line_up,
-		rm_solid_white_line_down
+		rm_solid_white_line_down,
+		rm_motorway
 	}
 	private static final long serialVersionUID = -3908736198953808153L;
 	
@@ -157,6 +158,10 @@ public class RoadCell extends AbstractCell{
 				g2d.drawLine(5,0,5,getHeight());
 			}
 			
+			// we don't draw motorway in the grid world
+//			else if(rm == RoadMarking.rm_motorway) {
+//				
+//			}
 			else if (rm == RoadMarking.rm_HorizontalWhiteLineRight){
 				g2d.setStroke(new BasicStroke(5, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
 				g2d.drawLine(getWidth()-5,0,getWidth()-5,getHeight());

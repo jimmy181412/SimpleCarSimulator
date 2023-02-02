@@ -151,43 +151,27 @@ public class ExampleTestingCar extends AbstractCar
 				}
 			}	
 		}	
-		switch (cmd)
-		{
-		case east:
-			wallAhead = visibleWorld.getCell(location.getX() + 1, location.getY()).getCellType() != CellType.ct_road;
-			break;
-		case north:
-			wallAhead = visibleWorld.getCell(location.getX(), location.getY()-1).getCellType() != CellType.ct_road;
-			break;
-		case south:
-			wallAhead = visibleWorld.getCell(location.getX(), location.getY()+1).getCellType() != CellType.ct_road;
-			break;
-		case west:
-			wallAhead = visibleWorld.getCell(location.getX() - 1, location.getY()).getCellType() != CellType.ct_road;
-			break;
-		
-		}
-		
+	
 		
 	}
 
 	@Override
 	public ArrayDeque<Direction> getSimulationRoute(){	
 		
-		System.out.println("no up turn: " + no_up_turn);
-		System.out.println("no down turn: " + no_down_turn);
-		System.out.println("no right turn: " + no_right_turn);
-		System.out.println("no left turn: " + no_left_turn);
-		System.out.println("traffic light red on: " + trafficLightRed);
-		System.out.println("at white line: " + atWhiteLine);
-		System.out.println("at hardshrouder: " + atHardShoulder);
-		System.out.println("approaching_vertical_zebra: " + approaching_vertical_zebra);
-		System.out.println("approaching_horizontal_zebra: " + approaching_horizontal_zebra);	
-		System.out.println("no_overtake: " + no_overtake);
-		System.out.println("no_go_north_because_other_car: " + no_go_north_because_other_car);
-		System.out.println("no_go_south_because_other_car: " + no_go_south_because_other_car);
-		System.out.println("no_go_east_because_other_car: " + no_go_east_because_other_car);
-		System.out.println("no_go_west_because_other_car: " + no_go_west_because_other_car);
+//		System.out.println("no up turn: " + no_up_turn);
+//		System.out.println("no down turn: " + no_down_turn);
+//		System.out.println("no right turn: " + no_right_turn);
+//		System.out.println("no left turn: " + no_left_turn);
+//		System.out.println("traffic light red on: " + trafficLightRed);
+//		System.out.println("at white line: " + atWhiteLine);
+//		System.out.println("at hardshrouder: " + atHardShoulder);
+//		System.out.println("approaching_vertical_zebra: " + approaching_vertical_zebra);
+//		System.out.println("approaching_horizontal_zebra: " + approaching_horizontal_zebra);	
+//		System.out.println("no_overtake: " + no_overtake);
+//		System.out.println("no_go_north_because_other_car: " + no_go_north_because_other_car);
+//		System.out.println("no_go_south_because_other_car: " + no_go_south_because_other_car);
+//		System.out.println("no_go_east_because_other_car: " + no_go_east_because_other_car);
+//		System.out.println("no_go_west_because_other_car: " + no_go_west_because_other_car);
 		
 
 		if ((trafficLightRed && atWhiteLine) || finished)
@@ -249,7 +233,7 @@ public class ExampleTestingCar extends AbstractCar
 		}
 		
 		
-		System.out.println("currentMovingDirection is: " + cmd.toString());
+//		System.out.println("currentMovingDirection is: " + cmd.toString());
 		
 		
 		reMakeDecisions();
@@ -259,18 +243,11 @@ public class ExampleTestingCar extends AbstractCar
 	@Override
 	protected boolean isFinished(Point point)
 	{
-		finished = point == getEndPosition();
+		
+		finished = point.equals(getEndPosition());
 		return finished;
 	}
-	
-	public void changeCMD(Direction d) {
-		this.cmd = d;
-	}
-	
-	public Direction getCMD() {
-		return this.cmd;
-	}
-	
+
 	public void reMakeDecisions() {
 	   trafficLightRed = false;
 	   atWhiteLine = false;
