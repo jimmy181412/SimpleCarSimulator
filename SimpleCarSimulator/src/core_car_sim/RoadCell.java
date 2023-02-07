@@ -39,6 +39,7 @@ public class RoadCell extends AbstractCell{
 	// attributes used for A star search
 	private int f_value = 10000;
 	private int g_value = 500;
+	private int h_value = 500;
 	public boolean checked = false;
 	public boolean open = false;
 	public RoadCell parent;
@@ -78,8 +79,13 @@ public class RoadCell extends AbstractCell{
 
 	public boolean isPavement(){
 		return pavement;
-	}
+		}
 
+	// setter and getter of roadMarkings
+	public void setMarking(RoadMarking rm){
+		this.roadMarkings.add(rm);
+	}
+	
 	public ArrayList<RoadMarking> getRoadMarkings(){
 		return roadMarkings;
 	}
@@ -88,8 +94,30 @@ public class RoadCell extends AbstractCell{
 		return speedLimit;
 	}
 	
-	public void setMarking(RoadMarking rm){
-		roadMarkings.add(rm);
+	// set and get of g value
+	public void setGvalue(int value){
+		this.g_value = value;
+	}
+	
+	public int getGvalue() {
+		return this.g_value;
+	}
+
+	// getter and setter of f value
+	public void setFvalue(int value) {
+		this.f_value = value;
+	}
+	
+	public int getFvalue() {
+		return this.f_value;
+	}
+	
+	// getter and setter of h value
+	public void setHvalue(int value) {
+		this.h_value = value;
+	}
+	public int getHvalue() {
+		return this.h_value;
 	}
 	
 	public void setAsChecked(){
@@ -108,6 +136,7 @@ public class RoadCell extends AbstractCell{
 		this.open = false;
 	}
 	
+	// getter and setter of parent
 	public RoadCell getParent(){
 		return this.parent;
 	}
@@ -119,22 +148,6 @@ public class RoadCell extends AbstractCell{
 	@Override
 	public boolean isDriveable(){
 		return true;
-	}
-	
-	public void setGValue(int value){
-		this.g_value = value;
-	}
-	
-	public int getGValue() {
-		return this.g_value;
-	}
-	
-	public void setFValue(int value){
-		this.f_value = value;
-	}
-	
-	public int getFValue(){
-		return this.f_value;
 	}
 	
 	@Override

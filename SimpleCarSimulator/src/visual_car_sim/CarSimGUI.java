@@ -9,6 +9,8 @@ import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map.Entry;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
@@ -169,6 +171,8 @@ public class CarSimGUI
 					
 					BufferedReader br = new BufferedReader(new FileReader(System.getProperty("user.dir") + "/bin/examples/ExampleWorldFile.txt"));
 					simworld = LoadWorld.loadWorldFromFile(br, cal);
+					
+					
 					pnlWorld.setLayout(new GridLayout(simworld.getHeight(), simworld.getWidth(), 1, 1));
 					updateGUIWorld();
 					
@@ -197,6 +201,12 @@ public class CarSimGUI
 	
 	private void updateGUIWorld()
 	{
+//		HashMap<AbstractCar,Point> position = simworld.getCarPositionsList();
+//		for(Entry<AbstractCar,Point> entry : position.entrySet()) {
+//			System.out.print(entry.getKey().getClass().toString() + " ");
+//			System.out.println(entry.getValue().getX() + " " + entry.getValue().getY());
+//		}
+
 		pnlWorld.removeAll();
 		for (int y = 0; y < simworld.getHeight(); y++)
 		{

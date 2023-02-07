@@ -95,3 +95,4 @@ dottedlineup 12 5
 dottedlineup 13 5
 
 Car testingCar 6 8 6 0 JIM
+Car other 6 10 6 0

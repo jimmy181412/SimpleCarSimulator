@@ -2,6 +2,8 @@ package examples;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map.Entry;
 
 import core_car_sim.AbstractCar;
 import core_car_sim.AbstractCell.CellType;
@@ -44,9 +46,48 @@ public class ExampleTestingCar extends AbstractCar
 		super(startPos,endPos,0,imageLoc);
 		setSpeed(1);
 	}
+	
+	
 
 	@Override
 	public void visibleWorldUpdate(WorldSim visibleWorld, Point location){
+		
+//		HashMap<AbstractCar,Point> position = visibleWorld.getCarPositionsList();
+//		for(Entry<AbstractCar,Point> entry : position.entrySet()) {
+//			System.out.print(entry.getKey().getClass().toString() + " ");
+//			System.out.println(entry.getValue().getX() + " " + entry.getValue().getY());
+//		}
+
+//		System.out.println("the visibility of the world is: " + visibleWorld.getVisibility());
+//		System.out.println("-------- ----------------------------------");
+		
+		System.out.println("current location in its visible world is: " + location.getX() + " " + location.getY()); 
+		for(int i = 0; i < visibleWorld.getWidth(); i++) {
+			for(int j = 0 ; j < visibleWorld.getHeight();j++) {
+					if(visibleWorld.containsCar(i, j)) {
+						Point tmp = new Point(i,j);
+						if(!tmp.equals(location)) {
+						
+							System.out.println("the car's position is: " + i + " " +j);
+							AbstractCar car1 = visibleWorld.getCarAtPosition(i, j);
+							
+							System.out.print(car1.getClass().toString() + " ");
+							
+							System.out.println("car speed is" + car1.getSpeed());
+							System.out.println("car current moving direction is:" + car1.getCurrentPosition());
+						}
+						 
+					}
+				}
+				
+			}
+		
+//		System.out.println("--------------------------------------------");
+			
+			
+			
+			
+			
 		for (int y = 0; y < visibleWorld.getHeight(); y++){
 			for (int x = 0; x < visibleWorld.getWidth(); x++){
 				if (visibleWorld.getCell(x, y).getCellType() == CellType.ct_information){
@@ -173,7 +214,7 @@ public class ExampleTestingCar extends AbstractCar
 //		System.out.println("no_go_east_because_other_car: " + no_go_east_because_other_car);
 //		System.out.println("no_go_west_because_other_car: " + no_go_west_because_other_car);
 		
-
+		
 		if ((trafficLightRed && atWhiteLine) || finished)
 		{
 			setSpeed(0);
@@ -234,7 +275,7 @@ public class ExampleTestingCar extends AbstractCar
 		
 		
 //		System.out.println("currentMovingDirection is: " + cmd.toString());
-		
+//		System.out.println(getCurrentPosition().getX()  + " " + getCurrentPosition().getY());
 		
 		reMakeDecisions();
 		return directions;
