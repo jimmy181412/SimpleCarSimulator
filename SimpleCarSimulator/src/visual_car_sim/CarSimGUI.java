@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
@@ -15,6 +16,7 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -26,13 +28,16 @@ import javax.swing.SpinnerNumberModel;
 
 import core_car_sim.AbstractCar;
 import core_car_sim.CarAddedListener;
+import core_car_sim.Direction;
 import core_car_sim.LoadWorld;
+import core_car_sim.Pedestrian;
+import core_car_sim.PedestrianAddedListener;
 import core_car_sim.Point;
 import core_car_sim.WorldSim;
 import examples.ExampleAICar;
 import examples.ExampleTestingCar;
 
-
+//<a href="https://www.flaticon.com/free-icons/ui" title="ui icons">Ui icons created by icon wind - Flaticon</a>
 public class CarSimGUI
 {
 	public class Simulate implements Runnable
@@ -53,6 +58,7 @@ public class CarSimGUI
 			boolean finished = false;
 			while (!finished)
 			{
+				updateGUIWorld();
 				simworld.simulate(1);
 				try
 				{
@@ -61,7 +67,7 @@ public class CarSimGUI
 				{
 					e.printStackTrace();
 				}
-				updateGUIWorld();
+				
 				lblNewLabel.setText("Steps simulated: " + ++stepsSimulated);
 			
 				
@@ -80,6 +86,7 @@ public class CarSimGUI
 	private JPanel pnlWorld = new JPanel();
 	private Executor simulationThread = Executors.newSingleThreadExecutor();
 	private CarAddedListener cal;
+	private PedestrianAddedListener pal;
 
 	/**
 	 * Launch the application.
@@ -115,6 +122,15 @@ public class CarSimGUI
 			{
 				return new ExampleTestingCar(startingLoca, endingLoca,System.getProperty("user.dir") + "/SimpleCarSimulator/resources/bluecar.png");
 			}
+		};
+		
+		pal = new PedestrianAddedListener() {
+			@Override
+			public Pedestrian createPedestrians(String name,Point startingLoca,Point endingLoca,Point referenceLoca, Direction d) {
+				// TODO Auto-generated method stub
+				return new Pedestrian(startingLoca, endingLoca, referenceLoca,d, System.getProperty("user.dir") + "/SimpleCarSimulator/resources/pedestrian.png");
+			}
+			
 		};
 	}
 
@@ -170,11 +186,12 @@ public class CarSimGUI
 					//While testing
 					
 					BufferedReader br = new BufferedReader(new FileReader(System.getProperty("user.dir") + "/bin/examples/ExampleWorldFile.txt"));
-					simworld = LoadWorld.loadWorldFromFile(br, cal);
+					simworld = LoadWorld.loadWorldFromFile(br, cal, pal);
 					
 					
 					pnlWorld.setLayout(new GridLayout(simworld.getHeight(), simworld.getWidth(), 1, 1));
 					updateGUIWorld();
+					
 					
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
@@ -201,13 +218,23 @@ public class CarSimGUI
 	
 	private void updateGUIWorld()
 	{
-//		HashMap<AbstractCar,Point> position = simworld.getCarPositionsList();
-//		for(Entry<AbstractCar,Point> entry : position.entrySet()) {
-//			System.out.print(entry.getKey().getClass().toString() + " ");
-//			System.out.println(entry.getValue().getX() + " " + entry.getValue().getY());
-//		}
-
 		pnlWorld.removeAll();
+		
+		// get pnl's height and weight in pxis
+		int pnlWidth = pnlWorld.getWidth();
+		int pnlHeight = pnlWorld.getHeight();
+		
+		//get simulated world's height and width
+		int simWidth = simworld.getWidth();
+		int simHeight = simworld.getHeight();
+		
+		// height and width of each cell
+		int cWidth = pnlWidth / simWidth;
+		int cHeight = pnlHeight / simHeight;
+		
+		//adjust cell width and cell height for car and pedestrian icons
+		int iconWidth = (int) (cWidth / 1.5);
+		int iconHeight = (int) (cHeight / 1.5);
 		for (int y = 0; y < simworld.getHeight(); y++)
 		{
 			for (int x = 0; x < simworld.getWidth(); x++)
@@ -216,19 +243,30 @@ public class CarSimGUI
 				pnlWorld.add(simworld.getCell(x, y));
 			}
 		}
-		for (AbstractCar car : simworld.getCars())
-		{
-		
+		//update cars
+		for (AbstractCar car : simworld.getCars()){
 			Point p = simworld.getCarPosition(car);
-			JLabel icon = new JLabel(car.getCarIcon());
-			icon.setSize(simworld.getCell(p.getX(), p.getY()).getWidth(), simworld.getCell(p.getX(), p.getY()).getHeight());
-			simworld.getCell(p.getX(), p.getY()).add(icon);
+			ImageIcon iicon1 = car.getCarIcon();
+			Image img1 = iicon1.getImage();
+			//adjust size
+			Image newimg1 = img1.getScaledInstance(iconWidth,iconHeight,java.awt.Image.SCALE_SMOOTH);
+			iicon1 = new ImageIcon(newimg1);
+			JLabel icon1 = new JLabel(iicon1);
+			simworld.getCell(p.getX(), p.getY()).add(icon1);
 			
 		}
+		//update pedestrians
+		for(Pedestrian p : simworld.getPedestrian()) {
+			Point point = simworld.getPedestrianPosition(p);
+			ImageIcon iicon2 = p.getPedestrainIcon();
+			Image img2 = iicon2.getImage();
+			Image newimg2 = img2.getScaledInstance(iconWidth,iconHeight,java.awt.Image.SCALE_SMOOTH);
+			iicon2 = new ImageIcon(newimg2);
+			JLabel icon2 = new JLabel(iicon2);
+			simworld.getCell(point.getX(), point.getY()).add(icon2);
+			}
+		
 		pnlWorld.revalidate();
 		pnlWorld.repaint();
 	}
-
-	
-
 }

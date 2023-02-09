@@ -52,38 +52,7 @@ public class ExampleTestingCar extends AbstractCar
 	@Override
 	public void visibleWorldUpdate(WorldSim visibleWorld, Point location){
 		
-//		HashMap<AbstractCar,Point> position = visibleWorld.getCarPositionsList();
-//		for(Entry<AbstractCar,Point> entry : position.entrySet()) {
-//			System.out.print(entry.getKey().getClass().toString() + " ");
-//			System.out.println(entry.getValue().getX() + " " + entry.getValue().getY());
-//		}
 
-//		System.out.println("the visibility of the world is: " + visibleWorld.getVisibility());
-//		System.out.println("-------- ----------------------------------");
-		
-		System.out.println("current location in its visible world is: " + location.getX() + " " + location.getY()); 
-		for(int i = 0; i < visibleWorld.getWidth(); i++) {
-			for(int j = 0 ; j < visibleWorld.getHeight();j++) {
-					if(visibleWorld.containsCar(i, j)) {
-						Point tmp = new Point(i,j);
-						if(!tmp.equals(location)) {
-						
-							System.out.println("the car's position is: " + i + " " +j);
-							AbstractCar car1 = visibleWorld.getCarAtPosition(i, j);
-							
-							System.out.print(car1.getClass().toString() + " ");
-							
-							System.out.println("car speed is" + car1.getSpeed());
-							System.out.println("car current moving direction is:" + car1.getCurrentPosition());
-						}
-						 
-					}
-				}
-				
-			}
-		
-//		System.out.println("--------------------------------------------");
-			
 			
 			
 			
@@ -168,22 +137,22 @@ public class ExampleTestingCar extends AbstractCar
 							}
 						}
 						
-						else if(rm == RoadMarking.rm_solid_white_line_left) {
+						else if(rm == RoadMarking.rm_solid_white_line_west) {
 							if((x == location.getX() && y == location.getY()) || (x == location.getX() - 1 && y == location.getY())) {
 								no_left_turn = true;
 							}
 						}
-						else if(rm == RoadMarking.rm_solid_white_line_right) {
+						else if(rm == RoadMarking.rm_solid_white_line_east) {
 							if((x == location.getX() && y == location.getY())|| (x == location.getX() + 1 && y == location.getY())){
 								no_right_turn = true;
 							}
 						}
-						else if(rm == RoadMarking.rm_solid_white_line_up) {
+						else if(rm == RoadMarking.rm_solid_white_line_north) {
 							if((x == location.getX() && y == location.getY())||(x == location.getX() && y == location.getY() - 1)) {
 								no_up_turn = true;
 							}
 						}
-						else if(rm == RoadMarking.rm_solid_white_line_down) {
+						else if(rm == RoadMarking.rm_solid_white_line_west) {
 							if((x == location.getX() && y == location.getY()) || x == location.getX() && y == location.getY() + 1) {
 								no_down_turn = true;
 							}

@@ -22,6 +22,12 @@ public class WorldSim{
 	//(store car and its position key value pair)
 	private HashMap<AbstractCar, Point> carPositions = new HashMap<AbstractCar, Point>();
 	
+	
+	// Pedestrian
+	private ArrayList<PedestrianAddedListener> pals = new ArrayList<PedestrianAddedListener>();
+	private ArrayList<Pedestrian> pedestrians = new ArrayList<>();
+	private HashMap<Pedestrian, Point> pedestrianPositions = new HashMap<>(); 
+	
 	public WorldSim(int x, int y){
 		this.width = x;
 		this.height = y;
@@ -34,6 +40,8 @@ public class WorldSim{
 			updateCells();
 			// update cars in this step
 			carMovementPhase();
+			//update pedestrains in this step
+			pedestrianMovementPhase();
 		}
 	}
 	
@@ -41,6 +49,35 @@ public class WorldSim{
 		for (AbstractCell[] row : world){
 			for (AbstractCell cell : row){
 				cell.stepSim();
+			}
+		}	
+	}
+	
+	private void pedestrianMovementPhase() {
+	
+		// all routes of pedestrians in the current grid world
+		HashMap<Pedestrian, Deque<Direction>> AllRoutes = new HashMap<>();
+		for(Pedestrian p : pedestrians) {
+			if(!p.isFinished(this.getPedestrianPosition(p))) {
+				ArrayDeque<Direction> route = p.getSimulationRoute();
+				AllRoutes.put(p, route);
+			}	
+		}
+		for(Pedestrian p: pedestrians) {
+			//get the current position of the pedestrian
+			Point currentPosition = this.pedestrianPositions.get(p);
+			if(!p.isFinished(currentPosition)) { 
+				Direction d = AllRoutes.get(p).pop();
+				currentPosition.moveDirection(d);		
+				//update the position
+				pedestrianPositions.put(p, currentPosition);
+			}
+			//reset the pedestrian
+			else {
+				int x = p.getReferencePosition().getX();
+				int y = p.getReferencePosition().getY();
+				Point origin = new Point(x,y);
+				pedestrianPositions.put(p, origin);
 			}
 		}	
 	}
@@ -150,7 +187,6 @@ public class WorldSim{
 		}
 	}
 
-	//TODO
 	private WorldSim getVisibleWorldForPosition(Point currentPosition, boolean looped){		
 		//(Field of view)FOV of a car
 		// the visible world's width is visibility * 2 + 1
@@ -160,17 +196,28 @@ public class WorldSim{
 		visWorld.carAddedListeners = carAddedListeners;   
 		visWorld.cars = cars;
 		
+		visWorld.pals = pals;
+		visWorld.pedestrians = pedestrians;
+		
 		//car positions need to be adjusted to visible world
 		visWorld.carPositions = new HashMap<AbstractCar, Point>();
+		//pedestrian positions need to be adjusted to visible world
+		visWorld.pedestrianPositions = new HashMap<Pedestrian, Point>();
 		
 		int worldX;
 		int worldY;
 		
-		//adjust car positions based on current cars position
+		//adjust car positions based on current cars' position
 		for (Entry<AbstractCar, Point> cp : carPositions.entrySet()){
 			//Adjust car
 			visWorld.carPositions.put(cp.getKey(), new Point((cp.getValue().getX() - currentPosition.getX()) + visability, 
 															(cp.getValue().getY() - currentPosition.getY()) + visability));
+		}
+		
+		//adjust pedestrian positions based on current car's position
+		for(Entry<Pedestrian, Point> pp: pedestrianPositions.entrySet()) {
+			visWorld.pedestrianPositions.put(pp.getKey(), new Point((pp.getValue().getX() - currentPosition.getX()) + visability,
+																	(pp.getValue().getY() - currentPosition.getY()) + visability));
 		}
 		//adjust cell
 		for (int x = 0-visability; x <= visability; x++){
@@ -455,8 +502,7 @@ public class WorldSim{
 		return 0;
 	}
 	
-	//-----------------------------------------------------------------
-	
+
 	public void addCarAddedListener(CarAddedListener cal){
 		carAddedListeners.add(cal);
 	}
@@ -480,8 +526,7 @@ public class WorldSim{
 	//check whether there are cars at position (x,y)
 	public boolean containsCar(int x, int y){
 		Point p = new Point(x, y);
-		HashMap<AbstractCar, Point> cp = getCarPositionsList();
-		for(Entry<AbstractCar, Point> entry : cp.entrySet()) {
+		for(Entry<AbstractCar, Point> entry : carPositions.entrySet()) {
 			if(entry.getValue().equals(p)) {
 				return true;
 			}
@@ -492,8 +537,7 @@ public class WorldSim{
 	//get the car at position (x,y)
 	public AbstractCar getCarAtPosition(int x, int y){
 		Point p = new Point(x,y);
-		HashMap<AbstractCar, Point> cp = getCarPositionsList();
-		for(Entry<AbstractCar, Point> entry : cp.entrySet()) {
+		for(Entry<AbstractCar, Point> entry : carPositions.entrySet()) {
 			if(entry.getValue().equals(p)) {
 				return entry.getKey();
 			}
@@ -530,4 +574,52 @@ public class WorldSim{
 	public HashMap<AbstractCar,Point> getCarPositionsList(){
 		return carPositions;
 	}
+	
+	public void addPedestrianListener(PedestrianAddedListener pal) {
+		pals.add(pal);
+	}
+	
+	//add pedestrian to the world
+	public void addPedestrain(String name, Point startPos, Point endPos,Point referencePos, Direction d) {
+		for(PedestrianAddedListener pal : pals) {
+			Pedestrian p = pal.createPedestrians(name, startPos, endPos,referencePos,d);
+			pedestrians.add(p);
+			pedestrianPositions.put(p,startPos);
+		}
+	}
+	
+	//get all pedestrian in the world
+	public ArrayList<Pedestrian> getPedestrian(){
+		return this.pedestrians;
+	}
+	
+	public Point getPedestrianPosition(Pedestrian p) {
+		return this.pedestrianPositions.get(p);
+	}
+	
+	public HashMap<Pedestrian, Point> getPedestrianPositionList(){
+		return this.pedestrianPositions;
+	}
+	
+	public boolean containsPedestrain(int x, int y) {
+		Point p = new Point(x,y);
+		for(Entry<Pedestrian, Point> entry : pedestrianPositions.entrySet()) {
+			if(entry.getValue().equals(p)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	//get the car at position (x,y)
+	public Pedestrian getPedestrainAtPosition(int x, int y){
+		Point p = new Point(x,y);
+		for(Entry<Pedestrian, Point> entry : pedestrianPositions.entrySet()) {
+			if(entry.getValue().equals(p)) {
+				return entry.getKey();
+			}
+		}
+		return null;
+	}
+	
 }
