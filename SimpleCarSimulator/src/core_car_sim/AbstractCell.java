@@ -1,5 +1,9 @@
 package core_car_sim;
 
+import java.awt.AlphaComposite;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+
 import javax.swing.JPanel;
 
 /*
@@ -38,5 +42,4 @@ public abstract class AbstractCell extends JPanel{
 	public Point getPosition() {
 		return cellPosition;
 	}
-	
 }

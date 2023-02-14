@@ -1,5 +1,6 @@
 package core_car_sim;
 
+import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
@@ -15,6 +16,7 @@ public class PavementCell extends AbstractCell{
 	 */
 	private static final long serialVersionUID = 1L;
 	private ArrayList<PavementMarking> pavementMarkings = new ArrayList<>();
+	private float transparency = 1;
 
 	public enum PavementMarking{
 		pm_kerb_east,
@@ -52,11 +54,9 @@ public class PavementCell extends AbstractCell{
 	public void paintComponent(Graphics g){
 		
 		Graphics2D g2d = (Graphics2D)g.create();
-		
+		g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, transparency));
 		g2d.setColor(Color.gray);
 		g2d.fillRect(0, 0, getWidth(), getHeight());
-		
-	
 		
 		for(PavementMarking pm: pavementMarkings) {
 			if(pm == PavementMarking.pm_kerb_east) {
@@ -80,5 +80,12 @@ public class PavementCell extends AbstractCell{
 				g2d.drawLine(0,getHeight()-5,getWidth(),getHeight()-5);
 			}
 		  }
+		this.transparency = 1;
 		}
+	
+
+	public void setTransparency(float f) {
+		// TODO Auto-generated method stub
+		this.transparency = f;
+	}
 	}

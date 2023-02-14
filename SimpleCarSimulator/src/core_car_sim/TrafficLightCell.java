@@ -18,6 +18,7 @@ public class TrafficLightCell extends AbstractInformationCell{
 	private TrafficLightCellInformation lightSituation = new TrafficLightCellInformation();
 	private int timeToChange = 12;
 	private int currentTime;
+	private float transparency = 1;
 
 	public TrafficLightCell(Direction _faces, 
 							int _visibleFrom,
@@ -94,23 +95,35 @@ public class TrafficLightCell extends AbstractInformationCell{
 	
 	@Override
 	public void paintComponent(Graphics g){
+		Graphics2D g2d = (Graphics2D)g.create();
+		g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, transparency));
 		if(lightSituation.greenOn){
-			g.setColor(Color.GREEN);
+			g2d.setColor(Color.GREEN);
 		}
 		else if (lightSituation.redOn && !lightSituation.yellowOn){
-			g.setColor(Color.RED);
+			g2d.setColor(Color.RED);
 		}
 		else if (!lightSituation.redOn && lightSituation.yellowOn){
-			g.setColor(Color.YELLOW);
+			g2d.setColor(Color.YELLOW);
 		}
 		else{
-			g.setColor(Color.BLUE);
+			g2d.setColor(Color.BLUE);
 		}
-		g.fillOval(0, 0, getWidth()-1, getHeight()-1);
+		g2d.fillOval(0, 0, getWidth()-1, getHeight()-1);
+		
+		this.transparency = 1;
 	}
 
 	@Override
 	public InformationCell getInformationType(){
 		return InformationCell.ic_trafficLight;
+	}
+
+	public float getTransparency() {
+		return transparency;
+	}
+
+	public void setTransparency(float transparency) {
+		this.transparency = transparency;
 	}		
 }

@@ -1,8 +1,10 @@
 package visual_car_sim;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.FlowLayout;
+import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
@@ -10,6 +12,7 @@ import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map.Entry;
 import java.util.concurrent.Executor;
@@ -27,15 +30,21 @@ import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 
 import core_car_sim.AbstractCar;
+import core_car_sim.AbstractCell;
 import core_car_sim.CarAddedListener;
 import core_car_sim.Direction;
 import core_car_sim.LoadWorld;
+import core_car_sim.NonDrivingCell;
+import core_car_sim.PavementCell;
 import core_car_sim.Pedestrian;
 import core_car_sim.PedestrianAddedListener;
 import core_car_sim.Point;
+import core_car_sim.RoadCell;
+import core_car_sim.TrafficLightCell;
 import core_car_sim.WorldSim;
 import examples.ExampleAICar;
 import examples.ExampleTestingCar;
+
 
 //<a href="https://www.flaticon.com/free-icons/ui" title="ui icons">Ui icons created by icon wind - Flaticon</a>
 public class CarSimGUI
@@ -58,7 +67,7 @@ public class CarSimGUI
 			boolean finished = false;
 			while (!finished)
 			{
-				updateGUIWorld();
+				
 				simworld.simulate(1);
 				try
 				{
@@ -69,7 +78,7 @@ public class CarSimGUI
 				}
 				
 				lblNewLabel.setText("Steps simulated: " + ++stepsSimulated);
-			
+				updateGUIWorld();
 				
 				finished = until == 0 ? simworld.allFinished() : until == ++i;
 //				System.out.println(simworld.allFinished());
@@ -214,6 +223,71 @@ public class CarSimGUI
 				}
 			}
 		});
+		
+		// button used to show visible world of the self-driving vehicle
+        JButton show_visible_world = new JButton("show visible world");
+        show_visible_world.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // TODO Auto-generated method stub
+                
+                int width = simworld.getWidth();
+                int height = simworld.getHeight();
+                int visibility = simworld.getVisibility();
+                
+                for(AbstractCar car: simworld.getCars()) {
+                    if(car.getClass() == ExampleTestingCar.class) {
+                        Point carPosition = simworld.getCarPosition(car);
+                        //get the car visible world
+                        ArrayList<Point> visibleCells = new ArrayList<>();
+                        for(int i = carPosition.getX() - visibility; i <= carPosition.getX() + visibility;i++) {
+                            for(int j = carPosition.getY() - visibility; j <= carPosition.getY() + visibility; j++) {
+                                // for the cell out of boundary
+                                if( (i < 0) || (i >= width) || (j < 0) || ( j >= height)) {
+                                   
+                                }
+                                else {
+                                   visibleCells.add(new Point(i,j));
+                                }
+            
+                            }
+                        }
+                        
+                 
+                        for(int m = 0; m < width; m++) {
+                            for(int n = 0; n < height;n++) {
+                                if(visibleCells.contains(new Point(m,n))) {
+                                	simworld.getCell(m, n).setVisible(true);
+                                }
+                                else {
+                                   if(simworld.getCell(m, n).getClass() == NonDrivingCell.class) {
+                                	   NonDrivingCell ndc =  (NonDrivingCell)simworld.getCell(m, n);
+                                	   ndc.setTransparency((float) 0.5);	 
+                                   }
+                                   else if(simworld.getCell(m, n).getClass() == RoadCell.class) {
+                                	   RoadCell rc = (RoadCell)simworld.getCell(m, n);
+                                	   rc.setTransparency((float) 0.5);
+                                   }
+                                   else if(simworld.getCell(m, n).getClass() == TrafficLightCell.class) {
+                                	   TrafficLightCell tlc = (TrafficLightCell)simworld.getCell(m, n);
+                                	   tlc.setTransparency((float)0.5);
+                                   }
+                                   else if(simworld.getCell(m, n).getClass() == PavementCell.class) {
+                                	   PavementCell pc = (PavementCell)simworld.getCell(m,n);
+                                	   pc.setTransparency((float)0.5);
+                                   }
+                                }
+                            }
+                        }
+                  }
+              }
+                pnlWorld.repaint();
+          }
+                
+            
+        });
+        
+        panel.add(show_visible_world);
 	}
 	
 	private void updateGUIWorld()

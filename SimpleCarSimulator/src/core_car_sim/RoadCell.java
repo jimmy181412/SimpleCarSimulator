@@ -3,11 +3,6 @@ package core_car_sim;
 import java.util.ArrayList;
 
 import java.awt.*;
-import java.awt.BasicStroke;
-
-
-import java.awt.Graphics;
-import java.awt.Graphics2D;
 
 public class RoadCell extends AbstractCell{
 	public enum RoadMarking{
@@ -42,6 +37,9 @@ public class RoadCell extends AbstractCell{
 	public boolean open = false;
 	public RoadCell parent;
 	
+	private float transparency = 1;
+
+	
 	// the direction that the car can go at this road cell
 	private ArrayList<Direction> travelDirection = new ArrayList<Direction>();
 	// the road markings at this road cell
@@ -70,6 +68,10 @@ public class RoadCell extends AbstractCell{
 	
 	public ArrayList<Direction> getTravelDirection(){
 		return travelDirection;
+	}
+	
+	public void setTransparency(float transparency) {
+		this.transparency = transparency;
 	}
 	
 	// setter and getter of roadMarkings
@@ -146,9 +148,11 @@ public class RoadCell extends AbstractCell{
 	{	
 		
 		Graphics2D g2d = (Graphics2D)g.create();
-		g2d.setColor(Color.DARK_GRAY);
+		
+		g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, transparency));
+		g2d.setColor(Color.gray.darker());
 		g2d.fillRect(0, 0, getWidth(), getHeight());
-		g2d.setColor(Color.WHITE);
+		g2d.setColor(Color.white);
 		
 		for(RoadMarking rm:  roadMarkings){
 			if (rm  == RoadMarking.rm_HorizontalWhiteLineLeft){	
@@ -243,5 +247,6 @@ public class RoadCell extends AbstractCell{
 		else {
 			g2d.drawString(travelDirection.get(0).toString(),getWidth()/4,getHeight()/4);
 		}
+		this.transparency = 1;
 	}
 }
