@@ -12,15 +12,15 @@ public class Pedestrian {
 	//it will also be 1
 	private int speed = 1;
 	private Direction md; 
-	protected ImageIcon pedestrainIcon = null;
+	protected ImageIcon pedestrianIcon;
 	private boolean isFinished = false;
-	private ArrayDeque<Direction> directions = new ArrayDeque<Direction>();
+	private final ArrayDeque<Direction> directions = new ArrayDeque<>();
 	
 	public Pedestrian(Point startPos, Point endPos, Point referencePos, Direction d, String fileImage) {
 		this.startPos = startPos;
 		this.endPos = endPos;
 		this.referencePosition = referencePos;
-		this.pedestrainIcon = new ImageIcon(fileImage);
+		this.pedestrianIcon = new ImageIcon(fileImage);
 		this.md = d;
 	}
 	
@@ -43,8 +43,8 @@ public class Pedestrian {
 	public Direction getMovingDirection() {
 		return this.md;
 	}
-	public ImageIcon getPedestrainIcon() {
-		return this.pedestrainIcon;
+	public ImageIcon getPedestrianIcon() {
+		return this.pedestrianIcon;
 	}
 	
 	public ArrayDeque<Direction> getSimulationRoute(){
@@ -54,12 +54,7 @@ public class Pedestrian {
 	}
 	
 	public boolean isFinished(Point p) {
-		if(p.equals(endPos)) {
-			return true;
-		}
-		else{
-			return false;
-		}
+		return p.equals(endPos);
 	}
 
 	public int getSpeed() {

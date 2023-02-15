@@ -1,5 +1,6 @@
 package core_car_sim;
 
+import java.io.Serial;
 import java.util.ArrayList;
 
 public abstract class AbstractInformationCell extends AbstractCell{
@@ -8,10 +9,11 @@ public abstract class AbstractInformationCell extends AbstractCell{
 		ic_trafficLight
 	}
 
+	@Serial
 	private static final long serialVersionUID = 6253765837690795987L;
 	//Which way the information faces
-	public ArrayList<Direction> faces = new ArrayList<Direction>();
-	public ArrayList<Integer> visibleFrom = new ArrayList<Integer>();
+	public ArrayList<Direction> faces = new ArrayList<>();
+	public ArrayList<Integer> visibleFrom = new ArrayList<>();
 	public int visibilityChange = 0;
 	
 	public AbstractInformationCell(ArrayList<Direction> _faces, ArrayList<Integer> _visibleFrom){

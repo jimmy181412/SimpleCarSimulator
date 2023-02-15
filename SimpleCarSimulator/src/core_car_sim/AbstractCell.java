@@ -1,10 +1,7 @@
 package core_car_sim;
 
-import java.awt.AlphaComposite;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-
-import javax.swing.JPanel;
+import javax.swing.*;
+import java.io.Serial;
 
 /*
  * Abstract cell of the car simulator
@@ -13,6 +10,7 @@ public abstract class AbstractCell extends JPanel{
 	/**
 	 * Auto generated serial
 	 */
+	@Serial
 	private static final long serialVersionUID = -1866861919859124549L;
 
 	public enum CellType{

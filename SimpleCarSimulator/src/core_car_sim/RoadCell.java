@@ -1,5 +1,6 @@
 package core_car_sim;
 
+import java.io.Serial;
 import java.util.ArrayList;
 
 import java.awt.*;
@@ -27,6 +28,7 @@ public class RoadCell extends AbstractCell{
 		rm_hard_shoulder
 		
 	}
+	@Serial
 	private static final long serialVersionUID = -3908736198953808153L;
 	
 	// attributes used for A star search

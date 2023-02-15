@@ -1,15 +1,13 @@
 package core_car_sim;
 
-import java.awt.AlphaComposite;
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
+import java.awt.*;
+import java.io.Serial;
 
 public class NonDrivingCell extends AbstractCell{
 	
+	@Serial
 	private static final long serialVersionUID = 3155750680055909034L;
-	private Color color = Color.green.darker().darker();
+	private final Color color = Color.green.darker().darker();
 	private float transparency = (float) 1.0; 
 	
 	public NonDrivingCell(){
@@ -37,10 +35,6 @@ public class NonDrivingCell extends AbstractCell{
 	@Override
 	public boolean isDriveable(){
 		return false;
-	}
-
-	public float getTransparency() {
-		return transparency;
 	}
 
 	public void setTransparency(float transparency) {

@@ -1,19 +1,15 @@
 package core_car_sim;
 
-import java.awt.AlphaComposite;
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
+import java.awt.*;
+import java.io.Serial;
 import java.util.ArrayList;
-
-import core_car_sim.RoadCell.RoadMarking;
 
 public class PavementCell extends AbstractCell{
 	
 	/**
 	 * 
 	 */
+	@Serial
 	private static final long serialVersionUID = 1L;
 	private ArrayList<PavementMarking> pavementMarkings = new ArrayList<>();
 	private float transparency = 1;

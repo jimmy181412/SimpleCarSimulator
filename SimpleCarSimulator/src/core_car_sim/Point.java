@@ -44,19 +44,11 @@ public class Point implements Comparable<Point>{
 	}
 
 	public void moveDirection(Direction nextDirection){
-		switch (nextDirection){
-			case east:
-				x++;
-				break;
-			case north:
-				y--;
-				break;
-			case south:
-				y++;
-				break;
-			case west:
-				x--;
-				break;
+		switch (nextDirection) {
+			case east -> x++;
+			case north -> y--;
+			case south -> y++;
+			case west -> x--;
 		}
 	}
 

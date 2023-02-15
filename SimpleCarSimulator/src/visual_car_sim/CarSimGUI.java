@@ -1,10 +1,8 @@
 package visual_car_sim;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.FlowLayout;
-import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
@@ -13,8 +11,6 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map.Entry;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
@@ -30,7 +26,6 @@ import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 
 import core_car_sim.AbstractCar;
-import core_car_sim.AbstractCell;
 import core_car_sim.CarAddedListener;
 import core_car_sim.Direction;
 import core_car_sim.LoadWorld;
@@ -332,7 +327,7 @@ public class CarSimGUI
 		//update pedestrians
 		for(Pedestrian p : simworld.getPedestrian()) {
 			Point point = simworld.getPedestrianPosition(p);
-			ImageIcon iicon2 = p.getPedestrainIcon();
+			ImageIcon iicon2 = p.getPedestrianIcon();
 			Image img2 = iicon2.getImage();
 			Image newimg2 = img2.getScaledInstance(iconWidth,iconHeight,java.awt.Image.SCALE_SMOOTH);
 			iicon2 = new ImageIcon(newimg2);

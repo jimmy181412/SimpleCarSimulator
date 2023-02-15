@@ -1,6 +1,7 @@
 package core_car_sim;
 
 import java.awt.*;
+import java.io.Serial;
 import java.util.ArrayList;
 
 public class TrafficLightCell extends AbstractInformationCell{	
@@ -9,11 +10,12 @@ public class TrafficLightCell extends AbstractInformationCell{
 		public boolean redOn;
 		public boolean yellowOn;
 		public boolean greenOn;
-		public ArrayList<Point> effected_area = new ArrayList<Point>();
+		public ArrayList<Point> effected_area = new ArrayList<>();
 		public Point stopAt;
 		public Point stopAtReference;
 	}
 	
+	@Serial
 	private static final long serialVersionUID = -686102171772509852L;
 	private TrafficLightCellInformation lightSituation = new TrafficLightCellInformation();
 	private int timeToChange = 12;

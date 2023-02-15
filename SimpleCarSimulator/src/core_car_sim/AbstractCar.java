@@ -14,7 +14,7 @@ public abstract class AbstractCar{
 	public Point startingPosition;
 	public Point endPosition;
 	public int speed;
-	protected ImageIcon carIcon = null;
+	protected ImageIcon carIcon;
 	
 	//detect whether the car has crashed or not
 	public boolean crashed;
