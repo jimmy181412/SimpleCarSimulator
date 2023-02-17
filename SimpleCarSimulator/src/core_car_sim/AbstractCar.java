@@ -1,6 +1,7 @@
 package core_car_sim;
 
 import java.util.ArrayDeque;
+import java.util.ArrayList;
 
 
 import javax.swing.ImageIcon;
@@ -10,32 +11,35 @@ import javax.swing.ImageIcon;
 // Abstract RoTRA
 // 
 public abstract class AbstractCar{
-	//general attributes
+
+	public enum CarType{
+		car_large,
+		car_small,
+		car_AI
+	}
+
+	private CarType carType;
 	public Point startingPosition;
 	public Point endPosition;
 	public int speed;
 	protected ImageIcon carIcon;
-	
-	//detect whether the car has crashed or not
 	public boolean crashed;
-	
-	//the current Position of the car
 	public Point currentPosition;
-	//current moving direction of the car
 	public Direction cmd = Direction.north;
-	//Previous moving direction of the car
 	public Direction pmd = Direction.north;
+	public ArrayDeque<Direction> currentMovingDirectionList = new ArrayDeque<>();
 	
 	protected abstract void visibleWorldUpdate(WorldSim visibleWorld, Point location);
 	protected abstract ArrayDeque<Direction> getSimulationRoute();
 	protected abstract boolean isFinished(Point point);
 	
-	public AbstractCar(Point startPos, Point endPos, int startingSpeed, String fileImage){
-		startingPosition = startPos;
-		endPosition = endPos;
-		currentPosition = startPos;
-		speed = startingSpeed;
-		carIcon = new ImageIcon(fileImage);
+	public AbstractCar(Point startPos, Point endPos, int startingSpeed, String fileImage, CarType ct){
+		this.startingPosition = startPos;
+		this.endPosition = endPos;
+		this.currentPosition = startPos;
+		this.speed = startingSpeed;
+		this.carIcon = new ImageIcon(fileImage);
+		this.carType = ct;
 	}
 	
 	// getter and setter of current moving direction and previous moving direction of the car
@@ -102,4 +106,17 @@ public abstract class AbstractCar{
 	public ImageIcon getCarIcon(){
 		return carIcon;
 	}
+
+	public ArrayDeque<Direction> getCurrentMovingDirectionList(){
+		return this.currentMovingDirectionList;
+	}
+
+	public void setCurrentMovingDirectionList(ArrayDeque<Direction> currentMovingDirectionList){
+		this.currentMovingDirectionList = currentMovingDirectionList;
+	}
+
+	public CarType getCarType(){
+		return  this.carType;
+	}
+
 }

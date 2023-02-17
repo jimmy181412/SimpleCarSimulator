@@ -189,7 +189,7 @@ public class CarSimGUI
 //					}
 					//While testing
 					
-					BufferedReader br = new BufferedReader(new FileReader(System.getProperty("user.dir") + "/bin/examples/ExampleWorldFile.txt"));
+					BufferedReader br = new BufferedReader(new FileReader(System.getProperty("user.dir") + "/bin/examples/example2.txt"));
 					simworld = LoadWorld.loadWorldFromFile(br, cal, pal);
 					
 					

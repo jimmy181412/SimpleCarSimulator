@@ -1,5 +1,6 @@
 package core_car_sim;
 
+import java.sql.SQLOutput;
 import java.util.*;
 
 import java.util.Map.Entry;
@@ -113,8 +114,19 @@ public class WorldSim{
 						}
 					}
 					car.setPMD(car.getCMD());
+					int currentSpeed = car.getSpeed();
+
 					//current moving direction of the car is the first direction in the stack
 					Direction cmd = path1.peek();
+
+					//the all driving directions according to the speed of the car
+					ArrayDeque<Direction> movingList = new ArrayDeque<>();
+					for(int i = 0; i < currentSpeed; i++){
+						Direction tmpDirection = path1.pop();
+						movingList.add(tmpDirection);
+					}
+
+					car.setCurrentMovingDirectionList(movingList);
 					car.setCMD(cmd);
 					// The screen that car is able to see
 					WorldSim visibleWorld = getVisibleWorldForPosition(carPositions.get(car));

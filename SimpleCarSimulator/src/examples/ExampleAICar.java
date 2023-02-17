@@ -13,7 +13,7 @@ public class ExampleAICar extends AbstractCar
 
 	public ExampleAICar(Point startPos, Point endPos, String imageLoc)
 	{
-		super(startPos,endPos, 1, imageLoc);
+		super(startPos,endPos, 1, imageLoc,CarType.car_small);
 	}
 
 	@Override
