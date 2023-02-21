@@ -92,8 +92,6 @@ public abstract class AbstractCar{
 	public void setCurrentPosition(Point currentPosition){
 		this.currentPosition = currentPosition;
 	}
-	
-	
 	// getter and setter of crash
 	public boolean isCrashed(){
 		return crashed;
