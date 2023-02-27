@@ -7,7 +7,7 @@ public class NonDrivingCell extends AbstractCell{
 	
 	@Serial
 	private static final long serialVersionUID = 3155750680055909034L;
-	private final Color color = Color.green.darker().darker();
+	private final Color color = Color.green.darker().darker().darker();
 	private float transparency = (float) 1.0; 
 	
 	public NonDrivingCell(){

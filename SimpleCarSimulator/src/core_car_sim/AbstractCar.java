@@ -12,6 +12,8 @@ import javax.swing.ImageIcon;
 // 
 public abstract class AbstractCar{
 
+
+
 	public enum CarType{
 		car_large,
 		car_small,
@@ -19,12 +21,15 @@ public abstract class AbstractCar{
 	}
 
 	private CarType carType;
-	public Point startingPosition;
-	public Point endPosition;
-	public int speed;
+	private Point startingPosition;
+	private Point endPosition;
+	private Point referencePosition;
+	private  Point currentPosition;
+
+	private int speed;
 	protected ImageIcon carIcon;
 	public boolean crashed;
-	public Point currentPosition;
+
 	public Direction cmd = Direction.north;
 	public Direction pmd = Direction.north;
 	public ArrayDeque<Direction> currentMovingDirectionList = new ArrayDeque<>();
@@ -33,10 +38,11 @@ public abstract class AbstractCar{
 	protected abstract ArrayDeque<Direction> getSimulationRoute();
 	protected abstract boolean isFinished(Point point);
 	
-	public AbstractCar(Point startPos, Point endPos, int startingSpeed, String fileImage, CarType ct){
+	public AbstractCar(Point startPos, Point endPos,Point referencePosition, int startingSpeed, String fileImage, CarType ct){
 		this.startingPosition = startPos;
 		this.endPosition = endPos;
 		this.currentPosition = startPos;
+		this.referencePosition = referencePosition;
 		this.speed = startingSpeed;
 		this.carIcon = new ImageIcon(fileImage);
 		this.carType = ct;
@@ -115,6 +121,13 @@ public abstract class AbstractCar{
 
 	public CarType getCarType(){
 		return  this.carType;
+	}
+
+	public Point getReferencePosition() {
+		return referencePosition;
+	}
+	public void setReferencePosition(Point referencePosition) {
+		this.referencePosition = referencePosition;
 	}
 
 }

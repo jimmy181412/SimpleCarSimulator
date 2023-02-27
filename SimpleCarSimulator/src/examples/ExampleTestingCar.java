@@ -42,8 +42,8 @@ public class ExampleTestingCar extends AbstractCar
 	
 	ArrayDeque<Direction> directions = new ArrayDeque<Direction>();
 
-	public ExampleTestingCar(Point startPos, Point endPos,String imageLoc){
-		super(startPos,endPos,0,imageLoc, CarType.car_AI);
+	public ExampleTestingCar(Point startPos, Point endPos,Point referencePos,String imageLoc){
+		super(startPos,endPos,referencePos,0,imageLoc, CarType.car_AI);
 		setSpeed(1);
 	}
 	
@@ -130,33 +130,7 @@ public class ExampleTestingCar extends AbstractCar
 								}
 							}
 						}
-						else if(rm == RoadMarking.rm_hard_shoulder) {
-							//check cars current position
-							if(x == location.getX() && y == location.getY()) {
-								atHardShoulder = true;
-							}
-						}
-						
-						else if(rm == RoadMarking.rm_solid_white_line_west) {
-							if((x == location.getX() && y == location.getY()) || (x == location.getX() - 1 && y == location.getY())) {
-								no_left_turn = true;
-							}
-						}
-						else if(rm == RoadMarking.rm_solid_white_line_east) {
-							if((x == location.getX() && y == location.getY())|| (x == location.getX() + 1 && y == location.getY())){
-								no_right_turn = true;
-							}
-						}
-						else if(rm == RoadMarking.rm_solid_white_line_north) {
-							if((x == location.getX() && y == location.getY())||(x == location.getX() && y == location.getY() - 1)) {
-								no_up_turn = true;
-							}
-						}
-						else if(rm == RoadMarking.rm_solid_white_line_west) {
-							if((x == location.getX() && y == location.getY()) || x == location.getX() && y == location.getY() + 1) {
-								no_down_turn = true;
-							}
-						}
+
 					}	
 				}
 			}	

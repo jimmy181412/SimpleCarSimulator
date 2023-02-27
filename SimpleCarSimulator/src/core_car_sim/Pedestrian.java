@@ -20,8 +20,9 @@ public class Pedestrian {
 		this.startPos = startPos;
 		this.endPos = endPos;
 		this.referencePosition = referencePos;
-		this.pedestrianIcon = new ImageIcon(fileImage);
 		this.md = d;
+		this.pedestrianIcon = new ImageIcon(fileImage);
+
 	}
 	
 	//getter and setter of positions

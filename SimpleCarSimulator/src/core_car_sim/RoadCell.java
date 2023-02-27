@@ -7,26 +7,41 @@ import java.awt.*;
 
 public class RoadCell extends AbstractCell{
 	public enum RoadMarking{
+
+		rm_stop_line_at_signal_east,
+		rm_stop_line_at_signal_west,
+		rm_stop_line_at_signal_north,
+		rm_stop_line_at_signal_south,
+		rm_stop_line_at_stop_sign_east,
+		rm_stop_line_at_stop_sign_west,
+		rm_stop_line_at_stop_sign_north,
+		rm_stop_line_at_stop_sign_south,
+		rm_edge_line_east,
+		rm_edge_line_west,
+		rm_edge_line_north,
+		rm_edge_line_south,
+		rm_centre_line_east,
+		rm_centre_line_west,
+		rm_centre_line_north,
+		rm_centre_line_south,
+		rm_hazard_warning_line_east,
+		rm_hazard_warning_line_west,
+		rm_hazard_warning_line_north,
+		rm_hazard_warning_line_south,
+		rm_double_white_line_broken_east,
+		rm_double_white_line_broken_west,
+		rm_double_white_line_broken_north,
+		rm_double_white_line_broken_south,
+		rm_double_white_line_solid_east,
+		rm_double_white_line_solid_west,
+		rm_double_white_line_solid_north,
+		rm_double_white_line_solid_south,
+		rm_lane_line_east,
+		rm_lane_line_west,
+		rm_lane_line_north,
+		rm_lane_line_south,
 		rm_Zebra_Vertical,
-		rm_Zebra_Horizontal,
-		rm_HorizontalWhiteLineLeft, //Holds 
-		rm_HorizontalWhiteLineRight,
-		rm_VerticalWhiteLineUp,
-		rm_VerticalWhiteLineDown,
-		rm_solid_line_east,
-		rm_solid_line_west,
-		rm_solid_line_north,
-		rm_solid_line_south,
-		rm_solid_white_line_east,
-		rm_solid_white_line_west,
-		rm_solid_white_line_north,
-		rm_solid_white_line_south,
-		rm_dotted_line_east,
-		rm_dotted_line_west,
-		rm_dotted_line_north,
-		rm_dotted_line_south,
-		rm_hard_shoulder
-		
+		rm_Zebra_Horizontal
 	}
 	@Serial
 	private static final long serialVersionUID = -3908736198953808153L;
@@ -43,9 +58,9 @@ public class RoadCell extends AbstractCell{
 
 	
 	// the direction that the car can go at this road cell
-	private ArrayList<Direction> travelDirection = new ArrayList<Direction>();
+	private ArrayList<Direction> travelDirection = new ArrayList<>();
 	// the road markings at this road cell
-	private ArrayList<RoadMarking> roadMarkings = new ArrayList<RoadMarking>();
+	private ArrayList<RoadMarking> roadMarkings = new ArrayList<>();
 	
 	private int speedLimit;
 	
@@ -157,20 +172,36 @@ public class RoadCell extends AbstractCell{
 		g2d.setColor(Color.white);
 		
 		for(RoadMarking rm:  roadMarkings){
-			if (rm  == RoadMarking.rm_HorizontalWhiteLineLeft){	
+			if (rm  == RoadMarking.rm_stop_line_at_signal_east){
 				g2d.setStroke(new BasicStroke(5, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
 				g2d.drawLine(5,0,5,getHeight());
 			}
-			else if (rm == RoadMarking.rm_HorizontalWhiteLineRight){
+			else if (rm == RoadMarking.rm_stop_line_at_signal_west){
 				g2d.setStroke(new BasicStroke(5, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
 				g2d.drawLine(getWidth()-5,0,getWidth()-5,getHeight());
 			}
-			else if (rm == RoadMarking.rm_VerticalWhiteLineUp){
+			else if (rm == RoadMarking.rm_stop_line_at_signal_north){
+				g2d.setStroke(new BasicStroke(5, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
+				g2d.drawLine(0,getHeight()-5,getWidth(),getHeight()-5);
+			}
+			else if (rm == RoadMarking.rm_stop_line_at_signal_south){
 				g2d.setStroke(new BasicStroke(5, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
 				g2d.drawLine(0,5,getWidth(),5);
 			}
-			else if (rm == RoadMarking.rm_VerticalWhiteLineDown){
-				g2d.setStroke(new BasicStroke(5, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
+			else if (rm  == RoadMarking.rm_stop_line_at_stop_sign_east){
+				g2d.setStroke(new BasicStroke(8, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
+				g2d.drawLine(5,0,5,getHeight());
+			}
+			else if (rm == RoadMarking.rm_stop_line_at_stop_sign_west){
+				g2d.setStroke(new BasicStroke(8, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
+				g2d.drawLine(getWidth()-5,0,getWidth()-5,getHeight());
+			}
+			else if (rm == RoadMarking.rm_stop_line_at_stop_sign_north){
+				g2d.setStroke(new BasicStroke(8, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
+				g2d.drawLine(0,5,getWidth(),5);
+			}
+			else if (rm == RoadMarking.rm_stop_line_at_stop_sign_south){
+				g2d.setStroke(new BasicStroke(8, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
 				g2d.drawLine(0,getHeight()-5,getWidth(),getHeight()-5);
 			}
 			else if(rm == RoadMarking.rm_Zebra_Vertical){
@@ -189,66 +220,150 @@ public class RoadCell extends AbstractCell{
 					}
 				}		
 			}
-			else if(rm == RoadMarking.rm_solid_line_east) {
+			else if(rm == RoadMarking.rm_edge_line_east) {
 				g2d.setStroke(new BasicStroke(7, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
 				g2d.drawLine(getWidth(),0,getWidth(),getHeight());
 			}	
-			else if(rm == RoadMarking.rm_solid_line_west){
+			else if(rm == RoadMarking.rm_edge_line_west){
 				g2d.setStroke(new BasicStroke(7, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
 				g2d.drawLine(0,0,0,getHeight());
 			}		
-			else if(rm == RoadMarking.rm_solid_line_north){
+			else if(rm == RoadMarking.rm_edge_line_north){
 				g2d.setStroke(new BasicStroke(7, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
 				g2d.drawLine(0,0,getWidth(),0);
 			}	
-			else if(rm == RoadMarking.rm_solid_line_south){
+			else if(rm == RoadMarking.rm_edge_line_south){
 				g2d.setStroke(new BasicStroke(7, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
 				g2d.drawLine(0,getHeight(),getWidth(),getHeight());
 			}	
-			else if(rm == RoadMarking.rm_dotted_line_east) {
-				
-				g2d.setStroke(new BasicStroke(7, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]{10}, 0));
-				g2d.drawLine(getWidth(),0,getWidth(),getHeight());
+			else if(rm == RoadMarking.rm_centre_line_east) {
+				g2d.setStroke(new BasicStroke(7, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_BEVEL));
+				int y1 = (int) (getHeight() / 3.5);
+				int y2 = (int) ((getHeight() / 3.5) * 2.5);
+				g2d.drawLine(getWidth(),y1,getWidth(),y2);
 			}	
-			else if(rm == RoadMarking.rm_dotted_line_west){
-				g2d.setStroke(new BasicStroke(7, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]{10}, 0));
-				g2d.drawLine(0,0,0,getHeight());
+			else if(rm == RoadMarking.rm_centre_line_west){
+				g2d.setStroke(new BasicStroke(7, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_BEVEL));
+				int y1 = (int) (getHeight() / 3.5);
+				int y2 = (int) ((getHeight() / 3.5) * 2.5);
+				g2d.drawLine(0,y1,0,y2);
 			}
-			else if(rm == RoadMarking.rm_dotted_line_north){
-				g2d.setStroke(new BasicStroke(7, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]{10}, 0));
-				g2d.drawLine(0,0,getWidth(),0);
+			else if(rm == RoadMarking.rm_centre_line_north){
+				g2d.setStroke(new BasicStroke(7, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_BEVEL));
+				int x1 = (int) (getWidth() / 3.5);
+				int x2 = (int) ((getWidth() / 3.5) * 2.5);
+				g2d.drawLine(x1,0,x2,0);
 			}
-			else if(rm == RoadMarking.rm_dotted_line_south){
-				g2d.setStroke(new BasicStroke(7, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]{10}, 0));
-				g2d.drawLine(0,getHeight(),getWidth(),getHeight());
+			else if(rm == RoadMarking.rm_centre_line_south){
+				g2d.setStroke(new BasicStroke(7, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_BEVEL));
+				int x1 = (int) (getWidth() / 3.5);
+				int x2 = (int) ((getWidth() / 3.5) * 2.5);
+				g2d.drawLine(x1,getHeight(),x2,getHeight());
 			}
-			else if(rm == RoadMarking.rm_hard_shoulder) {
-				g2d.drawString("HS",getWidth()/2,getHeight()/2);
+			else if(rm == RoadMarking.rm_hazard_warning_line_east){
+				g2d.setStroke(new BasicStroke(7, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_BEVEL));
+				int y1 = getHeight() / 5;
+				int y2 = (getHeight() / 5) * 4;
+				g2d.drawLine(getWidth(),y1,getWidth(),y2);
 			}
-			else if(rm == RoadMarking.rm_solid_white_line_east) {
-				g2d.setStroke(new BasicStroke(7, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
-				g2d.drawLine(getWidth(),0,getWidth(),getHeight());
+			else if(rm == RoadMarking.rm_hazard_warning_line_west){
+				g2d.setStroke(new BasicStroke(7, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_BEVEL));
+				int y1 = getHeight() / 5;
+				int y2 = (getHeight() / 5) * 4;
+				g2d.drawLine(0,y1,0,y2);
 			}
-			else if(rm == RoadMarking.rm_solid_white_line_west){
-				g2d.setStroke(new BasicStroke(7, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
-				g2d.drawLine(0,0,0,getHeight());
+			else if(rm == RoadMarking.rm_hazard_warning_line_north){
+				g2d.setStroke(new BasicStroke(7, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_BEVEL));
+				int x1 = getWidth() / 5;
+				int x2 = (getWidth() / 5) * 4;
+				g2d.drawLine(x1,0,x2,0);
 			}
-			else if(rm == RoadMarking.rm_solid_white_line_north){
-				g2d.setStroke(new BasicStroke(7, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
-				g2d.drawLine(0,0,getWidth(),0);
+			else if(rm == RoadMarking.rm_hazard_warning_line_south){
+				g2d.setStroke(new BasicStroke(7, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_BEVEL));
+				int x1 = getWidth() / 5;
+				int x2 = (getWidth() / 5) * 4;
+				g2d.drawLine(x1,getHeight(),x2,getHeight());
 			}
-			else if(rm == RoadMarking.rm_solid_white_line_south){
-				g2d.setStroke(new BasicStroke(7, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
-				g2d.drawLine(0,getHeight(),getWidth(),getHeight());
+			else if(rm == RoadMarking.rm_double_white_line_broken_east){
+				g2d.setStroke(new BasicStroke(7, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_BEVEL));
+				int y1  = getHeight() / 3;
+				int y2  = (getHeight() / 3) * 2;
+				g2d.drawLine(getWidth() - 9, y1, getWidth() - 9, y2);
+				g2d.drawLine(getWidth(), 0, getWidth(), getHeight());
+			}
+			else if(rm == RoadMarking.rm_double_white_line_broken_west){
+				g2d.setStroke(new BasicStroke(7, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_BEVEL));
+				int y1  = getHeight() / 3;
+				int y2  = (getHeight() / 3) * 2;
+				g2d.drawLine(0, y1, 0, y2);
+				g2d.drawLine(9, 0, 9, getHeight());
+			}
+			else if(rm == RoadMarking.rm_double_white_line_broken_north){
+				g2d.setStroke(new BasicStroke(7, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_BEVEL));
+				int x1 = getWidth() / 3;
+				int x2 = (getWidth() / 3) * 2;
+				g2d.drawLine(x1, 0, x2 , 0);
+				g2d.drawLine(0, 9, getWidth(), 9);
+			}
+			else if(rm == RoadMarking.rm_double_white_line_broken_south){
+				g2d.setStroke(new BasicStroke(7, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_BEVEL));
+				int x1 = getWidth() / 3;
+				int x2 = (getWidth() / 3) * 2;
+				g2d.drawLine(x1, getHeight() - 9, x2, getHeight() - 9);
+				g2d.drawLine(0,getHeight(), getWidth(),getHeight());
+			}
+			else if(rm == RoadMarking.rm_double_white_line_solid_east){
+				g2d.setStroke(new BasicStroke(7, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_BEVEL));
+				g2d.drawLine(getWidth() - 9, 0, getWidth() - 9, getHeight());
+				g2d.drawLine(getWidth(), 0, getWidth(), getHeight());
+			}
+			else if(rm == RoadMarking.rm_double_white_line_solid_west){
+				g2d.setStroke(new BasicStroke(7, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_BEVEL));
+				g2d.drawLine(0, 0, 0, getHeight());
+				g2d.drawLine(9, 0, 9, getHeight());
+			}
+			else if(rm == RoadMarking.rm_double_white_line_solid_north){
+				g2d.setStroke(new BasicStroke(7, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_BEVEL));
+				g2d.drawLine(0, 0, getWidth() , 0);
+				g2d.drawLine(0, 9, getWidth(), 9);
+			}
+			else if(rm == RoadMarking.rm_double_white_line_solid_south){
+				g2d.setStroke(new BasicStroke(7, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_BEVEL));
+				g2d.drawLine(0, getHeight() - 9, getWidth(), getHeight() - 9);
+				g2d.drawLine(0,getHeight(), getWidth(),getHeight());
+			}
+			else if(rm == RoadMarking.rm_lane_line_east){
+				g2d.setStroke(new BasicStroke(7, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_BEVEL));
+				int y1 = (int) (getHeight() / 2.5);
+				int y2 = (int) ((getHeight() / 2.5) * 1.5);
+				g2d.drawLine(getWidth(),y1,getWidth(),y2);
+			}
+			else if(rm == RoadMarking.rm_lane_line_west){
+				g2d.setStroke(new BasicStroke(7, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_BEVEL));
+				int y1 = (int) (getHeight() / 2.5);
+				int y2 = (int) ((getHeight() / 2.5) * 1.5);
+				g2d.drawLine(0,y1,0,y2);
+			}
+			else if(rm == RoadMarking.rm_lane_line_north){
+				g2d.setStroke(new BasicStroke(7, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_BEVEL));
+				int x1 = (int) (getWidth() / 2.5);
+				int x2 = (int) ((getWidth() / 2.5) * 1.5);
+				g2d.drawLine(x1,0,x2,0);
+			}
+			else if(rm == RoadMarking.rm_lane_line_south){
+				g2d.setStroke(new BasicStroke(7, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_BEVEL));
+				int x1 = (int) (getWidth() / 2.5);
+				int x2 = (int) ((getWidth() / 2.5) * 1.5);
+				g2d.drawLine(x1,getHeight(),x2,getHeight());
 			}
 		}
-		if(travelDirection.size() > 1)
-		{
-			g2d.drawString("+",getWidth()/4, getHeight()/4);
-		}
-		else {
-			g2d.drawString(travelDirection.get(0).toString(),getWidth()/4,getHeight()/4);
-		}
+//		if(travelDirection.size() > 1)
+//		{
+//			g2d.drawString("+",getWidth()/4, getHeight()/4);
+//		}
+//		else {
+//			g2d.drawString(travelDirection.get(0).toString(),getWidth()/4,getHeight()/4);
+//		}
 		this.transparency = 1;
 	}
 }

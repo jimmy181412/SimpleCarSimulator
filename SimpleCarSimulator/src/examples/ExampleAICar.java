@@ -11,15 +11,15 @@ public class ExampleAICar extends AbstractCar
 {
 	private ArrayDeque<Direction> goLeft = new ArrayDeque<Direction>();
 
-	public ExampleAICar(Point startPos, Point endPos, String imageLoc)
+	public ExampleAICar(Point startPos, Point endPos, Point referenceLoca, String imageLoc)
 	{
-		super(startPos,endPos, 1, imageLoc,CarType.car_small);
+		super(startPos,endPos, referenceLoca,1, imageLoc,CarType.car_small);
 	}
 
 	@Override
 	protected ArrayDeque<Direction> getSimulationRoute()
 	{
-		goLeft.push(Direction.north);
+		goLeft.push(Direction.west);
 	
 		return goLeft;
 	}
@@ -29,7 +29,7 @@ public class ExampleAICar extends AbstractCar
 	{
 		boolean isFinished = false;
 		// Dont care where the car is when finished
-		  if(currentPosition.equals(endPosition)) {
+		  if(getCurrentPosition().equals(getEndPosition())) {
 	            isFinished = true;
 	        }
 	        else {

@@ -62,7 +62,6 @@ public class CarSimGUI
 			boolean finished = false;
 			while (!finished)
 			{
-				
 				simworld.simulate(1);
 				try
 				{
@@ -71,9 +70,9 @@ public class CarSimGUI
 				{
 					e.printStackTrace();
 				}
-				
-				lblNewLabel.setText("Steps simulated: " + ++stepsSimulated);
 				updateGUIWorld();
+				lblNewLabel.setText("Steps simulated: " + ++stepsSimulated);
+
 				
 				finished = until == 0 ? simworld.allFinished() : until == ++i;
 //				System.out.println(simworld.allFinished());
@@ -115,16 +114,16 @@ public class CarSimGUI
 		initialize();
 		cal = new CarAddedListener() {
 			@Override
-			public AbstractCar createCar(String name, Point startingLoca, Point endingLoca)
+			public AbstractCar createCar(String name, Point startingLoca, Point endingLoca, Point referenceLoca)
 			{
 				//AI controlled car (car not tested)
-				return new ExampleAICar(startingLoca, endingLoca, System.getProperty("user.dir") + "/SimpleCarSimulator/resources/redcar.png");
+				return new ExampleAICar(startingLoca, endingLoca, referenceLoca,System.getProperty("user.dir") + "/SimpleCarSimulator/resources/redcar.png");
 			}
 	
 			@Override
-			public AbstractCar createCar(String name, Point startingLoca, Point endingLoca, String av)
+			public AbstractCar createCar(String name, Point startingLoca, Point endingLoca, Point referenceLoca, String av)
 			{
-				return new ExampleTestingCar(startingLoca, endingLoca,System.getProperty("user.dir") + "/SimpleCarSimulator/resources/bluecar.png");
+				return new ExampleTestingCar(startingLoca, endingLoca, referenceLoca,System.getProperty("user.dir") + "/SimpleCarSimulator/resources/bluecar.png");
 			}
 		};
 		
@@ -186,13 +185,8 @@ public class CarSimGUI
 //						simworld = LoadWorld.loadWorldFromFile(br, cal);
 //						pnlWorld.setLayout(new GridLayout(simworld.getHeight(), simworld.getWidth(), 1, 1));
 //						updateGUIWorld();
-//					}
-					//While testing
-					
-					BufferedReader br = new BufferedReader(new FileReader(System.getProperty("user.dir") + "/bin/examples/example2.txt"));
+					BufferedReader br = new BufferedReader(new FileReader(System.getProperty("user.dir") + "/SimpleCarSimulator/src/examples/example1.txt"));
 					simworld = LoadWorld.loadWorldFromFile(br, cal, pal);
-					
-					
 					pnlWorld.setLayout(new GridLayout(simworld.getHeight(), simworld.getWidth(), 1, 1));
 					updateGUIWorld();
 					
@@ -210,11 +204,11 @@ public class CarSimGUI
 				
 				if (rdbtnNewRadioButton.isSelected())
 				{
-					simulationThread.execute(new Simulate(250, 0));
+					simulationThread.execute(new Simulate(50, 0));
 				}
 				else
 				{
-					simulationThread.execute(new Simulate(250, (Integer)spinner.getValue()));
+					simulationThread.execute(new Simulate(50, (Integer)spinner.getValue()));
 				}
 			}
 		});
@@ -233,6 +227,8 @@ public class CarSimGUI
                 for(AbstractCar car: simworld.getCars()) {
                     if(car.getClass() == ExampleTestingCar.class) {
                         Point carPosition = simworld.getCarPosition(car);
+						System.out.println("current car position is: ");
+						System.out.println(carPosition.getX() + " " + carPosition.getY());
                         //get the car visible world
                         ArrayList<Point> visibleCells = new ArrayList<>();
                         for(int i = carPosition.getX() - visibility; i <= carPosition.getX() + visibility;i++) {
@@ -278,8 +274,6 @@ public class CarSimGUI
               }
                 pnlWorld.repaint();
           }
-                
-            
         });
         
         panel.add(show_visible_world);

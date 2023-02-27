@@ -73,22 +73,22 @@ public class LoadWorld{
 					//traffic light faces east
 					if (ld5 == Direction.east) {
 						createdSim.setCell(new TrafficLightCell(ld5, 3, roadEffectedLocation, roadEffectedReference, 1), roadEffectedLocation);
-						((RoadCell) createdSim.getCell(x6, y6)).setMarking(RoadMarking.rm_HorizontalWhiteLineLeft);
+						((RoadCell) createdSim.getCell(x6, y6)).setMarking(RoadMarking.rm_stop_line_at_signal_east);
 					}
 					//traffic light faces west
 					else if (ld5 == Direction.west) {
 						createdSim.setCell(new TrafficLightCell(ld5, 3, roadEffectedLocation, roadEffectedReference, 3), roadEffectedLocation);
-						((RoadCell) createdSim.getCell(x6, y6)).setMarking(RoadMarking.rm_HorizontalWhiteLineRight);
+						((RoadCell) createdSim.getCell(x6, y6)).setMarking(RoadMarking.rm_stop_line_at_signal_west);
 					}
 					//traffic light faces north
 					else if (ld5 == Direction.north) {
 						createdSim.setCell(new TrafficLightCell(ld5, 3, roadEffectedLocation, roadEffectedReference, 4), roadEffectedLocation);
-						((RoadCell) createdSim.getCell(x6, y6)).setMarking(RoadMarking.rm_VerticalWhiteLineDown);
+						((RoadCell) createdSim.getCell(x6, y6)).setMarking(RoadMarking.rm_stop_line_at_signal_north);
 					}
 					//traffic light faces south
 					else if (ld5 == Direction.south) {
 						createdSim.setCell(new TrafficLightCell(ld5, 3, roadEffectedLocation, roadEffectedReference, 2), roadEffectedLocation);
-						((RoadCell) createdSim.getCell(x6, y6)).setMarking(RoadMarking.rm_VerticalWhiteLineUp);
+						((RoadCell) createdSim.getCell(x6, y6)).setMarking(RoadMarking.rm_stop_line_at_signal_south);
 					}
 				}
 				case "zebracrossing" -> {
@@ -103,56 +103,114 @@ public class LoadWorld{
 						((RoadCell) createdSim.getCell(x4, y4)).setMarking(RoadMarking.rm_Zebra_Vertical);
 					}
 				}
-				case "solidline" -> {
+				case "edgeline" -> {
 					// item 1 solid line direction
 					// item 2 3 the point of the road cell
 					Direction ld3 = charToDirection(items[1]);
 					int x3 = Integer.parseInt(items[2]);
 					int y3 = Integer.parseInt(items[3]);
 					if (ld3 == Direction.east) {
-						((RoadCell) createdSim.getCell(x3, y3)).setMarking(RoadMarking.rm_solid_line_east);
+						((RoadCell) createdSim.getCell(x3, y3)).setMarking(RoadMarking.rm_edge_line_east);
 					} else if (ld3 == Direction.west) {
-						((RoadCell) createdSim.getCell(x3, y3)).setMarking(RoadMarking.rm_solid_line_west);
+						((RoadCell) createdSim.getCell(x3, y3)).setMarking(RoadMarking.rm_edge_line_west);
 					} else if (ld3 == Direction.north) {
-						((RoadCell) createdSim.getCell(x3, y3)).setMarking(RoadMarking.rm_solid_line_north);
+						((RoadCell) createdSim.getCell(x3, y3)).setMarking(RoadMarking.rm_edge_line_north);
 					} else if (ld3 == Direction.south) {
-						((RoadCell) createdSim.getCell(x3, y3)).setMarking(RoadMarking.rm_solid_line_south);
+						((RoadCell) createdSim.getCell(x3, y3)).setMarking(RoadMarking.rm_edge_line_south);
 					}
 				}
-				case "solidwhiteline" -> {
-					// item 1 solid white line direction
-					// item 2 3 the point of road cell
-					Direction ld2 = charToDirection(items[1]);
-					int x2 = Integer.parseInt(items[2]);
-					int y2 = Integer.parseInt(items[3]);
-					if (ld2 == Direction.east) {
-						((RoadCell) createdSim.getCell(x2, y2)).setMarking(RoadMarking.rm_solid_white_line_east);
-					} else if (ld2 == Direction.west) {
-						((RoadCell) createdSim.getCell(x2, y2)).setMarking(RoadMarking.rm_solid_white_line_west);
-					} else if (ld2 == Direction.north) {
-						((RoadCell) createdSim.getCell(x2, y2)).setMarking(RoadMarking.rm_solid_white_line_north);
-					} else if (ld2 == Direction.south) {
-						((RoadCell) createdSim.getCell(x2, y2)).setMarking(RoadMarking.rm_solid_white_line_south);
-					}
-				}
-				case "dottedline" -> {
+				case "centreline" -> {
 					// item 1 road line direction
 					// item 2 3 point of the road cell
 					Direction ld1 = charToDirection(items[1]);
 					int x1 = Integer.parseInt(items[2]);
 					int y1 = Integer.parseInt(items[3]);
 					if (ld1 == Direction.east) {
-						((RoadCell) createdSim.getCell(x1, y1)).setMarking(RoadMarking.rm_dotted_line_east);
+						((RoadCell) createdSim.getCell(x1, y1)).setMarking(RoadMarking.rm_centre_line_east);
 					} else if (ld1 == Direction.west) {
-						((RoadCell) createdSim.getCell(x1, y1)).setMarking(RoadMarking.rm_dotted_line_west);
+						((RoadCell) createdSim.getCell(x1, y1)).setMarking(RoadMarking.rm_centre_line_west);
 					} else if (ld1 == Direction.north) {
-						((RoadCell) createdSim.getCell(x1, y1)).setMarking(RoadMarking.rm_dotted_line_north);
+						((RoadCell) createdSim.getCell(x1, y1)).setMarking(RoadMarking.rm_centre_line_north);
 					} else if (ld1 == Direction.south) {
-						((RoadCell) createdSim.getCell(x1, y1)).setMarking(RoadMarking.rm_dotted_line_south);
+						((RoadCell) createdSim.getCell(x1, y1)).setMarking(RoadMarking.rm_centre_line_south);
 					}
 				}
-				case "hardshoulder" ->
-						((RoadCell) createdSim.getCell(Integer.parseInt(items[1]), Integer.parseInt(items[2]))).setMarking(RoadMarking.rm_hard_shoulder);
+				case "hazardwarningline" ->{
+					//item 1 hazard warning line direction
+					//item 2 3 point of the road cell
+					Direction hwld = charToDirection(items[1]);
+					int hwldx = Integer.parseInt(items[2]);
+					int hwldy = Integer.parseInt(items[3]);
+					if(hwld == Direction.east){
+						((RoadCell) createdSim.getCell(hwldx,hwldy)).setMarking(RoadMarking.rm_hazard_warning_line_east);
+					}
+					else if(hwld == Direction.west){
+						((RoadCell) createdSim.getCell(hwldx,hwldy)).setMarking(RoadMarking.rm_hazard_warning_line_west);
+					}
+					else if(hwld == Direction.north){
+						((RoadCell) createdSim.getCell(hwldx,hwldy)).setMarking(RoadMarking.rm_hazard_warning_line_north);
+					}
+					else if(hwld == Direction.south){
+						((RoadCell) createdSim.getCell(hwldx,hwldy)).setMarking(RoadMarking.rm_hazard_warning_line_south);
+					}
+				}
+				case "doublewhitelinebroken" -> {
+					//item 1 double white line broken direction
+					//item 2 3 point of the road cell
+					Direction dwlbd = charToDirection(items[1]);
+					int dwlbx = Integer.parseInt(items[2]);
+					int dwlby = Integer.parseInt(items[3]);
+					if(dwlbd == Direction.east){
+						((RoadCell) createdSim.getCell(dwlbx,dwlby)).setMarking(RoadMarking.rm_double_white_line_broken_east);
+					}
+					else if(dwlbd == Direction.west){
+						((RoadCell) createdSim.getCell(dwlbx,dwlby)).setMarking(RoadMarking.rm_double_white_line_broken_west);
+					}
+					else if(dwlbd == Direction.north){
+						((RoadCell) createdSim.getCell(dwlbx,dwlby)).setMarking(RoadMarking.rm_double_white_line_broken_north);
+					}
+					else if(dwlbd == Direction.south){
+						((RoadCell) createdSim.getCell(dwlbx,dwlby)).setMarking(RoadMarking.rm_double_white_line_broken_south);
+					}
+				}
+				case "doublewhitelinesolid" -> {
+					//item 1 double white line solid direction
+					//item 2 3 point of the road cell
+					Direction dwlsd = charToDirection(items[1]);
+					int dwlsx = Integer.parseInt(items[2]);
+					int dwlsy = Integer.parseInt(items[3]);
+					if(dwlsd == Direction.east){
+						((RoadCell) createdSim.getCell(dwlsx,dwlsy)).setMarking(RoadMarking.rm_double_white_line_solid_east);
+					}
+					else if(dwlsd == Direction.west){
+						((RoadCell) createdSim.getCell(dwlsx,dwlsy)).setMarking(RoadMarking.rm_double_white_line_solid_west);
+					}
+					else if(dwlsd == Direction.north){
+						((RoadCell) createdSim.getCell(dwlsx,dwlsy)).setMarking(RoadMarking.rm_double_white_line_solid_north);
+					}
+					else if(dwlsd == Direction.south){
+						((RoadCell) createdSim.getCell(dwlsx,dwlsy)).setMarking(RoadMarking.rm_double_white_line_solid_south);
+					}
+				}
+				case "laneline" -> {
+					//item 1 lane line direction
+					//item 2 3 point of road cell
+					Direction lld = charToDirection(items[1]);
+					int llx = Integer.parseInt(items[2]);
+					int lly = Integer.parseInt(items[3]);
+					if(lld == Direction.east){
+						((RoadCell) createdSim.getCell(llx,lly)).setMarking(RoadMarking.rm_lane_line_east);
+					}
+					else if(lld == Direction.west){
+						((RoadCell) createdSim.getCell(llx,lly)).setMarking(RoadMarking.rm_lane_line_west);
+					}
+					else if(lld == Direction.north){
+						((RoadCell) createdSim.getCell(llx,lly)).setMarking(RoadMarking.rm_lane_line_north);
+					}
+					else if(lld == Direction.south){
+						((RoadCell) createdSim.getCell(llx,lly)).setMarking(RoadMarking.rm_lane_line_south);
+					}
+				}
 				case "pavement" -> {
 					//item 1 pavement kerb direction
 					//item 2, 3 Point of the pavement
@@ -170,17 +228,19 @@ public class LoadWorld{
 					}
 				}
 				case "car" -> {
-					if (items.length <= 6) {
+					if (items.length <= 8) {
 						// item 1 car name
 						// item 2 3 car start position
 						// item 4 5 car end position
-						createdSim.addCar(items[1], new Point(Integer.parseInt(items[2]), Integer.parseInt(items[3])), new Point(Integer.parseInt(items[4]), Integer.parseInt(items[5])));
+						// item 6 7 car reference position
+						createdSim.addCar(items[1], new Point(Integer.parseInt(items[2]), Integer.parseInt(items[3])), new Point(Integer.parseInt(items[4]), Integer.parseInt(items[5])), new Point(Integer.parseInt(items[6]), Integer.parseInt(items[7])));
 					} else {
 						// item 1 car name
 						// item 2 3 car start position
 						// item 4 5 car end position
-						// item 6 identifier
-						createdSim.addCar(items[1], new Point(Integer.parseInt(items[2]), Integer.parseInt(items[3])), new Point(Integer.parseInt(items[4]), Integer.parseInt(items[5])), items[6]);
+						// item 6 7 car reference position
+						// item 8 identifier
+						createdSim.addCar(items[1], new Point(Integer.parseInt(items[2]), Integer.parseInt(items[3])), new Point(Integer.parseInt(items[4]), Integer.parseInt(items[5])), new Point(Integer.parseInt(items[6]), Integer.parseInt(items[7])),items[8]);
 					}
 				}
 				case "pedestrian" ->
@@ -188,7 +248,8 @@ public class LoadWorld{
 					// item 1 pedestrian name
 					// item 2 3 ,pedestrian start position
 					// item 4 5 ,pedestrian end position
-					// item 6, pedestrian moving direction
+					// item 6 7 ,pedestrian reference position
+					// item 8, pedestrian moving direction
 						createdSim.addPedestrian(items[1], new Point(Integer.parseInt(items[2]), Integer.parseInt(items[3])), new Point(Integer.parseInt(items[4]), Integer.parseInt(items[5])), new Point(Integer.parseInt(items[6]), Integer.parseInt(items[7])), charToDirection(items[8]));
 			}
 			line = reader.readLine();

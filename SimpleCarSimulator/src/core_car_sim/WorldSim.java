@@ -1,10 +1,10 @@
 package core_car_sim;
-
-import java.sql.SQLOutput;
 import java.util.*;
 
 import java.util.Map.Entry;
 import core_car_sim.AbstractCell.CellType;
+import examples.ExampleAICar;
+import examples.ExampleTestingCar;
 
 public class WorldSim{
 	private AbstractCell[][] world;
@@ -87,6 +87,8 @@ public class WorldSim{
 				// if the car is finished then there is no need to generate the route for the car
 				if(!car.isFinished(carPositions.get(car))) {
 					//currently we got a road cell path that the car should go through;
+					System.out.print("actual position of the car is at: ");
+					System.out.println(car.getCurrentPosition().getX() + "  " + car.getCurrentPosition().getY());
 					ArrayList<RoadCell> path = search(car);
 					ArrayDeque<Direction> path1 = new ArrayDeque<>();
 					// check two adjacent cells,
@@ -122,6 +124,8 @@ public class WorldSim{
 					WorldSim visibleWorld = getVisibleWorldForPosition(carPositions.get(car));
 					// The position that car in its own visible world
 					Point carReferencePoint = new Point(visibility, visibility);
+
+					//update beliefs and intentions for the car
 					car.visibleWorldUpdate(visibleWorld, carReferencePoint);
 
 					ArrayDeque<Direction> route = new ArrayDeque<>();
@@ -172,7 +176,14 @@ public class WorldSim{
 					}
 				}
 				else {
+//					if(car.getClass() == ExampleAICar.class){
+//						int x = car.getReferencePosition().getX();
+//						int y = car.getReferencePosition().getY();
+//						Point origin = new Point(x,y);
+//						carPositions.put(car, origin);
+//					}
 					carsFinished.add(car);
+
 				}
 			}
 			finishedChecking = carsFinished.size() == cars.size();		
@@ -495,17 +506,17 @@ public class WorldSim{
 		carAddedListeners.add(cal);
 	}
 	
-	public void addCar(String name, Point startPos,Point endPos){
+	public void addCar(String name, Point startPos,Point endPos, Point referencePos){
 		for (CarAddedListener cal : carAddedListeners){
-			AbstractCar createdCar = cal.createCar(name, startPos, endPos);
+			AbstractCar createdCar = cal.createCar(name, startPos, endPos, referencePos );
 			cars.add(createdCar);
 			carPositions.put(createdCar, startPos);
 		}
 	}
 
-	public void addCar(String name, Point startPos,Point endPos, String av){
+	public void addCar(String name, Point startPos,Point endPos, Point referencePos, String av){
 		for (CarAddedListener cal : carAddedListeners){
-			AbstractCar createdCar = cal.createCar(name, startPos, endPos,av);
+			AbstractCar createdCar = cal.createCar(name, startPos, endPos, referencePos, av);
 			cars.add(createdCar);
 			carPositions.put(createdCar, startPos);
 		}

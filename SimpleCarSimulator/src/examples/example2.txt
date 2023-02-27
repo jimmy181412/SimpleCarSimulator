@@ -15,77 +15,22 @@
 -----^^^^-----
 
 
-solidline < 5 10
-solidline < 5 9
-solidline < 5 8
-solidline < 5 7
-solidline < 5 6
-solidline < 5 5
-solidline < 5 4
-solidline < 5 3
-solidline < 5 2
-solidline < 5 1
-solidline < 5 0
+hazardwarningline < 6 0
+hazardwarningline < 6 1
+hazardwarningline < 6 2
+hazardwarningline < 6 3
 
-solidwhiteline < 6 10
-solidwhiteline < 6 9
-solidwhiteline < 6 8
-solidwhiteline < 6 7
-solidwhiteline < 6 6
-solidwhiteline < 6 5
-solidwhiteline < 6 4
-solidwhiteline < 6 3
-solidwhiteline < 6 2
-solidwhiteline < 6 1
-solidwhiteline < 6 0
+hazardwarningline > 6 0
+hazardwarningline > 6 1
+hazardwarningline > 6 2
+hazardwarningline > 6 3
 
-dottedline < 7 10
-dottedline < 7 9
-dottedline < 7 8
-dottedline < 7 7
-dottedline < 7 6
-dottedline < 7 5
-dottedline < 7 4
-dottedline < 7 3
-dottedline < 7 2
-dottedline < 7 1
-dottedline < 7 0
+hazardwarningline ^ 5 3
+hazardwarningline ^ 6 3
+hazardwarningline ^ 7 3
+hazardwarningline ^ 8 3
 
-dottedline < 8 10
-dottedline < 8 9
-dottedline < 8 8
-dottedline < 8 7
-dottedline < 8 6
-dottedline < 8 5
-dottedline < 8 4
-dottedline < 8 3
-dottedline < 8 2
-dottedline < 8 1
-dottedline < 8 0
-
-solidline > 8 10
-solidline > 8 9
-solidline > 8 8
-solidline > 8 7
-solidline > 8 6
-solidline > 8 5
-solidline > 8 4
-solidline > 8 3
-solidline > 8 2
-solidline > 8 1
-solidline > 8 0
-
-hardshoulder 5 10
-hardshoulder 5 9
-hardshoulder 5 8
-hardshoulder 5 7
-hardshoulder 5 6
-hardshoulder 5 5
-hardshoulder 5 4
-hardshoulder 5 3
-hardshoulder 5 2
-hardshoulder 5 1
-hardshoulder 5 0
-
-Car testingCar 5 8 8 2 jim
-
+hazardwarningline V 5 3
+hazardwarningline V 6 3
+hazardwarningline V 7 3
+hazardwarningline V 8 3
