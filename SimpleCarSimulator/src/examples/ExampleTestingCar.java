@@ -51,12 +51,6 @@ public class ExampleTestingCar extends AbstractCar
 
 	@Override
 	public void visibleWorldUpdate(WorldSim visibleWorld, Point location){
-		
-
-			
-			
-			
-			
 		for (int y = 0; y < visibleWorld.getHeight(); y++){
 			for (int x = 0; x < visibleWorld.getWidth(); x++){
 				if (visibleWorld.getCell(x, y).getCellType() == CellType.ct_information){
@@ -140,7 +134,7 @@ public class ExampleTestingCar extends AbstractCar
 	}
 
 	@Override
-	public ArrayDeque<Direction> getSimulationRoute(){	
+	public ArrayDeque<Direction> getSimulationRoute(WorldSim world){
 		
 //		System.out.println("no up turn: " + no_up_turn);
 //		System.out.println("no down turn: " + no_down_turn);
