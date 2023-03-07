@@ -1,6 +1,6 @@
 package core_car_sim;
 
-public class Point implements Comparable<Point>{
+public class Point implements Comparable<Point>, Cloneable {
 	private int x;
 	private int y;
 	
@@ -67,6 +67,15 @@ public class Point implements Comparable<Point>{
 		}
 		else if (y >= height){
 			y = 0;
+		}
+	}
+
+	@Override
+	public Point clone(){
+		try{
+			return  (Point) super.clone();
+		} catch(CloneNotSupportedException e){
+			throw  new RuntimeException(e);
 		}
 	}
 }

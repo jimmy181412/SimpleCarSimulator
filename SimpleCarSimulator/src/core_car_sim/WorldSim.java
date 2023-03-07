@@ -6,7 +6,7 @@ import core_car_sim.AbstractCell.CellType;
 import examples.ExampleAICar;
 import examples.ExampleTestingCar;
 
-public class WorldSim{
+public class WorldSim implements Cloneable{
 	private AbstractCell[][] world;
 	
 	// size of the world
@@ -149,12 +149,14 @@ public class WorldSim{
 					}
 				}
 				else {
-//					if(car.getClass() == ExampleAICar.class){
-//						int x = car.getReferencePosition().getX();
-//						int y = car.getReferencePosition().getY();
-//						Point origin = new Point(x,y);
-//						carPositions.put(car, origin);
-//					}
+					//reset car position
+
+					if(car.getClass() == ExampleAICar.class){
+						int x = car.getReferencePosition().getX();
+						int y = car.getReferencePosition().getY();
+						Point origin = new Point(x,y);
+						carPositions.put(car, origin);
+					}
 					carsFinished.add(car);
 
 				}
@@ -419,6 +421,14 @@ public class WorldSim{
 			}
 		}
 		return null;
+	}
+		
+	public WorldSim clone(){
+		try{
+			return (WorldSim) super.clone();
+		} catch (CloneNotSupportedException e) {
+			throw new RuntimeException(e);
+		}
 	}
 	
 }
