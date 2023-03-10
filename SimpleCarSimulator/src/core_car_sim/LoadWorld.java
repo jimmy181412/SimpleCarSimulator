@@ -228,19 +228,23 @@ public class LoadWorld{
 					}
 				}
 				case "car" -> {
-					if (items.length <= 8) {
+					if (items.length <= 9) {
 						// item 1 car name
 						// item 2 3 car start position
 						// item 4 5 car end position
 						// item 6 7 car reference position
-						createdSim.addCar(items[1], new Point(Integer.parseInt(items[2]), Integer.parseInt(items[3])), new Point(Integer.parseInt(items[4]), Integer.parseInt(items[5])), new Point(Integer.parseInt(items[6]), Integer.parseInt(items[7])));
+						// item 8 car initial Direction
+						createdSim.addCar(items[1], new Point(Integer.parseInt(items[2]), Integer.parseInt(items[3])), new Point(Integer.parseInt(items[4]), Integer.parseInt(items[5])), new Point(Integer.parseInt(items[6]), Integer.parseInt(items[7])),
+								charToDirection(items[8]));
 					} else {
 						// item 1 car name
 						// item 2 3 car start position
 						// item 4 5 car end position
 						// item 6 7 car reference position
-						// item 8 identifier
-						createdSim.addCar(items[1], new Point(Integer.parseInt(items[2]), Integer.parseInt(items[3])), new Point(Integer.parseInt(items[4]), Integer.parseInt(items[5])), new Point(Integer.parseInt(items[6]), Integer.parseInt(items[7])),items[8]);
+						// item 8 car initial direction
+						// item 9 identifier
+						createdSim.addCar(items[1], new Point(Integer.parseInt(items[2]), Integer.parseInt(items[3])), new Point(Integer.parseInt(items[4]), Integer.parseInt(items[5])), new Point(Integer.parseInt(items[6]), Integer.parseInt(items[7])),
+								charToDirection(items[8]),items[9]);
 					}
 				}
 				case "pedestrian" ->

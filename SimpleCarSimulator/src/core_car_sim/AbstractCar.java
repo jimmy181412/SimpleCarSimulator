@@ -12,9 +12,6 @@ import javax.swing.ImageIcon;
 // Abstract RoTRA
 // 
 public abstract class AbstractCar{
-
-
-
 	public enum CarType{
 		car_large,
 		car_small,
@@ -31,21 +28,43 @@ public abstract class AbstractCar{
 	protected ImageIcon carIcon;
 	public boolean crashed;
 
-	public Direction cmd = Direction.north;
-	public Direction pmd = Direction.north;
+	public Direction cmd;
+	public Direction pmd;
 	public ArrayDeque<Direction> currentMovingDirectionList = new ArrayDeque<>();
+
+	protected ImageIcon northCarIcon;
+	protected ImageIcon southCarIcon;
+	protected ImageIcon eastCarIcon;
+	protected ImageIcon westCarIcon;
 	
 	protected abstract void visibleWorldUpdate(WorldSim visibleWorld, Point location);
 	protected abstract ArrayDeque<Direction> getSimulationRoute(WorldSim world);
 	protected abstract boolean isFinished(Point point);
 	
-	public AbstractCar(Point startPos, Point endPos,Point referencePosition, int startingSpeed, String fileImage, CarType ct){
+	public AbstractCar(Point startPos, Point endPos,Point referencePosition, int startingSpeed, Direction initialDirection,String fileImage1,String fileImage2, String fileImage3, String fileImage4, CarType ct){
 		this.startingPosition = startPos;
 		this.endPosition = endPos;
 		this.currentPosition = startPos;
 		this.referencePosition = referencePosition;
 		this.speed = startingSpeed;
-		this.carIcon = new ImageIcon(fileImage);
+		this.cmd = initialDirection;
+		this.pmd = initialDirection;
+		if(cmd == Direction.north){
+			this.carIcon = new ImageIcon(fileImage1);
+		}
+		else if(cmd  == Direction.south){
+			this.carIcon = new ImageIcon(fileImage2);
+		}
+		else if(cmd  == Direction.east){
+			this.carIcon = new ImageIcon(fileImage3);
+		}
+		else if(cmd == Direction.west){
+			this.carIcon = new ImageIcon(fileImage4);
+		}
+		this.northCarIcon = new ImageIcon(fileImage1);
+		this.southCarIcon = new ImageIcon(fileImage2);
+		this.eastCarIcon = new ImageIcon(fileImage3);
+		this.westCarIcon = new ImageIcon(fileImage4);
 		this.carType = ct;
 	}
 	
@@ -342,6 +361,27 @@ public abstract class AbstractCar{
 		return path;
 	}
 
+	public void setCurrentIcon(ImageIcon carIcon){
+		this.carIcon = carIcon;
+	}
 
+	public ImageIcon getCurrentIcon(){
+		return this.carIcon;
+	}
 
+	public ImageIcon getNorthCarIcon(){
+		return this.northCarIcon;
+	}
+
+	public ImageIcon getSouthCarIcon(){
+		return this.southCarIcon;
+	}
+
+	public ImageIcon getEastCarIcon(){
+		return this.eastCarIcon;
+	}
+
+	public ImageIcon getWestCarIcon(){
+		return this.westCarIcon;
+	}
 }

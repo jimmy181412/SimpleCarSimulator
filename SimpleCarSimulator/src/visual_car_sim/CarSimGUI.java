@@ -114,26 +114,43 @@ public class CarSimGUI
 		initialize();
 		cal = new CarAddedListener() {
 			@Override
-			public AbstractCar createCar(String name, Point startingLoca, Point endingLoca, Point referenceLoca)
+			public AbstractCar createCar(String name, Point startingLoca, Point endingLoca, Point referenceLoca, Direction d)
 			{
 				//AI controlled car (car not tested)
-				return new ExampleAICar(startingLoca, endingLoca, referenceLoca,System.getProperty("user.dir") + "/SimpleCarSimulator/resources/redcar.png");
+				return new ExampleAICar(startingLoca, endingLoca, referenceLoca
+				,d
+				,System.getProperty("user.dir") + "/SimpleCarSimulator/resources/imagesIcon/basicCarImage1.png"
+				,System.getProperty("user.dir") + "/SimpleCarSimulator/resources/imagesIcon/basicCarImage2.png"
+				,System.getProperty("user.dir") + "/SimpleCarSimulator/resources/imagesIcon/basicCarImage3.png"
+				,System.getProperty("user.dir") + "/SimpleCarSimulator/resources/imagesIcon/basicCarImage4.png");
 			}
 	
 			@Override
-			public AbstractCar createCar(String name, Point startingLoca, Point endingLoca, Point referenceLoca, String av)
+			public AbstractCar createCar(String name, Point startingLoca, Point endingLoca, Point referenceLoca,Direction d, String av)
 			{
-				return new ExampleTestingCar(startingLoca, endingLoca, referenceLoca,System.getProperty("user.dir") + "/SimpleCarSimulator/resources/bluecar.png");
+				return new ExampleTestingCar(startingLoca, endingLoca, referenceLoca
+				,d
+				,System.getProperty("user.dir") + "/SimpleCarSimulator/resources/imagesIcon/AICarImage1.png"
+				,System.getProperty("user.dir") + "/SimpleCarSimulator/resources/imagesIcon/AICarImage2.png"
+				,System.getProperty("user.dir") + "/SimpleCarSimulator/resources/imagesIcon/AICarImage3.png"
+				,System.getProperty("user.dir") + "/SimpleCarSimulator/resources/imagesIcon/AICarImage4.png");
 			}
 		};
 		
 		pal = new PedestrianAddedListener() {
 			@Override
 			public Pedestrian createPedestrians(String name,Point startingLoca,Point endingLoca,Point referenceLoca, Direction d) {
-				// TODO Auto-generated method stub
-				return new Pedestrian(startingLoca, endingLoca, referenceLoca,d, System.getProperty("user.dir") + "/SimpleCarSimulator/resources/pedestrian.png");
+				if (d == Direction.north) {
+					return new Pedestrian(startingLoca, endingLoca, referenceLoca, d, System.getProperty("user.dir") + "/SimpleCarSimulator/resources/imagesIcon/Pedestrian1.png");
+				} else if (d == Direction.south) {
+					return new Pedestrian(startingLoca, endingLoca, referenceLoca, d, System.getProperty("user.dir") + "/SimpleCarSimulator/resources/imagesIcon/Pedestrian2.png");
+				} else if (d == Direction.east) {
+					return new Pedestrian(startingLoca, endingLoca, referenceLoca, d, System.getProperty("user.dir") + "/SimpleCarSimulator/resources/imagesIcon/Pedestrian3.png");
+				} else{
+					return new Pedestrian(startingLoca, endingLoca, referenceLoca, d, System.getProperty("user.dir") + "/SimpleCarSimulator/resources/imagesIcon/Pedestrian4.png");
+				}
 			}
-			
+
 		};
 	}
 
@@ -309,6 +326,43 @@ public class CarSimGUI
 		//update cars
 		for (AbstractCar car : simworld.getCars()){
 			Point p = simworld.getCarPosition(car);
+
+			//check world cell's direction of the current
+			if(simworld.getCell(p.getX(), p.getY()).getClass() == RoadCell.class){
+				RoadCell rc = (RoadCell)simworld.getCell(p.getX(), p.getY());
+				if(rc.getTravelDirection().size() == 1){
+					Direction d = rc.getTravelDirection().get(0);
+					if(d == Direction.north){
+						car.setCurrentIcon(car.getNorthCarIcon());
+					}
+					else if(d == Direction.south){
+						car.setCurrentIcon(car.getSouthCarIcon());
+					}
+					else if(d == Direction.east){
+						car.setCurrentIcon(car.getEastCarIcon());
+					}
+					else if(d == Direction.west){
+						car.setCurrentIcon(car.getWestCarIcon());
+					}
+				}
+				//if the car is on a multiple directions cell
+				else{
+					Direction d = car.getCMD();
+					if(d == Direction.north){
+						car.setCurrentIcon(car.getNorthCarIcon());
+					}
+					else if(d == Direction.south){
+						car.setCurrentIcon(car.getSouthCarIcon());
+					}
+					else if(d == Direction.east){
+						car.setCurrentIcon(car.getEastCarIcon());
+					}
+					else if(d == Direction.west){
+						car.setCurrentIcon(car.getWestCarIcon());
+					}
+				}
+			}
+
 			ImageIcon iicon1 = car.getCarIcon();
 			Image img1 = iicon1.getImage();
 			//adjust size

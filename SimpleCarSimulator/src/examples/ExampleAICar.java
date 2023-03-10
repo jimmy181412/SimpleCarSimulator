@@ -11,15 +11,15 @@ public class ExampleAICar extends AbstractCar
 {
 	private ArrayDeque<Direction> goLeft = new ArrayDeque<Direction>();
 
-	public ExampleAICar(Point startPos, Point endPos, Point referenceLoca, String imageLoc)
+	public ExampleAICar(Point startPos, Point endPos, Point referenceLoca,Direction initialDirection, String image1, String image2, String image3, String image4)
 	{
-		super(startPos,endPos, referenceLoca,1, imageLoc,CarType.car_small);
+		super(startPos,endPos, referenceLoca,2,initialDirection,image1,image2,image3,image4,CarType.car_small);
 	}
 
 	@Override
 	protected ArrayDeque<Direction> getSimulationRoute(WorldSim world)
 	{
-		goLeft.push(Direction.west);
+		goLeft.push(Direction.east);
 	
 		return goLeft;
 	}

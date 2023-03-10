@@ -300,21 +300,20 @@ public class WorldSim implements Cloneable{
 		}
 		return 0;
 	}
-	public void addCarAddedListener(CarAddedListener cal){
-		carAddedListeners.add(cal);
+	public void addCarAddedListener(CarAddedListener cal){carAddedListeners.add(cal);
 	}
 	
-	public void addCar(String name, Point startPos,Point endPos, Point referencePos){
+	public void addCar(String name, Point startPos,Point endPos, Point referencePos, Direction d){
 		for (CarAddedListener cal : carAddedListeners){
-			AbstractCar createdCar = cal.createCar(name, startPos, endPos, referencePos );
+			AbstractCar createdCar = cal.createCar(name, startPos, endPos, referencePos, d);
 			cars.add(createdCar);
 			carPositions.put(createdCar, startPos);
 		}
 	}
 
-	public void addCar(String name, Point startPos,Point endPos, Point referencePos, String av){
+	public void addCar(String name, Point startPos,Point endPos, Point referencePos, Direction d, String av){
 		for (CarAddedListener cal : carAddedListeners){
-			AbstractCar createdCar = cal.createCar(name, startPos, endPos, referencePos, av);
+			AbstractCar createdCar = cal.createCar(name, startPos, endPos, referencePos, d,av);
 			cars.add(createdCar);
 			carPositions.put(createdCar, startPos);
 		}

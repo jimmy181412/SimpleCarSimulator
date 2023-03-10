@@ -42,8 +42,8 @@ public class ExampleTestingCar extends AbstractCar
 	
 	ArrayDeque<Direction> directions = new ArrayDeque<Direction>();
 
-	public ExampleTestingCar(Point startPos, Point endPos,Point referencePos,String imageLoc){
-		super(startPos,endPos,referencePos,0,imageLoc, CarType.car_AI);
+	public ExampleTestingCar(Point startPos, Point endPos,Point referencePos,Direction initialDirection,String image1,String image2,String image3,String image4){
+		super(startPos,endPos,referencePos,0,initialDirection,image1,image2,image3,image4, CarType.car_AI);
 		setSpeed(1);
 	}
 	
