@@ -49,16 +49,16 @@ public abstract class AbstractCar{
 		this.speed = startingSpeed;
 		this.cmd = initialDirection;
 		this.pmd = initialDirection;
-		if(cmd == Direction.north){
+		if(initialDirection == Direction.north){
 			this.carIcon = new ImageIcon(fileImage1);
 		}
-		else if(cmd  == Direction.south){
+		else if(initialDirection == Direction.south){
 			this.carIcon = new ImageIcon(fileImage2);
 		}
-		else if(cmd  == Direction.east){
+		else if(initialDirection == Direction.east){
 			this.carIcon = new ImageIcon(fileImage3);
 		}
-		else if(cmd == Direction.west){
+		else if(initialDirection == Direction.west){
 			this.carIcon = new ImageIcon(fileImage4);
 		}
 		this.northCarIcon = new ImageIcon(fileImage1);

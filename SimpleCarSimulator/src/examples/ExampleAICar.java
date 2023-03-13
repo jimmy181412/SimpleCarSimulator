@@ -19,7 +19,7 @@ public class ExampleAICar extends AbstractCar
 	@Override
 	protected ArrayDeque<Direction> getSimulationRoute(WorldSim world)
 	{
-		goLeft.push(Direction.east);
+		goLeft.push(Direction.west);
 	
 		return goLeft;
 	}
