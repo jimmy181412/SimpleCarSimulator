@@ -1,10 +1,6 @@
 package visual_car_sim;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
-import java.awt.FlowLayout;
-import java.awt.GridLayout;
-import java.awt.Image;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
@@ -25,18 +21,8 @@ import javax.swing.JRadioButton;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 
-import core_car_sim.AbstractCar;
-import core_car_sim.CarAddedListener;
-import core_car_sim.Direction;
-import core_car_sim.LoadWorld;
-import core_car_sim.NonDrivingCell;
-import core_car_sim.PavementCell;
-import core_car_sim.Pedestrian;
-import core_car_sim.PedestrianAddedListener;
+import core_car_sim.*;
 import core_car_sim.Point;
-import core_car_sim.RoadCell;
-import core_car_sim.TrafficLightCell;
-import core_car_sim.WorldSim;
 import examples.ExampleAICar;
 import examples.ExampleTestingCar;
 
@@ -86,7 +72,8 @@ public class CarSimGUI
 	private JLabel lblNewLabel;
 	private JFileChooser loadWorldDialog = new JFileChooser();
 	private WorldSim simworld;
-	private JPanel pnlWorld = new JPanel();
+	private JPanel pnlWorld;
+
 	private Executor simulationThread = Executors.newSingleThreadExecutor();
 	private CarAddedListener cal;
 	private PedestrianAddedListener pal;
@@ -159,7 +146,7 @@ public class CarSimGUI
 	 */
 	private void initialize() {
 		frame = new JFrame();
-		frame.setBounds(100, 100, 966, 615);
+		frame.setBounds(0, 0, 800, 1400);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		JPanel panel = new JPanel();
@@ -189,10 +176,15 @@ public class CarSimGUI
 		
 		lblNewLabel = new JLabel("New label");
 		panel.add(lblNewLabel);
-	
+
+
+		pnlWorld = new JPanel();
+
+		pnlWorld.setLayout(new GridLayout(20, 20, 50, 50));
+		pnlWorld.setSize(200,200);
 		frame.getContentPane().add(pnlWorld, BorderLayout.CENTER);
-		pnlWorld.setLayout(new GridLayout(3, 3, 0, 0));
-		
+
+
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -203,7 +195,11 @@ public class CarSimGUI
 //						pnlWorld.setLayout(new GridLayout(simworld.getHeight(), simworld.getWidth(), 1, 1));
 //						updateGUIWorld();
 					BufferedReader br = new BufferedReader(new FileReader(System.getProperty("user.dir") + "/SimpleCarSimulator/src/examples/example1.txt"));
-					simworld = LoadWorld.loadWorldFromFile(br, cal, pal);
+					simworld = LoadWorld.loadWorldFromFile(br, cal, pal,
+							System.getProperty("user.dir") + "/SimpleCarSimulator/resources/imagesIcon/greenLight.png",
+							System.getProperty("user.dir") + "/SimpleCarSimulator/resources/imagesIcon/yellowLight.png",
+							System.getProperty("user.dir") + "/SimpleCarSimulator/resources/imagesIcon/redLight.png"
+							);
 					pnlWorld.setLayout(new GridLayout(simworld.getHeight(), simworld.getWidth(), 1, 1));
 					updateGUIWorld();
 					
@@ -376,13 +372,25 @@ public class CarSimGUI
 		for(Pedestrian p : simworld.getPedestrian()) {
 			Point point = simworld.getPedestrianPosition(p);
 			ImageIcon iicon2 = p.getPedestrianIcon();
+			System.out.println(iicon2.getIconHeight());
 			Image img2 = iicon2.getImage();
 			Image newimg2 = img2.getScaledInstance(iconWidth,iconHeight,java.awt.Image.SCALE_SMOOTH);
+			System.out.println("the size of pedestrian is: ");
+			System.out.println(newimg2.getHeight(null));
+			System.out.println(newimg2.getWidth(null));
 			iicon2 = new ImageIcon(newimg2);
 			JLabel icon2 = new JLabel(iicon2);
 			simworld.getCell(point.getX(), point.getY()).add(icon2);
 			}
-		
+
+
+//		System.out.println("ddddd");
+//		for(int i = 0; i < simworld.getWidth();i++){
+//			for(int j = 0; j < simworld.getHeight();j++){
+//				System.out.println(simworld.getCell(i,j).getHeight());
+//				System.out.println(simworld.getCell(i,j).getWidth());
+//			}
+//		}
 		pnlWorld.revalidate();
 		pnlWorld.repaint();
 	}

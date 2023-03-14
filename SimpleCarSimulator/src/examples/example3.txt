@@ -1,76 +1,180 @@
-9
-15
+20
+20
 1
-|^^VV||||
-|^^VV||||
-|^^VV||||
-|^^VV||||
-|^^VV||||
-|^^VV||||
-|++++>>>|
-|^^VV||||
-|^^VV||||
-|^^VV||||
-|^^VV||||
-|^^VV||||
+|||^^VV|||||||||||||
+|||^^VV|||||||||||||
+|||^^VV|||||||||||||
+|||^^VV|||||||||||||
+|||^^VV|||||||||||||
+|||^^VV|||||||||||||
+|||^^VV|||||||||||||
+|||^^VV|||||||||||||
+|||++++>>>>>>>>>>>>>
+|||++++<<<<<<<<<<<<<
+|||^^VV|||||||||||||
+|||^^VV|||||||||||||
+|||^^VV|||||||||||||
+|||^^VV|||||||||||||
+|||^^VV|||||||||||||
+|||^^VV|||||||||||||
+|||^^VV|||||||||||||
+|||^^VV|||||||||||||
+|||^^VV|||||||||||||
+|||^^VV|||||||||||||
 
-trafficlight < 5 3 5 4 
 
-solidline < 1 8
-solidline < 1 7
-solidline < 1 6
-solidline < 1 5
-solidline < 1 4
-solidline < 1 3 
-solidline < 1 2
-solidline < 1 1
-solidline < 1 0 
+edgeline < 3 19
+edgeline < 3 18
+edgeline < 3 17
+edgeline < 3 16
+edgeline < 3 15
+edgeline < 3 14
+edgeline < 3 13
+edgeline < 3 12
+edgeline < 3 11
+edgeline < 3 10
+edgeline < 3 9
+edgeline < 3 8
+edgeline < 3 7
+edgeline < 3 6
+edgeline < 3 5
+edgeline < 3 4
+edgeline < 3 3
+edgeline < 3 2
+edgeline < 3 1
+edgeline < 3 0
 
-dottedline < 3 8
-dottedline < 3 7
-dottedline < 3 6
-dottedline < 3 5
-dottedline < 3 4
-dottedline < 3 3
-dottedline < 3 2
-dottedline < 3 1
-dottedline < 3 0
+laneline < 4 19
+laneline < 4 18
+laneline < 4 17
+laneline < 4 16
+laneline < 4 15
+laneline < 4 14
+laneline < 4 12
+laneline < 4 13
+laneline < 4 11
+laneline < 4 10
+laneline < 4 9
+laneline < 4 8
+laneline < 4 7
+laneline < 4 6
+laneline < 4 5
+laneline < 4 4
+laneline < 4 3
+laneline < 4 2
+laneline < 4 1
+laneline < 4 0
 
-dottedline < 2 8
-dottedline < 2 7
-dottedline < 2 6
-dottedline < 2 5
-dottedline < 2 4
-dottedline < 2 3
-dottedline < 2 2
-dottedline < 2 1
-dottedline < 2 0
+centreline < 5 19
+centreline < 5 18
+centreline < 5 17
+centreline < 5 16
+centreline < 5 15
+centreline < 5 14
+centreline < 5 13
+centreline < 5 12
+centreline < 5 11
+centreline < 5 10
+centreline < 5 9
+centreline < 5 8
+centreline < 5 7
+centreline < 5 6
+centreline < 5 5
+centreline < 5 4
+centreline < 5 3
+centreline < 5 2
+centreline < 5 1
+centreline < 5 0
 
-dottedline < 4 8
-dottedline < 4 7
-dottedline < 4 6
-dottedline < 4 5
-dottedline < 4 4
-dottedline < 4 3
-dottedline < 4 2
-dottedline < 4 1
-dottedline < 4 0
+laneline < 6 19
+laneline < 6 18
+laneline < 6 17
+laneline < 6 16
+laneline < 6 15
+laneline < 6 14
+laneline < 6 12
+laneline < 6 13
+laneline < 6 11
+laneline < 6 10
+laneline < 6 9
+laneline < 6 8
+laneline < 6 7
+laneline < 6 6
+laneline < 6 5
+laneline < 6 4
+laneline < 6 3
+laneline < 6 2
+laneline < 6 1
+laneline < 6 0
 
-solidline > 4 8
-solidline > 4 7
-solidline > 4 6
-solidline > 4 5
-solidline > 4 3
-solidline > 4 2
-solidline > 4 1
-solidline > 4 0
+edgeline > 6 19
+edgeline > 6 18
+edgeline > 6 17
+edgeline > 6 16
+edgeline > 6 15
+edgeline > 6 14
+edgeline > 6 13
+edgeline > 6 12
+edgeline > 6 11
+edgeline > 6 10
+edgeline > 6 7
+edgeline > 6 6
+edgeline > 6 5
+edgeline > 6 4
+edgeline > 6 3
+edgeline > 6 2
+edgeline > 6 1
+edgeline > 6 0
 
-solidline ^ 5 4
-solidline ^ 6 4
-solidline ^ 7 4
-solidline V 5 4
-solidline V 6 4
-solidline V 7 4
+edgeline ^ 7 8
+edgeline ^ 8 8
+edgeline ^ 9 8
+edgeline ^ 10 8
+edgeline ^ 11 8
+edgeline ^ 12 8
+edgeline ^ 13 8
+edgeline ^ 14 8
+edgeline ^ 15 8
+edgeline ^ 16 8
+edgeline ^ 17 8
+edgeline ^ 18 8
+edgeline ^ 19 8
 
-Car Test 1 8 7 4 jim
-Car Test 2 8 2 1 
+centreline ^ 7 9
+centreline ^ 8 9
+centreline ^ 9 9
+centreline ^ 10 9
+centreline ^ 11 9
+centreline ^ 12 9
+centreline ^ 13 9
+centreline ^ 14 9
+centreline ^ 15 9
+centreline ^ 16 9
+centreline ^ 17 9
+centreline ^ 18 9
+centreline ^ 19 9
+
+edgeline V 7 9
+edgeline V 8 9
+edgeline V 9 9
+edgeline V 10 9
+edgeline V 11 9
+edgeline V 12 9
+edgeline V 13 9
+edgeline V 14 9
+edgeline V 15 9
+edgeline V 16 9
+edgeline V 17 9
+edgeline V 18 9
+edgeline V 19 9
+
+
+
+
+
+
+
+
+
+
+
