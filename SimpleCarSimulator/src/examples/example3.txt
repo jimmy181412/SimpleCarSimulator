@@ -156,7 +156,7 @@ centreline ^ 19 9
 
 edgeline V 7 9
 edgeline V 8 9
-edgeline V 9 9
+edgeline V 9
 edgeline V 10 9
 edgeline V 11 9
 edgeline V 12 9
@@ -167,14 +167,3 @@ edgeline V 16 9
 edgeline V 17 9
 edgeline V 18 9
 edgeline V 19 9
-
-
-
-
-
-
-
-
-
-
-
