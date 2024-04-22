@@ -1,3 +1,7 @@
+/*
+ *  it is building on work by Joe Collenette.
+ */
+
 package visual_car_sim;
 
 import java.awt.*;
@@ -25,8 +29,6 @@ import core_car_sim.*;
 import core_car_sim.Point;
 import examples.ExampleAICar;
 import examples.ExampleTestingCar;
-
-
 //<a href="https://www.flaticon.com/free-icons/ui" title="ui icons">Ui icons created by icon wind - Flaticon</a>
 public class CarSimGUI
 {
@@ -86,6 +88,7 @@ public class CarSimGUI
 			public void run() {
 				try {
 					CarSimGUI window = new CarSimGUI();
+					window.frame.setLocationRelativeTo(null);
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -194,12 +197,16 @@ public class CarSimGUI
 //						simworld = LoadWorld.loadWorldFromFile(br, cal);
 //						pnlWorld.setLayout(new GridLayout(simworld.getHeight(), simworld.getWidth(), 1, 1));
 //						updateGUIWorld();
+
 					BufferedReader br = new BufferedReader(new FileReader(System.getProperty("user.dir") + "/SimpleCarSimulator/src/examples/example1.txt"));
 					simworld = LoadWorld.loadWorldFromFile(br, cal, pal,
 							System.getProperty("user.dir") + "/SimpleCarSimulator/resources/imagesIcon/greenLight.png",
 							System.getProperty("user.dir") + "/SimpleCarSimulator/resources/imagesIcon/yellowLight.png",
+							System.getProperty("user.dir") + "/SimpleCarSimulator/resources/imagesIcon/redLight.png",
 							System.getProperty("user.dir") + "/SimpleCarSimulator/resources/imagesIcon/redLight.png"
+
 							);
+					updateGUIWorld();
 					pnlWorld.setLayout(new GridLayout(simworld.getHeight(), simworld.getWidth(), 1, 1));
 					updateGUIWorld();
 					
@@ -316,9 +323,28 @@ public class CarSimGUI
 			for (int x = 0; x < simworld.getWidth(); x++)
 			{
 				simworld.getCell(x, y).removeAll();
+				if(simworld.getCell(x,y).getCellType() == AbstractCell.CellType.ct_information){
+					AbstractInformationCell cell1 = (AbstractInformationCell) simworld.getCell(x,y);
+					if(cell1.getInformationType() == AbstractInformationCell.InformationCell.ic_trafficLight){
+
+
+						TrafficLightCell tlc = (TrafficLightCell) cell1;
+						tlc.yellowLight.getScaledInstance(cWidth,cHeight, Image.SCALE_SMOOTH);
+						tlc.redLight.getScaledInstance(cWidth,cHeight, Image.SCALE_SMOOTH);
+						tlc.greenLight.getScaledInstance(cWidth,cHeight, Image.SCALE_SMOOTH);
+						tlc.redYellowLight.getScaledInstance(cWidth,cHeight, Image.SCALE_SMOOTH);
+
+
+
+
+					}
+
+				}
 				pnlWorld.add(simworld.getCell(x, y));
 			}
 		}
+
+		System.out.println("size is: " + cWidth + " " + cHeight);
 		//update cars
 		for (AbstractCar car : simworld.getCars()){
 			Point p = simworld.getCarPosition(car);
@@ -372,25 +398,19 @@ public class CarSimGUI
 		for(Pedestrian p : simworld.getPedestrian()) {
 			Point point = simworld.getPedestrianPosition(p);
 			ImageIcon iicon2 = p.getPedestrianIcon();
-			System.out.println(iicon2.getIconHeight());
+//			System.out.println(iicon2.getIconHeight());
 			Image img2 = iicon2.getImage();
 			Image newimg2 = img2.getScaledInstance(iconWidth,iconHeight,java.awt.Image.SCALE_SMOOTH);
-			System.out.println("the size of pedestrian is: ");
-			System.out.println(newimg2.getHeight(null));
-			System.out.println(newimg2.getWidth(null));
+//			System.out.println("the size of pedestrian is: ");
+//			System.out.println(newimg2.getHeight(null));
+//			System.out.println(newimg2.getWidth(null));
 			iicon2 = new ImageIcon(newimg2);
 			JLabel icon2 = new JLabel(iicon2);
 			simworld.getCell(point.getX(), point.getY()).add(icon2);
 			}
 
 
-//		System.out.println("ddddd");
-//		for(int i = 0; i < simworld.getWidth();i++){
-//			for(int j = 0; j < simworld.getHeight();j++){
-//				System.out.println(simworld.getCell(i,j).getHeight());
-//				System.out.println(simworld.getCell(i,j).getWidth());
-//			}
-//		}
+
 		pnlWorld.revalidate();
 		pnlWorld.repaint();
 	}

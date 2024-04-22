@@ -1,3 +1,7 @@
+/*
+ *  it is building on work by Joe Collenette.
+ */
+
 package core_car_sim;
 
 import core_car_sim.PavementCell.PavementMarking;
@@ -26,7 +30,8 @@ public class LoadWorld{
 											 PedestrianAddedListener pal,
 											 String greenLightPath,
 											 String yellowLightPath,
-											 String redLightPath
+											 String redLightPath,
+											 String redYellowLightPath
 	) throws IOException{
 		String widthStr = reader.readLine();
 		String heightStr = reader.readLine();
@@ -77,22 +82,22 @@ public class LoadWorld{
 
 					//traffic light faces east
 					if (ld5 == Direction.east) {
-						createdSim.setCell(new TrafficLightCell(ld5, 3, roadEffectedLocation, roadEffectedReference, 1,greenLightPath,yellowLightPath,redLightPath), roadEffectedLocation);
+						createdSim.setCell(new TrafficLightCell(ld5, 3, roadEffectedLocation, roadEffectedReference, 1,greenLightPath,yellowLightPath,redLightPath, redYellowLightPath), roadEffectedLocation);
 						((RoadCell) createdSim.getCell(x6, y6)).setMarking(RoadMarking.rm_stop_line_at_signal_east);
 					}
 					//traffic light faces west
 					else if (ld5 == Direction.west) {
-						createdSim.setCell(new TrafficLightCell(ld5, 3, roadEffectedLocation, roadEffectedReference, 3,greenLightPath,yellowLightPath,redLightPath), roadEffectedLocation);
+						createdSim.setCell(new TrafficLightCell(ld5, 3, roadEffectedLocation, roadEffectedReference, 3,greenLightPath,yellowLightPath,redLightPath, redYellowLightPath), roadEffectedLocation);
 						((RoadCell) createdSim.getCell(x6, y6)).setMarking(RoadMarking.rm_stop_line_at_signal_west);
 					}
 					//traffic light faces north
 					else if (ld5 == Direction.north) {
-						createdSim.setCell(new TrafficLightCell(ld5, 3, roadEffectedLocation, roadEffectedReference, 4,greenLightPath,yellowLightPath,redLightPath), roadEffectedLocation);
+						createdSim.setCell(new TrafficLightCell(ld5, 3, roadEffectedLocation, roadEffectedReference, 4,greenLightPath,yellowLightPath,redLightPath, redYellowLightPath), roadEffectedLocation);
 						((RoadCell) createdSim.getCell(x6, y6)).setMarking(RoadMarking.rm_stop_line_at_signal_north);
 					}
 					//traffic light faces south
 					else if (ld5 == Direction.south) {
-						createdSim.setCell(new TrafficLightCell(ld5, 3, roadEffectedLocation, roadEffectedReference, 2,greenLightPath,yellowLightPath,redLightPath), roadEffectedLocation);
+						createdSim.setCell(new TrafficLightCell(ld5, 3, roadEffectedLocation, roadEffectedReference, 2,greenLightPath,yellowLightPath,redLightPath, redYellowLightPath), roadEffectedLocation);
 						((RoadCell) createdSim.getCell(x6, y6)).setMarking(RoadMarking.rm_stop_line_at_signal_south);
 					}
 				}

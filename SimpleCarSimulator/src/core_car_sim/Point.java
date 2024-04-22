@@ -1,3 +1,7 @@
+/*
+ *  it is building on work by Joe Collenette.
+ */
+
 package core_car_sim;
 
 public class Point implements Comparable<Point>, Cloneable {

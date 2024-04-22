@@ -1,8 +1,6 @@
 package core_car_sim;
 
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Objects;
+import java.util.*;
 
 
 import javax.swing.ImageIcon;
@@ -10,7 +8,7 @@ import javax.swing.ImageIcon;
 
 // the father of all kind of cars
 // Abstract RoTRA
-// 
+//
 public abstract class AbstractCar{
 	public enum CarType{
 		car_large,
@@ -36,11 +34,11 @@ public abstract class AbstractCar{
 	protected ImageIcon southCarIcon;
 	protected ImageIcon eastCarIcon;
 	protected ImageIcon westCarIcon;
-	
+
 	protected abstract void visibleWorldUpdate(WorldSim visibleWorld, Point location);
 	protected abstract ArrayDeque<Direction> getSimulationRoute(WorldSim world);
 	protected abstract boolean isFinished(Point point);
-	
+
 	public AbstractCar(Point startPos, Point endPos,Point referencePosition, int startingSpeed, Direction initialDirection,String fileImage1,String fileImage2, String fileImage3, String fileImage4, CarType ct){
 		this.startingPosition = startPos;
 		this.endPosition = endPos;
@@ -67,46 +65,46 @@ public abstract class AbstractCar{
 		this.westCarIcon = new ImageIcon(fileImage4);
 		this.carType = ct;
 	}
-	
+
 	// getter and setter of current moving direction and previous moving direction of the car
 	public void setCMD(Direction cmd){
 		this.cmd = cmd;
 	}
-	
+
 	public Direction getCMD(){
 		return this.cmd;
 	}
-	
+
 	public void setPMD(Direction pmd){
 		this.pmd = pmd;
 	}
-	
+
 	public Direction getPMD(){
 		return this.pmd;
 	}
-	
+
 	//getter and setter of speed
 	public int getSpeed(){
 		return speed;
 	}
-	
+
 	public void setSpeed(int speed){
 		this.speed = speed;
 	}
-	
-	// getters and setters of positions.. 
+
+	// getters and setters of positions..
 	public Point getStartingPosition(){
 		return startingPosition;
 	}
-	
+
 	public Point getEndPosition() {
 		return endPosition;
 	}
-	
+
 	public Point getCurrentPosition(){
 		return this.currentPosition;
 	}
-	
+
 	public void setEndPosition(Point endPosition){
 		this.endPosition = endPosition;
 	}
@@ -114,7 +112,7 @@ public abstract class AbstractCar{
 	public void setStartingPosition(Point startingPosition){
 		this.startingPosition = startingPosition;
 	}
-	
+
 	public void setCurrentPosition(Point currentPosition){
 		this.currentPosition = currentPosition;
 	}
@@ -122,11 +120,11 @@ public abstract class AbstractCar{
 	public boolean isCrashed(){
 		return crashed;
 	}
-	
+
 	public void setCrashed(boolean crashed){
 		this.crashed = crashed;
 	}
-	
+
 	public ImageIcon getCarIcon(){
 		return carIcon;
 	}
@@ -359,6 +357,96 @@ public abstract class AbstractCar{
 			path.add(currentCell);
 		}
 		return path;
+	}
+
+	public WorldSim getVisibleWorldForPosition(WorldSim gridWorld,Point currentPosition){
+		//(Field of view)FOV of a car
+		// the visible world's width is visibility * 2 + 1
+		// the visible world's height is visibility * 2 + 1
+
+		//height of the visible world
+		int visWorldWidth = gridWorld.getVisibility() * 2 + 1;
+		int visWorldHeight = gridWorld.getVisibility() * 2 + 1;
+		WorldSim visWorld = new WorldSim(visWorldWidth,visWorldWidth);
+
+		//initialize cars
+		visWorld.carAddedListeners = new ArrayList<>();
+		visWorld.cars = new ArrayList<>();
+		visWorld.carPositions = new HashMap<>();
+
+		//initialize pedestrians
+		visWorld.pals = new ArrayList<>();
+		visWorld.pedestrians = new ArrayList<>();
+		//pedestrian positions need to be adjusted to visible world
+		visWorld.pedestrianPositions = new HashMap<>();
+
+		int worldX;
+		int worldY;
+
+		visWorld.cars.add(this);
+		visWorld.carPositions.put(this, new Point(gridWorld.getVisibility(), gridWorld.getVisibility()));
+		visWorld.carAddedListeners = gridWorld.carAddedListeners;
+		visWorld.pals = gridWorld.pals;
+
+		for(int x = 0; x < visWorldWidth; x++){
+			for(int y = 0; y < visWorldHeight; y++){
+
+				//the position of grid world
+				worldX = currentPosition.getX() + (x - gridWorld.getVisibility());
+				worldY = currentPosition.getY() + (y - gridWorld.getVisibility());
+
+				//if cross the board
+				if (worldX < 0 || worldX >= gridWorld.getWidth() || worldY < 0 || worldY >= gridWorld.getHeight()){
+					visWorld.setCell(new NonVisibleCell(), x,y);
+				}
+				else{
+					// adjust cars
+					if(gridWorld.containsCar(worldX,worldY)){
+						visWorld.cars.add(gridWorld.getCarAtPosition(worldX,worldY));
+						visWorld.carPositions.put(gridWorld.getCarAtPosition(worldX,worldY), new Point(x,y));
+					}
+					// adjust pedestrians
+					if(gridWorld.containsPedestrian(worldX, worldY)){
+						visWorld.pedestrians.add(gridWorld.getPedestrianAtPosition(worldX, worldY));
+						visWorld.pedestrianPositions.put(gridWorld.getPedestrianAtPosition(worldX, worldY), new Point(x,y));
+					}
+					// adjust cells
+					visWorld.setCell(gridWorld.getCell(worldX,worldY), x, y);
+				}
+			}
+		}
+
+		return visWorld;
+	}
+
+	public ArrayDeque<Direction> getPathByRoadCell(ArrayList<RoadCell> path){
+		ArrayDeque<Direction> path1 = new ArrayDeque<>();
+		// check two adjacent cells,
+		for(int i = 0; i < path.size() - 1; i++){
+			int j = i + 1;
+			RoadCell rc1 = path.get(i);
+			RoadCell rc2 = path.get(j);
+			Point rc1_p = rc1.getPosition();
+			Point rc2_p = rc2.getPosition();
+			//east
+			if(rc1_p.getX() -1 == rc2_p.getX() && rc1_p.getY() == rc2_p.getY()) {
+				path1.push(Direction.east);
+			}
+			//west
+			else if(rc1_p.getX() + 1 == rc2_p.getX() && rc1_p.getY() == rc2_p.getY()) {
+				path1.push(Direction.west);
+			}
+			//north
+			else if(rc1_p.getX()== rc2_p.getX() && rc1_p.getY() + 1  == rc2_p.getY()) {
+				path1.push(Direction.north);
+			}
+			//south
+			else if(rc1_p.getX() == rc2_p.getX() && rc1_p.getY() - 1 == rc2_p.getY()) {
+				path1.push(Direction.south);
+			}
+		}
+
+		return path1;
 	}
 
 	public void setCurrentIcon(ImageIcon carIcon){

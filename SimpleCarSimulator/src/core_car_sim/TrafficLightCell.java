@@ -1,3 +1,7 @@
+/*
+ *  it is building on work by Joe Collenette.
+ */
+
 package core_car_sim;
 
 import javax.imageio.ImageIO;
@@ -13,6 +17,8 @@ public class TrafficLightCell extends AbstractInformationCell{
 		public boolean redOn;
 		public boolean yellowOn;
 		public boolean greenOn;
+
+		public boolean redYellowOn;
 		public ArrayList<Point> effected_area = new ArrayList<>();
 		public Point stopAt;
 		public Point stopAtReference;
@@ -25,15 +31,17 @@ public class TrafficLightCell extends AbstractInformationCell{
 	private int currentTime;
 	private float transparency = 1;
 	public JLabel icon;
-	private Image redLight;
-	private Image greenLight;
-	private Image yellowLight;
-	private Image defaultLight;
-	private Image currentLight;
-	private ImageIcon redLightIcon;
-	private ImageIcon greenLightIcon;
-	private ImageIcon yellowLightIcon;
-	private ImageIcon defaultLightIcon;
+	public Image redLight;
+	public Image greenLight;
+	public Image yellowLight;
+	public  Image redYellowLight;
+	public Image defaultLight;
+	public Image currentLight;
+	public ImageIcon redLightIcon;
+	public ImageIcon greenLightIcon;
+	public ImageIcon yellowLightIcon;
+	public ImageIcon defaultLightIcon;
+	public ImageIcon redYellowLightIcon;
 
 
 	public TrafficLightCell(Direction _faces, 
@@ -43,7 +51,8 @@ public class TrafficLightCell extends AbstractInformationCell{
 							int position,
 							String greenLightPath,
 							String yellowLightPath,
-							String redLightPath) throws IOException {
+							String redLightPath,
+							String redYellowPath) throws IOException {
 		
 		super(_faces, _visibleFrom);
 		redLightIcon = new ImageIcon(
@@ -58,9 +67,12 @@ public class TrafficLightCell extends AbstractInformationCell{
 				yellowLightPath
 		);
 
+		redYellowLightIcon = new ImageIcon(redYellowPath);
+
 		redLight = redLightIcon.getImage().getScaledInstance(40,40,Image.SCALE_SMOOTH);
 		greenLight = greenLightIcon.getImage().getScaledInstance(40,40,Image.SCALE_SMOOTH);
 		yellowLight = yellowLightIcon.getImage().getScaledInstance(40,40,Image.SCALE_SMOOTH);
+		redYellowLight = redYellowLightIcon.getImage().getScaledInstance(40,40,Image.SCALE_SMOOTH);
 
 		//The location of trafficLight
 		this.lightSituation.stopAt = roadEffectLocation;
@@ -72,24 +84,28 @@ public class TrafficLightCell extends AbstractInformationCell{
 			lightSituation.redOn = true;
 			lightSituation.yellowOn = false;
 			lightSituation.greenOn = false;
+			lightSituation.redYellowOn = false;
 			currentTime = 0;
 		}
 		else if(position == 2) {
 			lightSituation.redOn = true;
 			lightSituation.yellowOn = false;
-			lightSituation.greenOn = false;	
+			lightSituation.greenOn = false;
+			lightSituation.redYellowOn = false;
 			currentTime = 5;
 		}
 		else if(position == 3) {
 			lightSituation.redOn = true;
 			lightSituation.yellowOn = false;
 			lightSituation.greenOn = false;
+			lightSituation.redYellowOn = false;
 			currentTime = 10;
 		}
 		else if(position == 4) {
-			lightSituation.redOn = true;
+			lightSituation.redOn = false;
 			lightSituation.yellowOn = false;
 			lightSituation.greenOn = false;
+			lightSituation.redYellowOn = true;
 			currentTime = 15;
 		}
 	}
@@ -106,28 +122,33 @@ public class TrafficLightCell extends AbstractInformationCell{
 		redLight = redLightIcon.getImage().getScaledInstance(getWidth(),getHeight(),Image.SCALE_SMOOTH);
 		greenLight = greenLightIcon.getImage().getScaledInstance(getWidth(),getHeight(),Image.SCALE_SMOOTH);
 		yellowLight = yellowLightIcon.getImage().getScaledInstance(getWidth(),getHeight(),Image.SCALE_SMOOTH);
+		redYellowLight = redYellowLightIcon.getImage().getScaledInstance(getWidth(),getHeight(),Image.SCALE_SMOOTH);
 
-		if(currentTime >= 0 && currentTime < 16){
-			lightSituation.redOn = true;
+		if(currentTime >= 0 && currentTime < 15){
 			lightSituation.redOn = true;
 			lightSituation.yellowOn = false;
 			lightSituation.greenOn = false;
+			lightSituation.redYellowOn = false;
 		}
-		else if(currentTime == 16){
-			lightSituation.yellowOn = true;
-			lightSituation.greenOn = false;
+
+		else if(currentTime == 15) {
 			lightSituation.redOn = false;
-			
+			lightSituation.yellowOn = false;
+			lightSituation.greenOn = false;
+			lightSituation.redYellowOn = true;
 		}
-		else if(currentTime > 15 && currentTime < timeToChange) {
+		else if(currentTime >= 16 && currentTime < timeToChange) {
 			lightSituation.greenOn = true;
 			lightSituation.yellowOn = false;
-			lightSituation.redOn = false;	
+			lightSituation.redOn = false;
+			lightSituation.redYellowOn = false;
 		}
 		else if(currentTime == timeToChange) {
-			lightSituation.greenOn = true;
-			lightSituation.yellowOn = false;
+			lightSituation.greenOn = false;
+			lightSituation.yellowOn = true;
 			lightSituation.redOn = false;
+			lightSituation.redYellowOn = false;
+
 			//reset the time
 			currentTime = 0;
 		}
@@ -136,24 +157,43 @@ public class TrafficLightCell extends AbstractInformationCell{
 	@Override
 	public void paintComponent(Graphics g){
 		Graphics2D g2d = (Graphics2D)g.create();
+
+		// Set rendering hints for better image scaling quality
+		g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+		g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, transparency));
-		if(lightSituation.greenOn){
+		if(lightSituation.greenOn && !lightSituation.yellowOn && !lightSituation.redOn && !lightSituation.redYellowOn){
 			currentLight = greenLight;
 		}
-		else if (lightSituation.redOn && !lightSituation.yellowOn){
+		else if (!lightSituation.greenOn && !lightSituation.yellowOn && lightSituation.redOn && !lightSituation.redYellowOn){
 
 			currentLight = redLight;
 		}
-		else if (!lightSituation.redOn && lightSituation.yellowOn){
+		else if (!lightSituation.greenOn && lightSituation.yellowOn && !lightSituation.redOn && !lightSituation.redYellowOn){
 
 			currentLight = yellowLight;
 		}
-		else{
-
+		else if(!lightSituation.greenOn && !lightSituation.yellowOn && !lightSituation.redOn && lightSituation.redYellowOn){
+			currentLight = redYellowLight;
 		}
+
+
 		g2d.setColor(Color.gray);
 		g2d.fillRect(0,0,getWidth(),getHeight());
-		g2d.drawImage(currentLight,0,0,this);
+
+
+
+		// Calculate the new width and height based on the panel size
+		int width = getWidth() ;
+		int height = getHeight();
+
+		// Calculate the position to draw the image centered
+		int x = (getWidth() - width) / 2;
+		int y = (getHeight() - height) / 2;
+
+
+		g2d.drawImage(currentLight,x,y,width,height,this);
 		this.transparency = 1;
 	}
 
